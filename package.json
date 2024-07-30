@@ -1,0 +1,51 @@
+{
+  "name": "koma-vue-vite",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
+    "format": "prettier .  --write",
+    "replace-build": "replace-in-file --configFile=replace-config.cjs --verbose --dry",
+    "build-koma": "npm run build && node src/build-koma.js"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.1.96",
+    "@popperjs/core": "^2.11.6",
+    "animate.css": "^4.1.1",
+    "axios": "^1.2.0",
+    "chart.js": "^4.3.0",
+    "file-saver": "^2.0.5",
+    "md5": "^2.3.0",
+    "papaparse": "^5.3.2",
+    "pinia": "^2.0.28",
+    "qs": "^6.11.0",
+    "quill": "^1.3.7",
+    "quill-mention": "^4.1.0",
+    "signature_pad": "^4.1.5",
+    "slugify": "^1.6.5",
+    "vue": "^3.2.45",
+    "vue-router": "^4.1.6",
+    "vuex": "^4.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.0.0",
+    "autoprefixer": "^10.4.13",
+    "eslint": "^8.29.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-vue": "^9.8.0",
+    "postcss": "^8.4.19",
+    "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.6",
+    "replace-in-file": "^6.3.5",
+    "rollup-plugin-html-minifier": "^2.0.0",
+    "sass": "^1.56.1",
+    "tailwindcss": "^3.2.4",
+    "vite": "^4.0.0",
+    "vite-plugin-eslint": "^1.8.1"
+  }
+}

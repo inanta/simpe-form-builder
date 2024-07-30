@@ -1,0 +1,329 @@
+<template>
+  <transition
+    name="show-field-properties-transition"
+    enter-active-class="animate__animated animate__slideInRight animate__faster"
+    leave-active-class="animate__animated animate__slideOutRight animate__faster"
+  >
+    <div v-if="!isHidden" class="mb-2">
+      <div
+        class="rounded-t bg-primary p-1.5 font-bold text-on-primary dark:bg-primary--dark"
+      >
+        Properties
+        <a class="float-right" href="" @click.prevent="$emit('close')"
+          ><span class="mdi mdi-close p-1"></span
+        ></a>
+      </div>
+      <div
+        ref="container"
+        class="relative overflow-hidden border border-primary py-0.5 text-sm dark:border-surface--dark-300 dark:bg-surface--dark-300 dark:text-white"
+      >
+        <div class="grid grid-cols-2">
+          <div class="truncate px-1 py-0.5">Type</div>
+          <div class="px-1 py-1.5">
+            {{ elementName }}
+          </div>
+        </div>
+        <template
+          v-for="(fieldPropertyValue, fieldProperty) in fieldProperties[
+            fieldType
+          ]"
+          :key="fieldProperty"
+        >
+          <div
+            v-if="
+              isPropertyAvailable(fieldProperties[fieldType][fieldProperty])
+            "
+            class="grid grid-cols-2"
+          >
+            <div class="truncate px-1 py-0.5">
+              {{ fieldProperties[fieldType][fieldProperty]["label"] }}
+            </div>
+            <div class="px-1 py-0.5">
+              <!-- Field Option As Dropdown -->
+              <select
+                v-if="
+                  typeof fieldPropertyOptions[fieldProperty] !== 'undefined' &&
+                  typeof fieldPropertyOptions[fieldProperty].options !==
+                    'undefined' &&
+                  Array.isArray(fieldPropertyOptions[fieldProperty].options)
+                "
+                class="w-full rounded-sm border border-primary bg-white px-1 py-0.5 outline-none dark:border-surface--dark-500 dark:bg-surface--dark-500"
+                @input="setPropertyValue(fieldProperty, $event.target.value)"
+              >
+                <!-- TODO Change .name to .label -->
+                <option
+                  v-for="option in fieldPropertyOptions[fieldProperty].options"
+                  :key="
+                    typeof option.label !== 'undefined'
+                      ? option.label
+                      : option.name
+                  "
+                  :selected="getPropertyValue(fieldProperty) == option.value"
+                  :value="option.value"
+                >
+                  {{
+                    typeof option.label !== "undefined"
+                      ? option.label
+                      : option.name
+                  }}
+                </option>
+              </select>
+              <!-- Field Option As Custom Vue Component -->
+              <template
+                v-else-if="
+                  typeof fieldPropertyOptions[fieldProperty] !== 'undefined' &&
+                  typeof fieldPropertyOptions[fieldProperty].options !==
+                    'undefined'
+                "
+              >
+                <component
+                  :is="fieldPropertyOptions[fieldProperty].options"
+                  :columns="columns"
+                  :configuration="
+                    fieldPropertyOptions[fieldProperty].configuration
+                  "
+                  :containers="containers"
+                  :field-property="fieldProperty"
+                  :properties="properties"
+                  :table="table"
+                  @change="setPropertyValue"
+                  @change-size="onChangeSize"
+                ></component>
+              </template>
+              <!-- Field Option As Text Area -->
+              <textarea
+                v-else-if="
+                  typeof fieldProperties[fieldType][fieldProperty]['type'] !==
+                    'undefined' &&
+                  fieldProperties[fieldType][fieldProperty]['type'] ===
+                    'textarea'
+                "
+                :placeholder="
+                  typeof fieldProperties[fieldType][fieldProperty][
+                    'placeholder'
+                  ] !== 'undefined'
+                    ? fieldProperties[fieldType][fieldProperty]['placeholder']
+                    : ''
+                "
+                :value="getPropertyValue(fieldProperty, 'string', '')"
+                class="w-full rounded-sm border border-primary px-1 py-0.5 outline-none dark:border-surface--dark-500 dark:bg-surface--dark-500"
+                row="3"
+                @input="setPropertyValue(fieldProperty, $event.target.value)"
+              ></textarea>
+              <!-- Field Option As Text -->
+              <input
+                v-else
+                :placeholder="
+                  typeof fieldProperties[fieldType][fieldProperty][
+                    'placeholder'
+                  ] !== 'undefined'
+                    ? fieldProperties[fieldType][fieldProperty]['placeholder']
+                    : ''
+                "
+                :value="getPropertyValue(fieldProperty, 'string', '')"
+                class="w-full rounded-sm border border-primary px-1 py-0.5 outline-none dark:border-surface--dark-500 dark:bg-surface--dark-500"
+                type="text"
+                @input="setPropertyValue(fieldProperty, $event.target.value)"
+              />
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+  </transition>
+</template>
+
+<script>
+import FieldPropertyColumnSelector from "@/components/Builder/FieldProperty/FieldPropertyColumnSelector.vue";
+import FieldPropertyValueCollection from "@/components/Builder/FieldProperty/FieldPropertyValueCollection.vue";
+import FieldPropertyValueCollections from "@/components/Builder/FieldProperty/FieldPropertyValueCollections.vue";
+import FieldPropertyTableColumnSelector from "@/components/Builder/FieldProperty/FieldPropertyTableColumnSelector.vue";
+import FieldPropertyValueCollectionFormat from "@/components/Builder/FieldProperty/FieldPropertyValueCollectionFormat.vue";
+import FieldPropertyFilterCollection from "@/components/Builder/FieldProperty/FieldPropertyFilterCollection.vue";
+import FieldPropertySortCollection from "@/components/Builder/FieldProperty/FieldPropertySortCollection.vue";
+import FieldPropertyElementSelection from "@/components/Builder/FieldProperty/FieldPropertyElementSelection.vue";
+import FieldPropertyValidationCollection from "@/components/Builder/FieldProperty/FieldPropertyValidationCollection.vue";
+import FieldPropertyValueSource from "@/components/Builder/FieldProperty/FieldPropertyValueSource.vue";
+import FieldPropertyRepeatInput from "@/components/Builder/FieldProperty/FieldPropertyRepeatInput.vue";
+
+import FieldProperties from "@/assets/js/builder/FieldProperties.js";
+import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions.js";
+import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
+
+export default {
+  name: "FieldPropertiesPanel",
+  components: {
+    FieldPropertyColumnSelector,
+    FieldPropertyValueCollection,
+    FieldPropertyValueCollections,
+    FieldPropertyTableColumnSelector,
+    FieldPropertyValueCollectionFormat,
+    FieldPropertyFilterCollection,
+    FieldPropertySortCollection,
+    FieldPropertyElementSelection,
+    FieldPropertyValidationCollection,
+    FieldPropertyValueSource,
+    FieldPropertyRepeatInput
+  },
+  props: {
+    containers: {
+      type: Object,
+      default: function () {
+        return {};
+      }
+    },
+    columns: {
+      type: Array,
+      default: function () {
+        return [];
+      }
+    },
+    properties: {
+      type: Object,
+      default: function () {
+        return {};
+      }
+    },
+    table: {
+      type: String,
+      default: ""
+    }
+  },
+  emits: {
+    change: null,
+    close: null
+  },
+  data: function () {
+    return {
+      fieldProperties: FieldProperties,
+      fieldPropertyOptions: FieldPropertyOptions,
+      currentFieldProperties: {}
+    };
+  },
+  computed: {
+    isHidden: function () {
+      return typeof this.properties.element === "undefined" ? true : false;
+    },
+    fieldType: function () {
+      return typeof this.fieldProperties[
+        this.currentFieldProperties.element
+      ] === "undefined"
+        ? "p"
+        : this.currentFieldProperties.element;
+    },
+    elementName: function () {
+      const element = ElementPanelList.getElement(this.properties.element);
+
+      if (element) {
+        return element.name;
+      }
+
+      return "";
+    }
+  },
+  watch: {
+    properties: {
+      handler: function (value) {
+        this.fieldPropertyOptions.addOption(
+          "name",
+          "FieldPropertyColumnSelector"
+        );
+
+        if (
+          ["input", "select", "textarea", "drop-down-list"].includes(
+            value.element
+          )
+        ) {
+          this.fieldPropertyOptions.addOption(
+            "name",
+            "FieldPropertyColumnSelector"
+          );
+        } else {
+          this.fieldPropertyOptions.removeOption("name");
+        }
+
+        this.currentFieldProperties = value;
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    isPropertyAvailable: function (property) {
+      const self = this;
+
+      if (!Array.isArray(property.rules)) {
+        return true;
+      }
+
+      for (let index = 0; index < property.rules.length; index++) {
+        const rule = property.rules[index];
+
+        if (!rule.values.includes(self.properties[rule.property])) {
+          return false;
+        }
+      }
+
+      return true;
+    },
+    getPropertyValue: function (property, type, mismatch_type_default_value) {
+      if (
+        typeof this.fieldProperties[this.currentFieldProperties.element][
+          property
+        ].name !== "undefined"
+      ) {
+        property =
+          this.fieldProperties[this.currentFieldProperties.element][property]
+            .name;
+      }
+
+      if (typeof this.properties[property] !== "undefined") {
+        if (
+          typeof this.properties[property] === type ||
+          typeof type === "undefined"
+        ) {
+          return this.properties[property];
+        } else if (
+          typeof this.properties[property] !== type &&
+          typeof mismatch_type_default_value !== "undefined"
+        ) {
+          return mismatch_type_default_value;
+        }
+      }
+
+      if (
+        typeof this.fieldPropertyOptions[property] !== "undefined" &&
+        typeof this.fieldPropertyOptions[property].default !== "undefined"
+      ) {
+        return this.fieldPropertyOptions[property].default;
+      }
+
+      return "";
+    },
+    setPropertyValue: function (property, value) {
+      if (
+        typeof this.fieldProperties[this.currentFieldProperties.element][
+          property
+        ].name !== "undefined"
+      ) {
+        property =
+          this.fieldProperties[this.currentFieldProperties.element][property]
+            .name;
+      }
+
+      if (value === "true" || value === "false") {
+        if (value === "true") {
+          value = true;
+        } else {
+          value = false;
+        }
+      }
+
+      this.$emit("change", property, value);
+    },
+    onChangeSize: function (size) {
+      this.$refs.container.style.height =
+        size.height !== "auto" ? size.height + "px" : size.height;
+    }
+  }
+};
+</script>

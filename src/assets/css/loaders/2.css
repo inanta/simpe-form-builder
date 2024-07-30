@@ -1,0 +1,33 @@
+/* Based on https://cssloaders.github.io/ */
+:root {
+    --primary-color: #0093ff;
+    --secondary-color: #000000;
+}
+
+.loader-2 {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: block;
+    margin:15px auto;
+    position: relative;
+    background: var(--secondary-color);
+    box-shadow: -24px 0 var(--secondary-color), 24px 0 var(--secondary-color);
+    box-sizing: border-box;
+    animation: shadowPulse 2s linear infinite;
+  }
+  
+  @keyframes shadowPulse {
+    33% {
+      background: var(--secondary-color);
+      box-shadow: -24px 0 var(--primary-color), 24px 0 var(--secondary-color);
+    }
+    66% {
+      background: var(--primary-color);
+      box-shadow: -24px 0 var(--secondary-color), 24px 0 var(--secondary-color);
+    }
+    100% {
+      background: var(--secondary-color);
+      box-shadow: -24px 0 var(--secondary-color), 24px 0 var(--primary-color);
+    }
+  }
