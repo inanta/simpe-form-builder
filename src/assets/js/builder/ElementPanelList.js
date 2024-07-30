@@ -38,9 +38,9 @@ export default {
         tag: "input"
       },
       {
-        content: "Drop-down",
+        content: "Drop Down",
         icon: "mdi mdi-form-select",
-        name: "Drop-down",
+        name: "Drop Down",
         sort: 0,
         tag: "select"
       },
