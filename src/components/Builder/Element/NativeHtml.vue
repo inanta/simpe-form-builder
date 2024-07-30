@@ -52,7 +52,7 @@
   >
     <template v-if="items">
       <component
-        :is="item.element"
+        :is="itemElement(internalProperties.element, item)"
         v-for="item in cleanAttributeItems(items)"
         :key="item.name"
         :value="item.value"
@@ -136,6 +136,13 @@ export default {
           this.internalProperties.checked = false;
         }
       }
+    },
+    itemElement(element, item) {
+      if (typeof item.element !== "undefined" && item.element !== "") {
+        return item.element;
+      }
+
+      return element === "select" ? "option" : "";
     },
     onInputChecked: function ($event) {
       if ($event.target.checked) {
