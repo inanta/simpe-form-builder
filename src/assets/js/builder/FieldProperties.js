@@ -10,9 +10,6 @@ export default {
     }
   },
   input: {
-    element: {
-      label: "Element Type"
-    },
     name: {
       label: "Name"
     },
@@ -118,7 +115,7 @@ export default {
     readonly: {
       label: "Is Read Only"
     },
-    attributes: {
+    attrs: {
       label: "Attributes"
     },
     validation: {
@@ -131,9 +128,6 @@ export default {
     }
   },
   select: {
-    element: {
-      label: "Element Type"
-    },
     name: {
       label: "Name"
     },
@@ -161,14 +155,11 @@ export default {
     readonly: {
       label: "Is Read Only"
     },
-    attributes: {
+    attrs: {
       label: "Attributes"
     }
   },
   textarea: {
-    element: {
-      label: "Element Type"
-    },
     name: {
       label: "Name"
     },
@@ -187,7 +178,7 @@ export default {
     readonly: {
       label: "Is Read Only"
     },
-    attributes: {
+    attrs: {
       label: "Attributes"
     },
     validation: {

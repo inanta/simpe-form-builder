@@ -16,7 +16,7 @@ export default {
   removeOption: function (property) {
     delete this[property];
   },
-  attributes: {
+  attrs: {
     options: "FieldPropertyValueCollection",
     configuration: {
       addButtonLabel: "Add Attributes",

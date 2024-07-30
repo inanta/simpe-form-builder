@@ -1,12 +1,18 @@
 export default function cleanAttributes(attributes) {
   let cleaned_attributes = {};
   let allowed_attributes = {
-    attributes: false,
+    attrs: false,
     container: true,
     column: true,
+    disabled: false,
     element: true,
+    multiple: false,
     name: false,
-    row: true
+    placeholder: false,
+    readonly: false,
+    row: true,
+    rows: false,
+    size: false
   };
 
   for (const key in attributes) {
@@ -18,7 +24,7 @@ export default function cleanAttributes(attributes) {
           cleaned_attributes[key] = attributes[key];
         }
       }
-    } else if (typeof attributes[key] === "object" && key === "attributes") {
+    } else if (typeof attributes[key] === "object" && key === "attrs") {
       if (Array.isArray(attributes[key].value)) {
         for (let index = 0; index < attributes[key].value.length; index++) {
           const attribute = attributes[key].value[index];
