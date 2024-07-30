@@ -51,10 +51,10 @@ export default defineConfig({
             extType = "font";
           }
 
-          return `public/koma/application/app/${extType}/[name]-[hash][extname]`;
+          return `form-builder/${extType}/[name]-[hash][extname]`;
         },
-        chunkFileNames: "public/koma/application/app/js/[name]-[hash].js",
-        entryFileNames: "public/koma/application/app/js/[name]-[hash].js"
+        chunkFileNames: "form-builder/js/[name]-[hash].js",
+        entryFileNames: "form-builder/js/[name]-[hash].js"
       }
     }
   }
