@@ -1,6 +1,6 @@
 <template>
-  <div class="mb-2 grid grid-cols-8 gap-2">
-    <div class="col-span-2" :class="{ 'col-span-4': selectedTable === '-' }">
+  <div class="mb-2 mt-2">
+    <!-- <div class="col-span-2" :class="{ 'col-span-4': selectedTable === '-' }">
       <option-drop-down
         :items="tables"
         :value="selectedTable"
@@ -33,28 +33,26 @@
           Preview
         </button>
       </div>
-    </div>
-    <div class="flex items-end">
-      <div class="w-full">
-        <button
-          class="w-full rounded-sm bg-primary p-2 text-on-primary"
-          @click="$emit('save')"
-        >
-          Save
-        </button>
-      </div>
+    </div> -->
+    <div class="flex">
+      <button
+        class="ml-auto rounded-sm bg-primary p-2 text-on-primary"
+        @click="$emit('save')"
+      >
+        Save
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import OptionDropDown from "@/components/Builder/OptionDropDown.vue";
+// import OptionDropDown from "@/components/Builder/OptionDropDown.vue";
 
 import AppBuilder from "@/assets/js/AppBuilder.js";
 
 export default {
   name: "TopPanel",
-  components: { OptionDropDown },
+  // components: { OptionDropDown },
   props: {
     containerType: {
       type: String,
