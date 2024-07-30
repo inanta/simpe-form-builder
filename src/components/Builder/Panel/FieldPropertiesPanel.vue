@@ -224,23 +224,23 @@ export default {
   watch: {
     properties: {
       handler: function (value) {
-        this.fieldPropertyOptions.addOption(
-          "name",
-          "FieldPropertyColumnSelector"
-        );
+        // this.fieldPropertyOptions.addOption(
+        //   "name",
+        //   "FieldPropertyColumnSelector"
+        // );
 
-        if (
-          ["input", "select", "textarea", "drop-down-list"].includes(
-            value.element
-          )
-        ) {
-          this.fieldPropertyOptions.addOption(
-            "name",
-            "FieldPropertyColumnSelector"
-          );
-        } else {
-          this.fieldPropertyOptions.removeOption("name");
-        }
+        // if (
+        //   ["input", "select", "textarea", "drop-down-list"].includes(
+        //     value.element
+        //   )
+        // ) {
+        //   this.fieldPropertyOptions.addOption(
+        //     "name",
+        //     "FieldPropertyColumnSelector"
+        //   );
+        // } else {
+        //   this.fieldPropertyOptions.removeOption("name");
+        // }
 
         this.currentFieldProperties = value;
       },
