@@ -7,5 +7,8 @@ import "@mdi/font/css/materialdesignicons.min.css";
 import "animate.css";
 import "@/assets/builder/builder.css";
 
-window.$$App.setInstance(createApp(App));
-window.$$App.getInstance().use(router).use(createPinia()).mount("#app");
+const app = createApp(App);
+app.use(router).use(createPinia()).mount("#app");
+
+// window.$$App.setInstance(createApp(App));
+// window.$$App.getInstance().use(router).use(createPinia()).mount("#app");
