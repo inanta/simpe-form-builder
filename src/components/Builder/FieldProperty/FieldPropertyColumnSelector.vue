@@ -15,7 +15,7 @@
     >
       <div
         v-if="showAdd"
-        class="absolute left-0 top-0 flex h-full w-full flex-col overflow-scroll bg-white p-2 dark:bg-surface--dark-300"
+        class="absolute left-0 top-0 flex h-full w-full flex-col overflow-auto bg-white p-2 dark:bg-surface--dark-300"
       >
         <div class="flex-grow">
           <div class="py-0.5 pr-1"><b>Column</b></div>
