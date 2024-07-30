@@ -68,18 +68,6 @@ import cleanAttributes from "@/assets/js/builder/cleanAttributes.js";
 export default {
   inheritAttrs: false,
   props: {
-    app: {
-      type: Object,
-      default: function () {
-        return {};
-      }
-    },
-    attributes: {
-      type: Object,
-      default: function () {
-        return {};
-      }
-    },
     error: {
       type: Boolean,
       default: false
