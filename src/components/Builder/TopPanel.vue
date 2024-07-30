@@ -24,19 +24,16 @@
         @option-change="changeContainerType"
       ></option-drop-down>
     </div>
-    <div class="flex items-end">
-      <div class="w-full">
-        <button
-          class="w-full rounded-sm bg-primary p-2 text-on-primary"
-          @click="$emit('preview')"
-        >
-          Preview
-        </button>
-      </div>
-    </div> -->
-    <div class="flex">
+     -->
+    <div class="flex space-x-3">
       <button
         class="ml-auto rounded-sm bg-primary p-2 text-on-primary"
+        @click="$emit('preview')"
+      >
+        Preview
+      </button>
+      <button
+        class="rounded-sm bg-primary p-2 text-on-primary"
         @click="$emit('save')"
       >
         Save
