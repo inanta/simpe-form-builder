@@ -97,12 +97,6 @@ export default {
   watch: {
     properties: function () {
       this.closeAddItems();
-    },
-    value: {
-      handler: function () {
-        this.save();
-      },
-      deep: true
     }
   },
   mounted: function () {
@@ -134,7 +128,9 @@ export default {
     onCollectionSelectorCancel: function () {
       this.closeAddItems();
     },
-    onCollectionSelectorSave: function () {
+    onCollectionSelectorSave: function (value) {
+      this.value = value;
+      this.save();
       this.closeAddItems();
     }
   }
