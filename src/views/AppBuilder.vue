@@ -1,25 +1,11 @@
 <template>
   <div class="relative mx-4 mb-4">
-    <top-panel
-      :table="selectedTable"
-      :pk="selectedPrimaryKey"
-      :container-type="selectedContainerType"
-      :edit="isEdit"
-      @columns-change="
-        columns = $event;
-        clearItems();
-      "
-      @container-type-change="selectedContainerType = $event"
-      @primary-key-change="selectedPrimaryKey = $event"
-      @preview="showPreview"
-      @save="save"
-      @selected-table-change="tableChange"
-    ></top-panel>
+    <top-panel @save="save" @preview="showPreview"></top-panel>
     <hr class="border-top my-4 border-gray-300" />
     <div class="pb-2">
       <input
         v-model="app.name"
-        class="w-full rounded-sm border border-mid-gray px-3 py-1.5 text-2xl outline-none"
+        class="w-full rounded-sm border border-mid-gray px-3 py-1.5 text-2xl outline-none dark:border-surface--dark-600 dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
         type="text"
       />
     </div>
@@ -38,14 +24,14 @@
     <div ref="mainContainer" class="flex">
       <div class="flex-grow">
         <div>
-          <div class="flex px-4 pb-2">
+          <!-- <div class="flex px-4 pb-2">
             <button
               class="ml-auto rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark"
               @click="onViewLogicButtonClick"
             >
               <span class="mdi mdi-source-branch"></span> View Logic
             </button>
-          </div>
+          </div> -->
           <template
             v-for="(container, index) in containers"
             :key="container.name"
@@ -191,14 +177,14 @@
             @dragend="onDragEnd"
           ></html-element-panel>
         </div>
-        <div class="py-3">
+        <!-- <div class="py-3">
           <button
             class="w-full rounded-sm bg-primary p-2 text-on-primary"
             @click="isComputedFieldSidePanelShown = true"
           >
             Computed Fields
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
     <app-preview
@@ -310,6 +296,8 @@ export default {
         self.selectedTable = "";
       }
     }
+
+    self.clearItems();
 
     document.addEventListener("keydown", self.onKeyDown);
     window.addEventListener("scroll", this.onWindowScroll);
@@ -828,13 +816,17 @@ export default {
 
       app.containers = containers;
       app.rows = rows;
-      app.columns = columns;
-      app.computed_fields = self.app.computed_fields;
-      app.field_logics = self.app.field_logics;
+      app.elements = columns;
+      // app.computed_fields = self.app.computed_fields;
+      // app.field_logics = self.app.field_logics;
+      app = JSON.parse(JSON.stringify(app));
 
-      AppBuilder.save(app).then(function () {
-        self.$router.push("/app/builder/view");
-      });
+      alert("Info", "Please check the console log to view the generated JSON.");
+      console.log(app);
+
+      // AppBuilder.save(app).then(function () {
+      //   self.$router.push("/app/builder/view");
+      // });
     }
   }
 };
