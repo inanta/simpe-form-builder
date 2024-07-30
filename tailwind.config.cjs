@@ -17,7 +17,7 @@ module.exports = {
     "grid-cols-11",
     "grid-cols-12"
   ],
-  // darkMode: "class",
+  darkMode: "class",
   theme: {
     fontFamily: {
       sans: ["Mulish", "sans-serif"],
@@ -62,7 +62,8 @@ module.exports = {
           600: "#ffffff"
         },
 
-        primary: "#0093ff",
+        // primary: "#0093ff",
+        primary: "#22b9ff",
         "on-primary": "#ffffff",
         positive: "#8cdd3c",
         "on-positive": "#ffffff",
