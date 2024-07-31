@@ -27,16 +27,16 @@
      -->
     <div class="flex space-x-3">
       <button
-        class="ml-auto rounded-sm bg-primary p-2 text-on-primary"
+        class="ml-auto rounded-sm bg-primary py-2 px-4 text-on-primary"
         @click="$emit('preview')"
       >
-        Preview
+        <span class="mdi mdi-eye"></span> Preview
       </button>
       <button
-        class="rounded-sm bg-primary p-2 text-on-primary"
+        class="rounded-sm bg-primary py-2 px-4 text-on-primary"
         @click="$emit('save')"
       >
-        Save
+        <span class="mdi mdi-content-save"></span> Save
       </button>
     </div>
   </div>
