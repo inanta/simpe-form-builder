@@ -63,12 +63,6 @@ export default {
     },
     placeholder: {
       label: "Placeholder"
-      // rules: [
-      //   {
-      //     property: "type",
-      //     values: ["email", "number", "password", "tel", "text"]
-      //   }
-      // ]
     },
     step: {
       label: "Step",
@@ -108,6 +102,9 @@ export default {
           values: ["checkbox"]
         }
       ]
+    },
+    class: {
+      label: "Class"
     },
     disabled: {
       label: "Is Disabled"
@@ -149,6 +146,9 @@ export default {
     size: {
       label: "Size"
     },
+    class: {
+      label: "Class"
+    },
     disabled: {
       label: "Is Disabled"
     },
@@ -157,6 +157,9 @@ export default {
     },
     attrs: {
       label: "Attributes"
+    },
+    validation: {
+      label: "Validation"
     }
   },
   textarea: {
@@ -175,6 +178,9 @@ export default {
     disabled: {
       label: "Is Disabled"
     },
+    class: {
+      label: "Class"
+    },
     readonly: {
       label: "Is Read Only"
     },
@@ -185,89 +191,12 @@ export default {
       label: "Validation"
     }
   },
-  hr: {},
-
-  // "report-table": {
-  //   "report-table-title": {
-  //     label: "Title"
-  //   },
-  //   "report-table-source": {
-  //     label: "Source"
-  //   },
-  //   "report-table-filter": {
-  //     label: "Static Filters"
-  //   },
-  //   "report-table-sort": {
-  //     label: "Sorts"
-  //   },
-  //   "report-table-limit": {
-  //     label: "Limit",
-  //     placeholder: "No Limit"
-  //   },
-  //   "report-table-empty-items-placeholder": {
-  //     label: "Empty Items Placeholder",
-  //     placeholder: "No Data"
-  //   }
-  // },
-
-  "filter-text": {
-    "filter-element": {
-      label: "Type",
-      name: "element"
+  hr: {
+    class: {
+      label: "Class"
     },
-    label: {
-      label: "Label"
-    },
-    "filter-condition": {
-      label: "Condition"
-    },
-    placeholder: {
-      label: "Placeholder"
-    },
-    value: {
-      label: "Default Value"
-    }
-  },
-  "filter-date-range": {
-    "filter-element": {
-      label: "Type",
-      name: "element"
-    },
-    "date-start-label": {
-      label: "Start Label"
-    },
-    "date-end-label": {
-      label: "End Label"
-    },
-    "date-start-placeholder": {
-      label: "Start Placeholder"
-    },
-    "date-end-placeholder": {
-      label: "End Placeholder"
-    },
-    "date-start-value": {
-      label: "Start Value"
-    },
-    "date-end-value": {
-      label: "End Value"
-    }
-  },
-  "filter-drop-down": {
-    "filter-element": {
-      label: "Type",
-      name: "element"
-    },
-    label: {
-      label: "Label"
-    },
-    items: {
-      label: "Items"
-    },
-    "filter-condition": {
-      label: "Condition"
-    },
-    value: {
-      label: "Default Value"
+    attrs: {
+      label: "Attributes"
     }
   }
 };
