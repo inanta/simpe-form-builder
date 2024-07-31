@@ -111,7 +111,29 @@ export default {
   },
   methods: {
     cleanAttributes(attributes) {
-      return cleanAttributes(attributes);
+      const cleaned_attributes = cleanAttributes(attributes, [
+        "disabled",
+        "multiple",
+        "placeholder",
+        "readonly",
+        "rows",
+        "size"
+      ]);
+
+      if (typeof attributes.validation !== "undefined") {
+        for (let index = 0; index < attributes.validation.length; index++) {
+          const validation = attributes.validation[index];
+
+          if (validation.type === "required") {
+            cleaned_attributes.required = true;
+          } else if (validation.type === "regex") {
+            cleaned_attributes.pattern = validation.pattern;
+            cleaned_attributes.title = validation.message;
+          }
+        }
+      }
+
+      return cleaned_attributes;
     },
     cleanAttributeItems(items) {
       if (Array.isArray(items)) {
