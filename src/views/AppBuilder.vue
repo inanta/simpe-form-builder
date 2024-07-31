@@ -272,7 +272,10 @@ export default {
   mounted: function () {
     const self = this;
 
-    if (self.$route.params.name !== "") {
+    if (
+      self.$route.params.name !== "" &&
+      self.$route.params.name !== undefined
+    ) {
       AppBuilder.get(self.$route.params.name, true).then(function (app) {
         self.app = app;
         self.isEdit = true; // Not working
