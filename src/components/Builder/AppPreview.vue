@@ -19,26 +19,34 @@
         </div>
       </div>
       <hr class="border-top my-4 border-light-gray" />
-      <template
-        v-for="(container, index) in previewContainers"
-        :key="container.name"
-      >
-        <div v-if="index == selectedContainer" class="flex-shrink flex-grow">
-          <div class="">
+      <template v-for="(container, index) in containers" :key="container.name">
+        <div v-show="index == selectedContainer" class="flex-shrink flex-grow">
+          <div class="px-5 py-3">
             <div
               v-for="(row, row_index) in container.rows"
               :key="row_index"
-              :class="'grid-cols-' + row.grid"
-              class="grid gap-0"
+              :class="'grid-cols-' + (row.columns.length - 1)"
+              class="grid gap-2"
             >
-              <template
+              <div
                 v-for="(column, column_index) in row.columns"
                 :key="column_index"
+                class="overflow-hidden"
               >
-                <div v-if="column.type != 'empty'">
-                  <field-preview :properties="column"></field-preview>
-                </div>
-              </template>
+                <template v-if="column.type != 'empty'">
+                  <app-field
+                    :app="app"
+                    :data="values"
+                    :properties="column"
+                    :show-invalid="showInvalid"
+                    @visibility-changed="onVisibilityChanged"
+                    @input="onInput"
+                    @invalid="onInvalid"
+                    @keyup.enter="saveConfirmation"
+                    @valid="onValid"
+                  ></app-field>
+                </template>
+              </div>
             </div>
           </div>
         </div>
@@ -48,12 +56,14 @@
 </template>
 
 <script>
-import FieldPreview from "@/components/Builder/FieldPreview.vue";
+import AppField from "@/components/Builder/AppField.vue";
+// import FieldPreview from "@/components/Builder/FieldPreview.vue";
 
 export default {
   name: "AppPreview",
   components: {
-    FieldPreview
+    // FieldPreview
+    AppField
   },
   props: {
     show: {
