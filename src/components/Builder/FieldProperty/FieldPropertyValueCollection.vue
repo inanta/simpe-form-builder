@@ -96,6 +96,7 @@ export default {
   },
   watch: {
     properties: function () {
+      this.value = this.properties[this.fieldProperty];
       this.closeAddItems();
     }
   },
