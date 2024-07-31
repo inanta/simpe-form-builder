@@ -175,6 +175,11 @@ export default {
       invalidMessage: "",
       types: [
         {
+          label: "Required",
+          name: "required",
+          message: "This field is required"
+        },
+        {
           label: "Number",
           name: "number",
           message: "This field must be a number"
@@ -182,12 +187,13 @@ export default {
         {
           label: "Regular Expression",
           name: "regex",
-          message: "This field value is not valid"
-        },
-        {
-          label: "Required",
-          name: "required",
-          message: "This field is required"
+          message: "This field value is not valid",
+          options: [
+            {
+              label: "Pettern",
+              name: "pattern"
+            }
+          ]
         },
         {
           label: "Unique",
