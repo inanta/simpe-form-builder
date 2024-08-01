@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+
 export default {
   props: {
     field: {
@@ -106,6 +108,31 @@ export default {
         }
       });
     }
+  }
+};
+
+fieldProperties["filter-date-range"] = {
+  "filter-element": {
+    label: "Type",
+    name: "element"
+  },
+  "date-start-label": {
+    label: "Start Label"
+  },
+  "date-end-label": {
+    label: "End Label"
+  },
+  "date-start-placeholder": {
+    label: "Start Placeholder"
+  },
+  "date-end-placeholder": {
+    label: "End Placeholder"
+  },
+  "date-start-value": {
+    label: "Start Value"
+  },
+  "date-end-value": {
+    label: "End Value"
   }
 };
 </script>

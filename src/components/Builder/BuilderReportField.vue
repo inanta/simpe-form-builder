@@ -43,7 +43,7 @@
 import ReportField from "@/components/Builder/ReportField.vue";
 import FieldToolBar from "@/components/Builder/FieldToolBar.vue";
 
-import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions.js";
 
 export default {
   components: {
@@ -99,7 +99,7 @@ export default {
   },
   data: function () {
     return {
-      fieldPropertyOptions: FieldPropertyOptions,
+      fieldPropertyOptions: fieldPropertyOptions,
       selectedContainer: {},
       selectedContainerIndex: 0,
       value: undefined

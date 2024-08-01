@@ -5,10 +5,9 @@
     class="relative inline-block"
     :title="$attrs.title"
   >
-    <button v-bind="$attrs" @click.stop="onButtonClick">
+    <button v-bind="$attrs" @click="onButtonClick">
       <slot name="content">Button</slot>
-      &nbsp;
-      <slot name="arrow"><span class="text-xs">&#x25BC;</span></slot>
+      <slot name="arrow">&nbsp;<span class="text-xs">&#x25BC;</span></slot>
     </button>
     <Teleport to="body">
       <div v-show="isMenuShown" ref="items" class="z-10">
@@ -25,26 +24,12 @@
 
 <script>
 import { createPopper } from "@popperjs/core";
+import NsClosable from "@/directives/NsClosable.js";
 
 export default {
   name: "DropDownButton",
   directives: {
-    closable: {
-      mounted: function (el, binding) {
-        el.handleOutsideClick = function (event) {
-          if (!(el == event.target || el.contains(event.target))) {
-            binding.value();
-          }
-        };
-
-        document.addEventListener("click", el.handleOutsideClick);
-        document.addEventListener("touchstart", el.handleOutsideClick);
-      },
-      unmounted: function (el) {
-        document.removeEventListener("click", el.handleOutsideClick);
-        document.removeEventListener("touchstart", el.handleOutsideClick);
-      }
-    }
+    closable: NsClosable
   },
   inheritAttrs: false,
   props: {
@@ -55,12 +40,7 @@ export default {
     placement: {
       type: String,
       default: "bottom-start"
-    },
-    split: {
-      type: Boolean,
-      default: true
     }
-    // title: String
   },
   emits: {
     // click: null
@@ -95,17 +75,10 @@ export default {
       }, 250);
     },
     onButtonClick: function () {
-      // const self = this;
-
-      // if (!self.split) {
       this.toggleChildMenu();
-      // }
     },
     onChildMenuClick: function () {
       this.closeChildMenu();
-    },
-    onSplitButtonClick: function () {
-      this.toggleChildMenu();
     },
     toggleChildMenu: function () {
       const self = this;

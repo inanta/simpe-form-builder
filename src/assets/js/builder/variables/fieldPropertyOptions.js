@@ -1,0 +1,173 @@
+export default {
+  addOption: function (
+    property,
+    options,
+    configuration = undefined,
+    fields = [],
+    default_value = ""
+  ) {
+    this[property] = {
+      fields: fields,
+      options: options,
+      default: default_value,
+      configuration: configuration
+    };
+  },
+  removeOption: function (property) {
+    delete this[property];
+  },
+  attrs: {
+    options: "FieldPropertyValueCollection",
+    configuration: {
+      addButtonLabel: "Add Attributes",
+      sources: {
+        "static-label-value": {
+          configuration: {
+            label: "Name",
+            placeholder: "Name",
+            value: "Value"
+          }
+        }
+      }
+    }
+  },
+  checked: {
+    fields: ["input"],
+    options: [
+      {
+        name: "No",
+        value: false
+      },
+      {
+        name: "Yes",
+        value: true
+      }
+    ]
+  },
+  disabled: {
+    fields: ["input", "select", "textarea"],
+    options: [
+      {
+        name: "No",
+        value: false
+      },
+      {
+        name: "Yes",
+        value: true
+      }
+    ]
+  },
+  items: {
+    fields: ["select", "filter-drop-down"],
+    options: "FieldPropertyValueCollection",
+    default: "",
+    configuration: {
+      databaseAdditionalFields: [
+        {
+          label: "Allow Empty",
+          name: "allow_empty",
+          default: false,
+          options: [
+            {
+              label: "No",
+              name: false
+            },
+            {
+              label: "Yes",
+              name: true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  multiple: {
+    fields: ["select"],
+    options: [
+      {
+        name: "False",
+        value: false
+      },
+      {
+        name: "True",
+        value: true
+      }
+    ],
+    default: false
+  },
+  readonly: {
+    fields: ["input", "select", "textarea"],
+    options: [
+      {
+        name: "No",
+        value: false
+      },
+      {
+        name: "Yes",
+        value: true
+      }
+    ]
+  },
+  rows: {
+    fields: ["textarea"],
+    default: 2
+  },
+  size: {
+    fields: ["select"],
+    default: 1
+  },
+  type: {
+    fields: ["input"],
+    options: [
+      {
+        name: "Checkbox",
+        value: "checkbox"
+      },
+      {
+        name: "Date",
+        value: "date"
+      },
+      {
+        name: "Email",
+        value: "email"
+      },
+      {
+        name: "File",
+        value: "file"
+      },
+      {
+        name: "Number",
+        value: "number"
+      },
+      {
+        name: "Password",
+        value: "password"
+      },
+      {
+        name: "Range",
+        value: "range"
+      },
+      {
+        name: "Radio Button",
+        value: "radio"
+      },
+      {
+        name: "Telephone",
+        value: "tel"
+      },
+      {
+        name: "Text Box",
+        value: "text"
+      },
+      {
+        name: "Time",
+        value: "time"
+      }
+    ],
+    default: "text"
+  },
+  validation: {
+    fields: ["input", "textarea"],
+    options: "FieldPropertyValidationCollection"
+  }
+};

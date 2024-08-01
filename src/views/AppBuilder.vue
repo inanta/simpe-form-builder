@@ -5,7 +5,7 @@
     <div class="pb-2">
       <input
         v-model="app.name"
-        class="w-full rounded-sm border border-mid-gray px-3 py-1.5 text-2xl outline-none dark:border-surface--dark-600 dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
+        class="w-full rounded-sm border border-mid-gray px-3 py-1.5 text-2xl outline-none dark:border-surface--dark-500 dark:bg-surface--dark-500 dark:text-surface-500"
         type="text"
       />
     </div>
@@ -232,7 +232,7 @@ import createEmptyContainer from "@/assets/js/builder/createEmptyContainer.js";
 import createContainerRow from "@/assets/js/builder/createContainerRow.js";
 import fixRow from "@/assets/js/builder/fixRow.js";
 import iterateColumns from "@/assets/js/builder/iterateColumns.js";
-import alert from "@/assets/js/alert.js";
+import alert from "@/assets/js/builder/alert.js";
 
 export default {
   name: "App",

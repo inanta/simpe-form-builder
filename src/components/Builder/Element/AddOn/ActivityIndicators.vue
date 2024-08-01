@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
 import getAPI from "@/assets/js/getAPI.js";
 
@@ -208,7 +208,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "Activity Indicators",
   "Activity Indicators",
@@ -216,7 +216,7 @@ ElementPanelList.addElement(
   "mdi mdi-information"
 );
 
-FieldProperties["activity-indicators"] = {
+fieldProperties["activity-indicators"] = {
   label: {
     label: "Label"
   },

@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
 export default {
   components: {},
@@ -126,7 +126,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "Timeline",
   "Timeline",
@@ -134,7 +134,7 @@ ElementPanelList.addElement(
   "mdi mdi-timeline"
 );
 
-FieldProperties["timeline"] = {
+fieldProperties["timeline"] = {
   label: {
     label: "Label"
   },

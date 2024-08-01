@@ -37,7 +37,7 @@
 
 <script>
 import Components from "@/components/Builder/Element/Report/index.js";
-import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions.js";
 
 export default {
   name: "Field",
@@ -70,7 +70,7 @@ export default {
   },
   data: function () {
     return {
-      fieldPropertyOptions: FieldPropertyOptions
+      fieldPropertyOptions: fieldPropertyOptions
     };
   },
   computed: {

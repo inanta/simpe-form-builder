@@ -146,9 +146,9 @@ import FieldPropertyValidationCollection from "@/components/Builder/FieldPropert
 import FieldPropertyValueSource from "@/components/Builder/FieldProperty/FieldPropertyValueSource.vue";
 import FieldPropertyRepeatInput from "@/components/Builder/FieldProperty/FieldPropertyRepeatInput.vue";
 
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions.js";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions.js";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
 export default {
   name: "FieldPropertiesPanel",
@@ -195,8 +195,8 @@ export default {
   },
   data: function () {
     return {
-      fieldProperties: FieldProperties,
-      fieldPropertyOptions: FieldPropertyOptions,
+      fieldProperties: fieldProperties,
+      fieldPropertyOptions: fieldPropertyOptions,
       currentFieldProperties: {}
     };
   },
@@ -212,7 +212,7 @@ export default {
         : this.currentFieldProperties.element;
     },
     elementName: function () {
-      const element = ElementPanelList.getElement(this.properties.element);
+      const element = elementPanelList.getElement(this.properties.element);
 
       if (element) {
         return element.name;

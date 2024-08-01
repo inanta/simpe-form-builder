@@ -95,8 +95,8 @@
 import SignaturePad from "signature_pad";
 import NsDialog from "@/components/NS/NsDialog.vue";
 
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
 export default {
   components: {
@@ -289,7 +289,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "Signature Pad",
   "Signature Pad",
@@ -297,7 +297,7 @@ ElementPanelList.addElement(
   "mdi mdi-draw"
 );
 
-FieldProperties["signature-pad"] = {
+fieldProperties["signature-pad"] = {
   name: {
     label: "Name"
   },

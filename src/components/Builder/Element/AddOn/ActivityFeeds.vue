@@ -106,12 +106,12 @@ import FileBrowser from "@/components/Builder/Element/Component/FileBrowser.vue"
 import RichTextEditor from "@/components/Builder/Element/RichTextEditor.vue";
 
 import cleanAttributes from "@/assets/js/builder/cleanAttributes.js";
-import alert from "@/assets/js/alert.js";
+import alert from "@/assets/js/builder/alert.js";
 import postAPI from "@/assets/js/postAPI.js";
 
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
-import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
 
 export default {
   components: {
@@ -285,7 +285,6 @@ export default {
   },
   methods: {
     cleanAttributes(attributes) {
-      console.log(attributes);
       return cleanAttributes(attributes);
     },
     onInput: function (input) {
@@ -349,7 +348,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "Activity Feeds",
   "Activity Feeds",
@@ -357,7 +356,7 @@ ElementPanelList.addElement(
   "mdi mdi-timeline-text"
 );
 
-FieldProperties["activity-feeds"] = {
+fieldProperties["activity-feeds"] = {
   label: {
     label: "Label"
   },
@@ -432,7 +431,7 @@ FieldProperties["activity-feeds"] = {
   }
 };
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "activity-feeds-related-acitivities",
   "FieldPropertyRepeatInput",
   {
@@ -445,7 +444,7 @@ FieldPropertyOptions.addOption(
   }
 );
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "activity-feeds-related-record-created-message",
   "FieldPropertyRepeatInput",
   {
@@ -457,7 +456,7 @@ FieldPropertyOptions.addOption(
   }
 );
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "activity-feeds-related-record-deleted-message",
   "FieldPropertyRepeatInput",
   {
@@ -469,7 +468,7 @@ FieldPropertyOptions.addOption(
   }
 );
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "activity-feeds-related-record-updated-message",
   "FieldPropertyRepeatInput",
   {
@@ -481,7 +480,7 @@ FieldPropertyOptions.addOption(
   }
 );
 
-FieldPropertyOptions.addOption("activity-feeds-show-unrecognized-activity", [
+fieldPropertyOptions.addOption("activity-feeds-show-unrecognized-activity", [
   {
     name: "No",
     value: false

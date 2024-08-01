@@ -406,6 +406,11 @@ export default {
               "Are you sure want to delete $count selected item" +
                 (self.checkedItems.length > 1 ? "s" : "") +
                 "?"
+            ),
+            more: getPropertyValue(
+              self.app.settings,
+              "ui.page.messages.more",
+              "More"
             )
           };
 

@@ -58,13 +58,6 @@ export default {
         sort: 0,
         tag: "h1"
       },
-      // {
-      //   content: "Text",
-      //   icon: "mdi mdi-alphabetical-variant",
-      //   name: "Text",
-      //   sort: 0,
-      //   tag: "p"
-      // },
       {
         content: "Horizontal Line",
         icon: "mdi mdi-minus",

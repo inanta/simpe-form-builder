@@ -3,9 +3,8 @@
 </template>
 
 <script>
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
-// import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
 export default {
   props: {
@@ -51,7 +50,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "HTML",
   "HTML",
@@ -59,7 +58,7 @@ ElementPanelList.addElement(
   "mdi mdi-xml"
 );
 
-FieldProperties["inline-html"] = {
+fieldProperties["inline-html"] = {
   label: {
     label: "Label"
   },

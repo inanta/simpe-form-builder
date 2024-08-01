@@ -21,19 +21,19 @@
       v-if="additionalActionButtons.length > 0"
       v-tooltip
       align="right"
-      :split="false"
       :title="messages.more"
     >
       <template #content>
         <span class="mdi mdi-dots-vertical mdi-24px"></span>
       </template>
+      <template #arrow><span></span></template>
       <drop-down-button-item
         v-for="button in additionalActionButtons"
         :key="button"
       >
         <button
           class="inline-block w-full whitespace-nowrap px-3 py-2 text-left"
-          @click.stop="onAdditionalActionButtonClick(button, item)"
+          @click="onAdditionalActionButtonClick(button, item)"
         >
           <span v-if="button.icon" :class="button.icon"></span>
           {{ button.label }}

@@ -106,9 +106,9 @@
 </template>
 
 <script>
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
 import NsAutocomplete from "@/components/NS/NsAutocomplete.vue";
 import NsDialog from "@/components/NS/NsDialog.vue";
@@ -576,7 +576,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "Table Input",
   "Table Input",
@@ -584,7 +584,7 @@ ElementPanelList.addElement(
   "mdi mdi-table"
 );
 
-FieldProperties["table-input"] = {
+fieldProperties["table-input"] = {
   label: {
     label: "Label"
   },
@@ -662,7 +662,18 @@ FieldProperties["table-input"] = {
   }
 };
 
-FieldPropertyOptions.addOption("table-input-source", [
+fieldPropertyOptions.addOption("table-input-type", [
+  {
+    name: "Data Table",
+    value: "datatable"
+  },
+  {
+    name: "Inline",
+    value: "inline"
+  }
+]);
+
+fieldPropertyOptions.addOption("table-input-source", [
   {
     name: "User Defined",
     value: "user"
@@ -673,7 +684,35 @@ FieldPropertyOptions.addOption("table-input-source", [
   }
 ]);
 
-FieldPropertyOptions.addOption("table-input-hide-search", [
+fieldPropertyOptions.addOption(
+  "table-input-target-table",
+  "FieldPropertyTableColumnSelector",
+  {
+    additionalColumnAttributes: [
+      {
+        label: "Format",
+        name: "format",
+        value: "general",
+        options: [
+          { label: "Currency", value: "currency" },
+          { label: "General", value: "general" },
+          { label: "Date", value: "date" },
+          { label: "Number", value: "number" }
+        ]
+      }
+    ],
+    additionalFields: [
+      {
+        label: "Join Column",
+        name: "join_column"
+      }
+    ]
+  },
+  ["table-input"],
+  ""
+);
+
+fieldPropertyOptions.addOption("table-input-hide-search", [
   {
     name: "No",
     value: false
@@ -684,14 +723,116 @@ FieldPropertyOptions.addOption("table-input-hide-search", [
   }
 ]);
 
-FieldPropertyOptions.addOption("table-input-type", [
+fieldPropertyOptions.addOption(
+  "table-input-table",
+  "FieldPropertyTableColumnSelector",
   {
-    name: "Data Table",
-    value: "datatable"
+    additionalColumnAttributes: [
+      {
+        label: "Format",
+        name: "format",
+        value: "general",
+        options: [
+          { label: "Currency", value: "currency" },
+          { label: "General", value: "general" },
+          { label: "Date", value: "date" },
+          { label: "Number", value: "number" }
+        ]
+      },
+      {
+        label: "Align",
+        name: "align",
+        value: "left",
+        options: [
+          { label: "Left", value: "left" },
+          { label: "Center", value: "center" },
+          { label: "Right", value: "right" }
+        ]
+      },
+      {
+        label: "Visible",
+        name: "visible",
+        value: true,
+        options: [
+          { label: "True", value: true },
+          { label: "False", value: false }
+        ]
+      }
+    ],
+    additionalFields: [
+      {
+        label: "Primary Key",
+        name: "primary_key"
+      },
+      {
+        label: "Search Column",
+        name: "search_column"
+      }
+    ],
+    showColumnsSelector: true
   },
+  ["table-input"],
+  ""
+);
+
+fieldPropertyOptions.addOption(
+  "table-input-additional-field",
+  "FieldPropertyValueCollection",
+  undefined,
+  ["table-input"],
+  ""
+);
+
+fieldPropertyOptions.addOption(
+  "table-input-additional-field-format",
+  "FieldPropertyValueCollectionFormat",
   {
-    name: "Inline",
-    value: "inline"
-  }
-]);
+    source: "table-input-additional-field",
+    additionalFieldProperties: [
+      {
+        label: "Align",
+        name: "align",
+        value: "left",
+        options: [
+          { label: "Left", value: "left" },
+          { label: "Center", value: "center" },
+          { label: "Right", value: "right" }
+        ]
+      },
+      {
+        label: "Source",
+        name: "source",
+        value: "user",
+        options: [
+          { label: "User Input", value: "user" },
+          {
+            label: "Function",
+            value: "function",
+            fields: [{ label: "Function", name: "function", type: "textarea" }]
+          },
+          { label: "Webhook", value: "webhook" }
+        ]
+      },
+      {
+        label: "Function",
+        name: "function",
+        value: "",
+        type: "textarea",
+        validation: function (properties) {
+          if (
+            typeof properties !== "undefined" &&
+            typeof properties.source !== "undefined" &&
+            properties.source === "function"
+          ) {
+            return true;
+          }
+
+          return false;
+        }
+      }
+    ]
+  },
+  ["table-input"],
+  ""
+);
 </script>

@@ -54,7 +54,6 @@
         </div>
       </div>
     </transition>
-
     <transition
       name="show-column-setting-transition"
       enter-active-class="animate__animated animate__slideInUp animate__faster"
@@ -136,7 +135,7 @@
 
 <script>
 // TODO There are hard-coded name here "one-to-many-input"
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
 
 export default {
   name: "FieldPropertyValueCollectionFormat",
@@ -200,13 +199,13 @@ export default {
       return addditional_column_attributes;
     },
     fieldSourceName: function () {
-      return typeof FieldProperties["one-to-many-input"][
+      return typeof fieldProperties["one-to-many-input"][
         this.configuration.source
       ] !== "undefined" &&
-        typeof FieldProperties["one-to-many-input"][this.configuration.source][
+        typeof fieldProperties["one-to-many-input"][this.configuration.source][
           "label"
         ] !== "undefined"
-        ? FieldProperties["one-to-many-input"][this.configuration.source][
+        ? fieldProperties["one-to-many-input"][this.configuration.source][
             "label"
           ]
         : "";

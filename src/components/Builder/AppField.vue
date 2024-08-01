@@ -53,7 +53,7 @@
 <script>
 import Components from "@/components/Builder/Element/index.js";
 import AddOnComponents from "@/components/Builder/Element/add-on.js";
-import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions.js";
 import validateField from "@/assets/js/builder/validateField.js";
 import NativeHtml from "@/components/Builder/Element/NativeHtml.vue";
 
@@ -118,7 +118,7 @@ export default {
   },
   data: function () {
     return {
-      fieldPropertyOptions: FieldPropertyOptions,
+      fieldPropertyOptions: fieldPropertyOptions,
       htmlElements: [
         { tag: "input", hasValidation: true },
         { tag: "select", hasValidation: true },

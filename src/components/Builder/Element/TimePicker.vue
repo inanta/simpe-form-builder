@@ -32,8 +32,8 @@ import NsClosable from "@/directives/NsClosable.js";
 
 import NsTimePicker from "../../NS/NsTimePicker.vue";
 
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
 export default {
   directives: {
@@ -155,7 +155,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "Time Picker",
   "Time Picker",
@@ -163,7 +163,7 @@ ElementPanelList.addElement(
   "mdi mdi-clock"
 );
 
-FieldProperties["time-picker"] = {
+fieldProperties["time-picker"] = {
   name: {
     label: "Name"
   },

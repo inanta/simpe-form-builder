@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 import NsDropDownList from "../../NS/NsDropDownList.vue";
 
 import getAPI from "@/assets/js/getAPI.js";
@@ -155,7 +155,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "Cascading Drop Down List",
   "Cascading Drop Down List",
@@ -163,7 +163,7 @@ ElementPanelList.addElement(
   "mdi mdi-menu-down"
 );
 
-FieldProperties["cascading-drop-down-list"] = {
+fieldProperties["cascading-drop-down-list"] = {
   name: {
     label: "Name"
   },
@@ -190,12 +190,12 @@ FieldProperties["cascading-drop-down-list"] = {
   }
 };
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "cascading-drop-down-list-parent-element",
   "FieldPropertyElementSelection"
 );
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "cascading-drop-down-list-parent-source",
   "FieldPropertyTableColumnSelector",
   {
@@ -213,7 +213,7 @@ FieldPropertyOptions.addOption(
   }
 );
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "cascading-drop-down-list-child-source",
   "FieldPropertyTableColumnSelector",
   {

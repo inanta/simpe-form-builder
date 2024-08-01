@@ -30,8 +30,9 @@
 import NsAutocomplete from "@/components/NS/NsAutocomplete.vue";
 import NsProgressBar from "@/components/NS/NsProgressBar.vue";
 
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 import AppBuilder from "@/assets/js/AppBuilder.js";
 
 export default {
@@ -160,7 +161,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "Autocomplete",
   "Autocomplete",
@@ -168,7 +169,7 @@ ElementPanelList.addElement(
   "mdi mdi-list-box"
 );
 
-FieldProperties["autocomplete"] = {
+fieldProperties["autocomplete"] = {
   label: {
     label: "Label"
   },
@@ -179,4 +180,22 @@ FieldProperties["autocomplete"] = {
     label: "Items"
   }
 };
+
+fieldPropertyOptions.addOption(
+  "autocomplete-source",
+  "FieldPropertyValueCollection",
+  {
+    apiEndpointAdditionalFields: [
+      {
+        label: "Description Property",
+        name: "description_property"
+      },
+      {
+        label: "Search Parameter",
+        name: "search_parameter"
+      }
+    ]
+  },
+  ["autocomplete"]
+);
 </script>

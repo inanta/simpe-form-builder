@@ -1,4 +1,4 @@
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
 
 import fetch from "@/assets/js/ReportBuilderFetch.js";
 // import fetch from "@/assets/js/ReportBuilderFetchLocalDB";
@@ -65,7 +65,7 @@ export default {
     let stripped_field = {};
 
     for (const key in field) {
-      if (typeof FieldProperties[field.element][key] !== "undefined") {
+      if (typeof fieldProperties[field.element][key] !== "undefined") {
         stripped_field[key] = field[key];
       }
     }

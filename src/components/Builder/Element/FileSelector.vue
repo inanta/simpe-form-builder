@@ -228,9 +228,9 @@
 </template>
 
 <script>
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
 import NsTooltip from "@/directives/NsTooltip";
 import NsDialog from "@/components/NS/NsDialog.vue";
@@ -684,7 +684,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "File Selector",
   "File Selector",
@@ -692,7 +692,7 @@ ElementPanelList.addElement(
   "mdi mdi-image"
 );
 
-FieldProperties["file-selector"] = {
+fieldProperties["file-selector"] = {
   label: {
     label: "Label"
   },
@@ -759,7 +759,7 @@ FieldProperties["file-selector"] = {
   }
 };
 
-FieldPropertyOptions.addOption("file-selector-type", [
+fieldPropertyOptions.addOption("file-selector-type", [
   {
     name: "Uploader & Browser",
     value: "uploader-browser"
@@ -774,7 +774,7 @@ FieldPropertyOptions.addOption("file-selector-type", [
   }
 ]);
 
-FieldPropertyOptions.addOption("file-selector-return-type", [
+fieldPropertyOptions.addOption("file-selector-return-type", [
   {
     name: "Object",
     value: "object"
@@ -785,7 +785,7 @@ FieldPropertyOptions.addOption("file-selector-return-type", [
   }
 ]);
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "file-selector-show-preview-for-image-file",
   [
     {
@@ -802,12 +802,12 @@ FieldPropertyOptions.addOption(
   true
 );
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "file-selector-allowed-file-type",
   "FieldPropertyValueCollection"
 );
 
-FieldPropertyOptions.addOption("file-selector-allow-delete-in-browser", [
+fieldPropertyOptions.addOption("file-selector-allow-delete-in-browser", [
   {
     name: "Yes",
     value: true
@@ -818,7 +818,7 @@ FieldPropertyOptions.addOption("file-selector-allow-delete-in-browser", [
   }
 ]);
 
-FieldPropertyOptions.addOption("file-selector-update-mode", [
+fieldPropertyOptions.addOption("file-selector-update-mode", [
   {
     name: "Alter",
     value: "alter"
@@ -829,7 +829,7 @@ FieldPropertyOptions.addOption("file-selector-update-mode", [
   }
 ]);
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "file-selector-allow-update-add",
   [
     {
@@ -846,7 +846,7 @@ FieldPropertyOptions.addOption(
   true
 );
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "file-selector-allow-update-delete",
   [
     {

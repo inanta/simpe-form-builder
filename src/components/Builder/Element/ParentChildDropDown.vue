@@ -8,8 +8,9 @@
 </template>
 
 <script>
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 import NsDropDownList from "../../NS/NsDropDownList.vue";
 
 import AppBuilder from "@/assets/js/AppBuilder.js";
@@ -132,7 +133,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "Parent Child Drop Down",
   "Parent Child Drop Down",
@@ -140,7 +141,7 @@ ElementPanelList.addElement(
   "mdi mdi-menu-down"
 );
 
-FieldProperties["parent-child-drop-down"] = {
+fieldProperties["parent-child-drop-down"] = {
   element: {
     label: "Element Type"
   },
@@ -157,4 +158,51 @@ FieldProperties["parent-child-drop-down"] = {
     label: "Placeholder"
   }
 };
+
+fieldPropertyOptions.addOption(
+  "parent-child-drop-down-parent-element",
+  "FieldPropertyElementSelection",
+  undefined,
+  ["parent-child-drop-down"]
+);
+
+fieldPropertyOptions.addOption(
+  "parent-child-drop-down-parent-source",
+  "FieldPropertyTableColumnSelector",
+  {
+    additionalFields: [
+      {
+        label: "Parent Column",
+        name: "parent_column"
+      },
+      {
+        label: "Child Column",
+        name: "child_column"
+      }
+    ]
+  },
+  ["parent-child-drop-down"]
+);
+
+fieldPropertyOptions.addOption(
+  "parent-child-drop-down-child-source",
+  "FieldPropertyTableColumnSelector",
+  {
+    additionalFields: [
+      {
+        label: "Parent Column",
+        name: "parent_column"
+      },
+      {
+        label: "Label Column",
+        name: "label_column"
+      },
+      {
+        label: "Value Column",
+        name: "value_column"
+      }
+    ]
+  },
+  ["parent-child-drop-down"]
+);
 </script>

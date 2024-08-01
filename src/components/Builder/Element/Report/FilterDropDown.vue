@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+
 export default {
   props: {
     field: {
@@ -111,6 +113,25 @@ export default {
         }
       });
     }
+  }
+};
+
+fieldProperties["filter-drop-down"] = {
+  "filter-element": {
+    label: "Type",
+    name: "element"
+  },
+  label: {
+    label: "Label"
+  },
+  items: {
+    label: "Items"
+  },
+  "filter-condition": {
+    label: "Condition"
+  },
+  value: {
+    label: "Default Value"
   }
 };
 </script>

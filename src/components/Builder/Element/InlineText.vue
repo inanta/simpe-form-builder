@@ -8,9 +8,9 @@
 <script>
 import delay from "@/assets/js/delay.js";
 
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
-import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
 export default {
   props: {
@@ -203,7 +203,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "Text",
   "Text",
@@ -211,7 +211,7 @@ ElementPanelList.addElement(
   "mdi mdi-format-text"
 );
 
-FieldProperties["inline-text"] = {
+fieldProperties["inline-text"] = {
   label: {
     label: "Label"
   },
@@ -220,7 +220,7 @@ FieldProperties["inline-text"] = {
   }
 };
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "inline-text-content",
   "FieldPropertyValueSource"
 );

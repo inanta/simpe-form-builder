@@ -117,9 +117,9 @@
 </template>
 
 <script>
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
 export default {
   props: {
@@ -562,7 +562,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "Grid",
   "Grid",
@@ -570,7 +570,7 @@ ElementPanelList.addElement(
   "mdi mdi-grid"
 );
 
-FieldProperties["grid-input"] = {
+fieldProperties["grid-input"] = {
   label: {
     label: "Label"
   },
@@ -645,7 +645,140 @@ FieldProperties["grid-input"] = {
   }
 };
 
-FieldPropertyOptions.addOption("grid-input-show-border", [
+fieldPropertyOptions.addOption(
+  "grid-input-rows",
+  "FieldPropertyValueCollection",
+  {
+    databaseAdditionalFields: [
+      {
+        label: "Group By",
+        name: "group_by",
+        default: "",
+        type: "column-selector"
+      }
+    ]
+  },
+  ["grid-input"]
+);
+
+fieldPropertyOptions.addOption(
+  "grid-input-columns",
+  "FieldPropertyValueCollection",
+  undefined,
+  ["grid-input"]
+);
+
+fieldPropertyOptions.addOption(
+  "grid-input-type",
+  [
+    {
+      name: "Checkbox",
+      value: "checkbox"
+    },
+    {
+      name: "Multiple Choice",
+      value: "radio"
+    },
+    {
+      name: "Text",
+      value: "text"
+    },
+    {
+      name: "Drop-down",
+      value: "drop-down"
+    }
+  ],
+  undefined,
+  ["grid-input"],
+  "radio"
+);
+
+fieldPropertyOptions.addOption(
+  "grid-input-drop-down-items",
+  "FieldPropertyValueCollection",
+  undefined,
+  ["grid-input"]
+);
+
+fieldPropertyOptions.addOption(
+  "grid-input-additional-rows",
+  "FieldPropertyValueCollection",
+  undefined,
+  ["grid-input"]
+);
+
+fieldPropertyOptions.addOption(
+  "grid-input-additional-rows-type",
+  [
+    {
+      name: "Checkbox",
+      value: "checkbox"
+    },
+    {
+      name: "Multiple Choice",
+      value: "radio"
+    },
+    {
+      name: "Text",
+      value: "text"
+    },
+    {
+      name: "Drop-down",
+      value: "drop-down"
+    }
+  ],
+  undefined,
+  ["grid-input"],
+  "radio"
+);
+
+fieldPropertyOptions.addOption(
+  "grid-input-additional-rows-drop-down-items",
+  "FieldPropertyValueCollection",
+  undefined,
+  ["grid-input"]
+);
+
+fieldPropertyOptions.addOption(
+  "grid-input-additional-columns",
+  "FieldPropertyValueCollection",
+  undefined,
+  ["grid-input"]
+);
+
+fieldPropertyOptions.addOption(
+  "grid-input-additional-columns-type",
+  [
+    {
+      name: "Checkbox",
+      value: "checkbox"
+    },
+    {
+      name: "Multiple Choice",
+      value: "radio"
+    },
+    {
+      name: "Text",
+      value: "text"
+    },
+    {
+      name: "Drop-down",
+      value: "drop-down"
+    }
+  ],
+  undefined,
+  ["grid-input"],
+  "radio"
+);
+
+fieldPropertyOptions.addOption(
+  "grid-input-additional-columns-drop-down-items",
+  "FieldPropertyValueCollection",
+  undefined,
+  ["grid-input"]
+);
+
+fieldPropertyOptions.addOption("grid-input-show-border", [
   {
     name: "No",
     value: false
@@ -656,7 +789,7 @@ FieldPropertyOptions.addOption("grid-input-show-border", [
   }
 ]);
 
-FieldPropertyOptions.addOption("grid-input-checkbox-value-source", [
+fieldPropertyOptions.addOption("grid-input-checkbox-value-source", [
   {
     name: "Column",
     value: "column"
@@ -667,7 +800,7 @@ FieldPropertyOptions.addOption("grid-input-checkbox-value-source", [
   }
 ]);
 
-FieldPropertyOptions.addOption("readonly", [
+fieldPropertyOptions.addOption("readonly", [
   {
     name: "No",
     value: false

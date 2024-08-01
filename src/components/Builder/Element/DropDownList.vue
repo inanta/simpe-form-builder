@@ -12,9 +12,9 @@
 <script>
 import NsDropDownList from "../../NS/NsDropDownList.vue";
 
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
-import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
 export default {
   components: {
@@ -106,7 +106,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "Drop Down List",
   "Drop Down List",
@@ -114,7 +114,7 @@ ElementPanelList.addElement(
   "mdi mdi-arrow-down-drop-circle"
 );
 
-FieldProperties["drop-down-list"] = {
+fieldProperties["drop-down-list"] = {
   name: {
     label: "Name"
   },
@@ -138,7 +138,7 @@ FieldProperties["drop-down-list"] = {
   }
 };
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "drop-down-list-items",
   "FieldPropertyValueCollection",
   {

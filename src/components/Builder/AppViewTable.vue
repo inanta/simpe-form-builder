@@ -70,7 +70,7 @@
     @page-change="onDataTablePageChange"
     @search="onDataTableSearch"
     @sorting-change="onDataTableSortChange"
-    @table-row-click="onTableRowClick"
+    @table-column-click="onTableRowClick"
   >
     <template #no-data>
       <div v-if="!isLoading" class="mx-auto w-1/3 p-5">
@@ -445,7 +445,9 @@ export default {
   position: relative;
 }
 
-[data-component="data-table"] tbody tr:hover [data-action-buttons] {
-  display: flex;
+@media (min-width: 768px) {
+  [data-component="data-table"] tbody tr:hover [data-action-buttons] {
+    display: flex;
+  }
 }
 </style>

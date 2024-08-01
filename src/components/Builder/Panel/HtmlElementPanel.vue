@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
 export default {
   name: "HtmlElementPanel",
@@ -31,7 +31,7 @@ export default {
   },
   data: function () {
     return {
-      htmlElements: ElementPanelList.getElements()
+      htmlElements: elementPanelList.getElements()
     };
   },
   methods: {

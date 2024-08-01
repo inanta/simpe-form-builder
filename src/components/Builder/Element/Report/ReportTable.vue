@@ -54,7 +54,8 @@
 </template>
 
 <script>
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
 import AppBuilder from "@/assets/js/AppBuilder";
 
 export default {
@@ -246,7 +247,7 @@ export default {
   }
 };
 
-FieldProperties["report-table"] = {
+fieldProperties["report-table"] = {
   "report-table-title": {
     label: "Title"
   },
@@ -268,6 +269,54 @@ FieldProperties["report-table"] = {
     placeholder: "No Data"
   }
 };
+
+fieldPropertyOptions.addOption(
+  "report-table-source",
+  "FieldPropertyTableColumnSelector",
+  {
+    additionalColumnAttributes: [
+      {
+        label: "Format",
+        name: "format",
+        value: "general",
+        options: [
+          { label: "Currency", value: "currency" },
+          { label: "General", value: "general" },
+          { label: "Date", value: "date" },
+          { label: "Number", value: "number" }
+        ]
+      },
+      {
+        label: "Align",
+        name: "align",
+        value: "left",
+        options: [
+          { label: "Left", value: "left" },
+          { label: "Center", value: "center" },
+          { label: "Right", value: "right" }
+        ]
+      }
+    ]
+  },
+  ["report-table"]
+);
+
+fieldPropertyOptions.addOption(
+  "report-table-filter",
+  "FieldPropertyFilterCollection",
+  {
+    source: "report-table-source"
+  },
+  ["report-table"]
+);
+
+fieldPropertyOptions.addOption(
+  "report-table-sort",
+  "FieldPropertySortCollection",
+  {
+    source: "report-table-source"
+  }["report-table"]
+);
 </script>
 
 <style scoped>

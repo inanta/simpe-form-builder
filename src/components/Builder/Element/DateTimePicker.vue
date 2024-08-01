@@ -57,9 +57,9 @@ import NsClosable from "@/directives/NsClosable.js";
 import NsCalendar from "../../NS/NsCalendar.vue";
 import NsTimePicker from "../../NS/NsTimePicker.vue";
 
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions.js";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions.js";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
 export default {
   directives: {
@@ -367,7 +367,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "Date Time Picker",
   "Date Time Picker",
@@ -375,7 +375,7 @@ ElementPanelList.addElement(
   "mdi mdi-calendar"
 );
 
-FieldProperties["date-time-picker"] = {
+fieldProperties["date-time-picker"] = {
   name: {
     label: "Name"
   },
@@ -417,12 +417,12 @@ FieldProperties["date-time-picker"] = {
   }
 };
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "date-time-picker-exclude-days",
   "FieldPropertyValueCollection"
 );
 
-FieldPropertyOptions.addOption("date-time-picker-mode", [
+fieldPropertyOptions.addOption("date-time-picker-mode", [
   {
     name: "Date Time Picker",
     value: "date-time-picker"

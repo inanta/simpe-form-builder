@@ -78,6 +78,7 @@
                 'text-right': header.align === 'right'
               }"
               class="border-b border-mid-gray px-2 py-1.5"
+              @click.self="$emit('tableColumnClick', item)"
             >
               <slot :item="item" :name="'item.' + header.value">
                 <template v-if="header.format === 'picture-url'">
@@ -222,6 +223,7 @@ export default {
     pageChange: null,
     search: null,
     sortingChange: null,
+    tableColumnClick: null,
     tableRowClick: null
   },
   data: function () {

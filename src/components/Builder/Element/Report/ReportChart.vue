@@ -6,8 +6,8 @@
 
 <script>
 import Chart from "chart.js/auto";
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions.js";
 
 import delay from "@/assets/js/delay.js";
 
@@ -147,7 +147,7 @@ export default {
   }
 };
 
-FieldProperties["report-chart"] = {
+fieldProperties["report-chart"] = {
   name: {
     label: "Name"
   },
@@ -165,7 +165,7 @@ FieldProperties["report-chart"] = {
   }
 };
 
-FieldPropertyOptions.addOption("report-chart-type", [
+fieldPropertyOptions.addOption("report-chart-type", [
   {
     name: "Bar",
     value: "bar"
@@ -201,7 +201,7 @@ FieldPropertyOptions.addOption("report-chart-type", [
   }
 ]);
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "report-chart-datasets",
   "FieldPropertyValueCollections"
 );

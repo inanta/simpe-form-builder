@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import FieldProperties from "@/assets/js/builder/FieldProperties.js";
-import FieldPropertyOptions from "@/assets/js/builder/FieldPropertyOptions";
-import ElementPanelList from "@/assets/js/builder/ElementPanelList.js";
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 import NsDropDownList from "../../NS/NsDropDownList.vue";
 
 import AppBuilder from "@/assets/js/AppBuilder.js";
@@ -142,7 +142,7 @@ export default {
   }
 };
 
-ElementPanelList.addElement(
+elementPanelList.addElement(
   "general",
   "Parent Child Drop Down List",
   "Parent Child Drop Down List",
@@ -150,7 +150,7 @@ ElementPanelList.addElement(
   "mdi mdi-menu-down"
 );
 
-FieldProperties["parent-child-drop-down-list"] = {
+fieldProperties["parent-child-drop-down-list"] = {
   name: {
     label: "Name"
   },
@@ -168,12 +168,12 @@ FieldProperties["parent-child-drop-down-list"] = {
   }
 };
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "parent-child-drop-down-list-parent-element",
   "FieldPropertyElementSelection"
 );
 
-FieldPropertyOptions.addOption(
+fieldPropertyOptions.addOption(
   "parent-child-drop-down-list-child-source",
   "FieldPropertyTableColumnSelector",
   {
