@@ -1,7 +1,4 @@
-export default function cleanAttributes(
-  attributes,
-  additional_attributes = []
-) {
+export default function (attributes, additional_attributes = []) {
   let cleaned_attributes = {};
   let allowed_attributes = {
     attrs: false,
