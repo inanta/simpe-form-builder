@@ -153,8 +153,6 @@
 </template>
 
 <script>
-import { toRaw } from "vue";
-
 import AppViewTable from "@/components/Builder/AppViewTable.vue";
 import ConfirmationDialog from "../components/Builder/ConfirmationDialog.vue";
 import NsDropDownButton from "@/components/NS/NsDropDownButton.vue";
@@ -166,9 +164,10 @@ import AppBuilder from "@/assets/js/AppBuilder.js";
 
 import Papa from "papaparse";
 
-import hash from "@/assets/js/hash.js";
-import getPropertyValue from "@/assets/js/getPropertyValue.js";
 import callHook from "@/assets/js/builder/callHook.js";
+import getPropertyValue from "@/assets/js/getPropertyValue.js";
+import hasFeature from "@/assets/js/builder/hasFeature.js";
+import hash from "@/assets/js/hash.js";
 import onViewPageLoaded from "@/assets/js/builder/app/hooks/onViewPageLoaded.js";
 import onViewPageRenderAdditionalActionButtons from "@/assets/js/builder/app/hooks/onViewPageRenderAdditionalActionButtons.js";
 import onAppWindowScroll from "../assets/js/builder/onAppWindowScroll.js";
@@ -217,40 +216,16 @@ export default {
       });
     },
     hasCreateFeature: function () {
-      const app = toRaw(this.app);
-
-      if (typeof app.features !== "undefined") {
-        return app.features.includes("create");
-      }
-
-      return false;
+      return hasFeature(this.app, "create");
     },
     hasDeleteFeature: function () {
-      const app = toRaw(this.app);
-
-      if (typeof app.features !== "undefined") {
-        return app.features.includes("delete");
-      }
-
-      return false;
+      return hasFeature(this.app, "delete");
     },
     hasExportFeature: function () {
-      const app = toRaw(this.app);
-
-      if (typeof app.features !== "undefined") {
-        return app.features.includes("export");
-      }
-
-      return false;
+      return hasFeature(this.app, "export");
     },
     hasImportFeature: function () {
-      const app = toRaw(this.app);
-
-      if (typeof app.features !== "undefined") {
-        return app.features.includes("import");
-      }
-
-      return false;
+      return hasFeature(this.app, "import");
     },
     isItemsChecked: function () {
       const self = this;
@@ -414,6 +389,7 @@ export default {
             )
           };
 
+          // Checkboxes column for selecting records
           if (typeof self.app.features !== "undefined") {
             if (self.app.features.includes("delete")) {
               response.headers.unshift({
@@ -451,6 +427,7 @@ export default {
                 "column"
               ) === "column"
             ) {
+              // Actions (edit, delete, etc.) column
               response.headers.push({
                 additional: true,
                 align: "center",
@@ -465,13 +442,14 @@ export default {
             }
           }
 
+          // Settings columns
           response.headers.push({
             additional: true,
             hideable: false,
             label: "...",
             searchable: false,
             sortable: false,
-            value: "_setting",
+            value: "_settings",
             visible: true
           });
 

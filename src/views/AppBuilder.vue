@@ -1,6 +1,6 @@
 <template>
   <div class="relative mx-4 mb-4">
-    <top-panel @save="save" @preview="showPreview"></top-panel>
+    <top-panel @preview="showPreview" @save="save"></top-panel>
     <hr class="border-top my-4 border-gray-300" />
     <div class="pb-2">
       <input
@@ -161,7 +161,8 @@
       </div>
       <div
         ref="panelContainer"
-        class="h-max w-60 flex-shrink-0 flex-grow-0 overflow-hidden text-sm"
+        class="h-max flex-shrink-0 flex-grow-0 overflow-hidden text-sm transition-all"
+        :class="{ 'w-60': isPanelToggled, 'w-96': !isPanelToggled }"
       >
         <field-properties-panel
           :columns="columns"
@@ -170,11 +171,13 @@
           :properties="selectedColumn"
           @change="changeFieldProperties"
           @close="setSelect"
+          @toggle="isPanelToggled = !isPanelToggled"
         ></field-properties-panel>
         <div>
           <html-element-panel
             @dragstart="onDragStart"
             @dragend="onDragEnd"
+            @toggle="isPanelToggled = !isPanelToggled"
           ></html-element-panel>
         </div>
         <!-- <div class="py-3">
@@ -265,7 +268,8 @@ export default {
       dragColumn: {},
       isPreviewShown: false,
       isComputedFieldSidePanelShown: false,
-      isFieldLogicSidePanelShown: false
+      isFieldLogicSidePanelShown: false,
+      isPanelToggled: true
     };
   },
   computed: {},
@@ -327,7 +331,6 @@ export default {
       if (typeof saved_element === "undefined") {
         element.element = this.dragColumn.element;
         element.content = this.dragColumn.content;
-        element.contenteditable = "true";
       } else {
         element = saved_element;
       }

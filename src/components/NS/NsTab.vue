@@ -9,6 +9,10 @@ export default {
     title: {
       type: String,
       default: "Tab"
+    },
+    order: {
+      type: Number,
+      default: 0
     }
   }
 };

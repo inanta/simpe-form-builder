@@ -32,13 +32,13 @@
 <script>
 export default {
   props: {},
-  data() {
+  data: function () {
     return {
       selectedIndex: 0,
       tabs: []
     };
   },
-  mounted() {
+  mounted: function () {
     const children = this.$slots.default();
 
     for (let index = 0; index < children.length; index++) {
@@ -56,9 +56,17 @@ export default {
             typeof element.props.title !== "undefined"
               ? element.props.title
               : "Tab " + (index + 1),
-          element: element
+          element: element,
+          order:
+            typeof element.props.order !== "undefined"
+              ? element.props.order
+              : index
         });
       }
+
+      this.tabs.sort(function (a, b) {
+        return a.order - b.order;
+      });
     }
 
     if (this.tabs.length > 0) {

@@ -1,7 +1,10 @@
 <template>
   <div v-if="id != null || builder" v-bind="cleanAttributes(properties)">
     <ns-tabs>
-      <ns-tab title="Activities">
+      <ns-tab
+        title="Activities"
+        :order="activityFeedsDefaultTab === 'activities' ? 0 : 1"
+      >
         <div class="py-5 px-3">
           <div class="flex">
             <div>
@@ -87,7 +90,10 @@
           </div>
         </div>
       </ns-tab>
-      <ns-tab title="Files">
+      <ns-tab
+        title="Files"
+        :order="activityFeedsDefaultTab === 'files' ? 0 : 1"
+      >
         <div class="py-5 px-3">
           <file-browser :files="files"></file-browser>
         </div>
@@ -122,12 +128,6 @@ export default {
   },
   inheritAttrs: false,
   props: {
-    // app: {
-    //   type: Object,
-    //   default: function () {
-    //     return {};
-    //   }
-    // },
     builder: {
       type: Boolean,
       default: false
@@ -163,6 +163,10 @@ export default {
     activityFeedsSendButtonLabel: {
       type: String,
       default: ""
+    },
+    activityFeedsDefaultTab: {
+      type: String,
+      default: "activities"
     },
     activityFeedsOnRecordCreatedMessage: {
       type: String,
@@ -375,6 +379,9 @@ fieldProperties["activity-feeds"] = {
   "activity-feeds-send-button-label": {
     label: "Send Button Label"
   },
+  "activity-feeds-default-tab": {
+    label: "Default Tab"
+  },
   "activity-feeds-record-created-message": {
     label: "Record Created Message",
     type: "textarea"
@@ -430,6 +437,17 @@ fieldProperties["activity-feeds"] = {
     label: "Show Unrecognized Activity"
   }
 };
+
+fieldPropertyOptions.addOption("activity-feeds-default-tab", [
+  {
+    name: "Activities",
+    value: "activities"
+  },
+  {
+    name: "Files",
+    value: "files"
+  }
+]);
 
 fieldPropertyOptions.addOption(
   "activity-feeds-related-acitivities",

@@ -516,7 +516,7 @@ export default {
         }
       }
 
-      if (format === "date") {
+      if (format === "date" || format === "date-time") {
         if (value === undefined || value === null || value === "") {
           return "-";
         }
@@ -526,34 +526,24 @@ export default {
         }
 
         const dt = new Date(value);
-
-        return (
+        let date_string =
           dt.getDate().toString().padStart(2, "0") +
           "/" +
           (dt.getMonth() + 1).toString().padStart(2, "0") +
           "/" +
-          dt.getFullYear()
-        );
-      } else if (format === "date-time") {
-        if (value === undefined || value === null) {
-          return "-";
+          dt.getFullYear();
+
+        if (format === "date-time") {
+          date_string +=
+            " " +
+            dt.getHours().toString().padStart(2, "0") +
+            ":" +
+            dt.getMinutes().toString().padStart(2, "0") +
+            ":" +
+            dt.getSeconds().toString().padStart(2, "0");
         }
 
-        const dt = new Date(value);
-
-        return (
-          dt.getDate().toString().padStart(2, "0") +
-          "/" +
-          (dt.getMonth() + 1).toString().padStart(2, "0") +
-          "/" +
-          dt.getFullYear() +
-          " " +
-          dt.getHours().toString().padStart(2, "0") +
-          ":" +
-          dt.getMinutes().toString().padStart(2, "0") +
-          ":" +
-          dt.getSeconds().toString().padStart(2, "0")
-        );
+        return date_string;
       } else if (format === "number") {
         return Intl.NumberFormat("id-ID").format(value);
       } else if (format === "currency") {

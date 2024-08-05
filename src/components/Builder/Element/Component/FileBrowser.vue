@@ -1,12 +1,18 @@
 <template>
   <div class="flex" :class="{ 'flex-col': view == 'list' }">
-    <div v-for="(file, file_index) in files" :key="file_index">
-      <a :href="baseURI + '/' + file.file_path" :download="file.filename">
-        <div class="text-lg">
-          <span class="mdi" :class="getFileIcon(file.file_path)"></span>
-          {{ file.filename }}
-        </div>
-      </a>
+    <div v-if="files.length == 0">
+      <span class="mdi mdi-file-question"></span>
+      No files have been uploaded yet.
+    </div>
+    <div v-else>
+      <div v-for="(file, file_index) in files" :key="file_index">
+        <a :href="baseURI + '/' + file.file_path" :download="file.filename">
+          <div class="text-lg">
+            <span class="mdi" :class="getFileIcon(file.file_path)"></span>
+            {{ file.filename }}
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 </template>

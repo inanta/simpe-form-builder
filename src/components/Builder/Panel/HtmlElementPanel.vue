@@ -2,6 +2,9 @@
   <div
     class="rounded-t bg-primary p-1.5 font-bold text-on-primary dark:bg-primary--dark"
   >
+    <button @click="$emit('toggle')">
+      <span class="mdi mdi-arrow-expand-horizontal"></span>
+    </button>
     Elements
   </div>
   <div
@@ -27,7 +30,8 @@ export default {
   name: "HtmlElementPanel",
   emits: {
     dragend: null,
-    dragstart: null
+    dragstart: null,
+    toggle: null
   },
   data: function () {
     return {

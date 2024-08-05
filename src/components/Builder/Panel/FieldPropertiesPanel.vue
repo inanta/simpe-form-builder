@@ -8,10 +8,13 @@
       <div
         class="rounded-t bg-primary p-1.5 font-bold text-on-primary dark:bg-primary--dark"
       >
+        <button @click="$emit('toggle')">
+          <span class="mdi mdi-arrow-expand-horizontal"></span>
+        </button>
         Properties
-        <a class="float-right" href="" @click.prevent="$emit('close')"
-          ><span class="mdi mdi-close p-1"></span
-        ></a>
+        <button class="float-right" @click="$emit('close')">
+          <span class="mdi mdi-close p-1"></span>
+        </button>
       </div>
       <div
         ref="container"
@@ -191,7 +194,8 @@ export default {
   },
   emits: {
     change: null,
-    close: null
+    close: null,
+    toggle: null
   },
   data: function () {
     return {

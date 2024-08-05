@@ -419,6 +419,10 @@ export default {
               cloned_table_items[table_item_index][header.value] =
                 parseInt(cloned_table_items[table_item_index][header.value]) *
                 1000;
+
+              if (isNaN(cloned_table_items[table_item_index][header.value])) {
+                cloned_table_items[table_item_index][header.value] = null;
+              }
             }
           }
         }

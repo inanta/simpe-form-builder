@@ -49,6 +49,7 @@
           @blur="isSearchShown = searchText !== ''"
         />
         <button
+          v-if="hasViewFeature"
           class="ml-2 h-9 w-9 rounded bg-primary text-on-primary dark:bg-primary--dark"
           @click="isTableSettingsShown = true"
         >
@@ -110,7 +111,7 @@
         {{ props.header.label }}
       </span>
     </template>
-    <template #header._setting>
+    <template #header._settings>
       <div class="flex">
         <button class="ml-auto" @click="isTableSettingsShown = true">
           <span class="mdi mdi-dots-horizontal mdi-24px"></span>
@@ -144,7 +145,7 @@
         ></app-view-item-actions>
       </div>
     </template>
-    <template #item._setting="props">
+    <template #item._settings="props">
       <div class="text-2xl">&nbsp;</div>
       <template v-if="tableActions === 'inline'">
         <div
@@ -201,8 +202,6 @@
 </template>
 
 <script>
-import { toRaw } from "vue";
-
 import NsProgressBar from "@/components/NS/NsProgressBar.vue";
 import DataTable from "@/components/DataTable.vue";
 
@@ -214,6 +213,7 @@ import AppViewItemActions from "@/components/Builder/AppViewItemActions.vue";
 import AppBuilder from "@/assets/js/AppBuilder.js";
 
 import getPropertyValue from "@/assets/js/getPropertyValue.js";
+import hasFeature from "@/assets/js/builder/hasFeature.js";
 
 export default {
   name: "Field",
@@ -329,22 +329,13 @@ export default {
       return "";
     },
     hasUpdateFeature: function () {
-      const app = toRaw(this.app);
-
-      if (typeof app.features !== "undefined") {
-        return app.features.includes("update");
-      }
-
-      return false;
+      return hasFeature(this.app, "update");
     },
     hasDeleteFeature: function () {
-      const app = toRaw(this.app);
-
-      if (typeof app.features !== "undefined") {
-        return app.features.includes("delete");
-      }
-
-      return false;
+      return hasFeature(this.app, "delete");
+    },
+    hasViewFeature: function () {
+      return hasFeature(this.app, "view-settings");
     },
     isAppInitialized: function () {
       return typeof this.app.slug !== "undefined";
@@ -425,7 +416,10 @@ export default {
           headers.push({
             align: header.align,
             format: header.format,
-            value: header.target !== "" ? header.target : header.value,
+            value:
+              typeof header.target !== "undefined" && header.target !== ""
+                ? header.target
+                : header.value,
             visible: header.visible
           });
         }
