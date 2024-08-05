@@ -2,7 +2,9 @@
   <span v-if="savedContent === '' && builder === true" class="text-gray-500"
     >Empty Text</span
   >
-  <span v-else class="dark:text-white">{{ savedContent }}</span>
+  <component :is="inlineTextElement" v-else class="dark:text-white">
+    {{ savedContent }}
+  </component>
 </template>
 
 <script>
@@ -13,24 +15,11 @@ import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOpt
 import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
 export default {
+  inheritAttrs: false,
   props: {
-    app: {
-      type: Object,
-      default: function () {
-        return {};
-      }
-    },
     builder: {
       type: Boolean,
       default: false
-    },
-    column: {
-      type: Number,
-      default: 0
-    },
-    container: {
-      type: Number,
-      default: 0
     },
     data: {
       type: Object,
@@ -42,13 +31,13 @@ export default {
       type: [Object, String],
       default: ""
     },
+    inlineTextElement: {
+      type: String,
+      default: "span"
+    },
     label: {
       type: String,
       default: ""
-    },
-    row: {
-      type: Number,
-      default: 0
     }
   },
   data: function () {
@@ -215,10 +204,24 @@ fieldProperties["inline-text"] = {
   label: {
     label: "Label"
   },
+  "inline-text-element": {
+    label: "Element"
+  },
   "inline-text-content": {
     label: "Content"
   }
 };
+
+fieldPropertyOptions.addOption("inline-text-element", [
+  {
+    label: "Generic Inline Container (span)",
+    value: "span"
+  },
+  {
+    label: "Paragraph",
+    value: "p"
+  }
+]);
 
 fieldPropertyOptions.addOption(
   "inline-text-content",

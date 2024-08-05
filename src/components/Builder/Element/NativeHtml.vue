@@ -7,7 +7,7 @@
     class="flex flex-col"
   >
     <label
-      v-for="item in cleanAttributeItems(items)"
+      v-for="item in cleanAttributeItems(properties.items)"
       :key="item.name"
       :for="internalProperties.name + '_' + item.value"
       ><input
@@ -30,6 +30,7 @@
     <label :for="internalProperties.name"
       ><input
         :id="internalProperties.name"
+        :name="internalProperties.name"
         v-bind="cleanAttributes(internalProperties)"
         class="mr-2"
         type="checkbox"
@@ -39,27 +40,57 @@
   </template>
   <component
     :is="internalProperties.element"
-    v-else
+    v-else-if="
+      internalProperties.element === 'input' ||
+      internalProperties.element === 'select' ||
+      internalProperties.element == 'textarea'
+    "
     :class="{
       'border-mid-gray dark:border-surface--dark-500': error,
       'border-negative dark:border-negative--dark': !error
     }"
+    :name="internalProperties.name"
     :value="value"
     v-bind="cleanAttributes(internalProperties)"
     class="w-full appearance-none rounded-sm border bg-white px-3 py-1.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
     @input="$emit('input', $event)"
     @keyup="$emit('keyup', $event)"
   >
-    <template v-if="items">
+    <template v-if="properties.items">
       <component
         :is="itemElement(internalProperties.element, item)"
-        v-for="item in cleanAttributeItems(items)"
+        v-for="item in cleanAttributeItems(properties.items)"
         :key="item.name"
         :value="item.value"
         >{{ item.label }}</component
       >
     </template>
   </component>
+  <component
+    :is="internalProperties.element"
+    v-else-if="
+      properties.items || (properties.content && properties.content !== '')
+    "
+    v-bind="cleanAttributes(internalProperties)"
+  >
+    <template v-if="properties.items">
+      <component
+        :is="itemElement(internalProperties.element, item)"
+        v-for="item in cleanAttributeItems(properties.items)"
+        :key="item.name"
+        :value="item.value"
+        >{{ item.label }}</component
+      >
+    </template>
+    <template v-else-if="properties.content">
+      {{ properties.content }}
+    </template>
+  </component>
+  <component
+    :is="internalProperties.element"
+    v-else
+    v-bind="cleanAttributes(internalProperties)"
+  />
 </template>
 
 <script>
@@ -71,12 +102,6 @@ export default {
     error: {
       type: Boolean,
       default: false
-    },
-    items: {
-      type: Object,
-      default: function () {
-        return {};
-      }
     },
     properties: {
       type: Object,
@@ -117,7 +142,8 @@ export default {
         "placeholder",
         "readonly",
         "rows",
-        "size"
+        "size",
+        "type"
       ]);
 
       if (typeof attributes.validation !== "undefined") {

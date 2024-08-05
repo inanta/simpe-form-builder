@@ -16,7 +16,6 @@
         v-if="getHtmlElements(true).includes(properties.element)"
         ref="fields"
         :error="validateError === '' || !showInvalidMessage"
-        :items="properties.items"
         :value="value"
         :properties="properties"
         @input="onInput"
