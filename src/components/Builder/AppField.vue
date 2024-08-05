@@ -13,7 +13,7 @@
         {{ fieldLabel }}
       </label>
       <native-html
-        v-if="getHtmlElements(true).includes(properties.element)"
+        v-if="getHtmlElements().includes(properties.element)"
         ref="fields"
         :error="validateError === '' || !showInvalidMessage"
         :items="properties.items"
@@ -124,6 +124,11 @@ export default {
         { tag: "select", hasValidation: true },
         { tag: "textarea", hasValidation: true },
         { tag: "h1", hasValidation: false },
+        { tag: "h2", hasValidation: false },
+        { tag: "h3", hasValidation: false },
+        { tag: "h4", hasValidation: false },
+        { tag: "h5", hasValidation: false },
+        { tag: "h6", hasValidation: false },
         { tag: "p", hasValidation: false },
         { tag: "hr", hasValidation: false }
       ],

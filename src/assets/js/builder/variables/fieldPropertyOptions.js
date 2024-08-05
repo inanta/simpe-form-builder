@@ -57,6 +57,35 @@ export default {
       }
     ]
   },
+  element: {
+    fields: ["h1", "h2", "h3", "h4", "h5", "h6"],
+    options: [
+      {
+        name: "Heading 1",
+        value: "h1"
+      },
+      {
+        name: "Heading 2",
+        value: "h2"
+      },
+      {
+        name: "Heading 3",
+        value: "h3"
+      },
+      {
+        name: "Heading 4",
+        value: "h4"
+      },
+      {
+        name: "Heading 5",
+        value: "h5"
+      },
+      {
+        name: "Heading 6",
+        value: "h6"
+      }
+    ]
+  },
   items: {
     fields: ["select", "filter-drop-down"],
     options: "FieldPropertyValueCollection",

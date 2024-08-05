@@ -31,21 +31,21 @@ export default {
   elements: {
     general: [
       {
-        content: "Input",
+        content: "",
         icon: "mdi mdi-form-textbox",
         name: "Input",
         sort: 0,
         tag: "input"
       },
       {
-        content: "Drop Down",
+        content: "",
         icon: "mdi mdi-form-select",
         name: "Drop Down",
         sort: 0,
         tag: "select"
       },
       {
-        content: "Multiline Text Box",
+        content: "",
         icon: "mdi mdi-form-textarea",
         name: "Multiline Text Box",
         sort: 0,
@@ -59,7 +59,7 @@ export default {
         tag: "h1"
       },
       {
-        content: "Horizontal Line",
+        content: "",
         icon: "mdi mdi-minus",
         name: "Horizontal Line",
         sort: 0,

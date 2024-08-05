@@ -5,8 +5,87 @@ export default {
   }
   */
   h1: {
+    element: {
+      label: "Element"
+    },
     content: {
       label: "Content"
+    },
+    class: {
+      label: "Class"
+    },
+    attrs: {
+      label: "Attributes"
+    }
+  },
+  h2: {
+    element: {
+      label: "Element"
+    },
+    content: {
+      label: "Content"
+    },
+    class: {
+      label: "Class"
+    },
+    attrs: {
+      label: "Attributes"
+    }
+  },
+  h3: {
+    element: {
+      label: "Element"
+    },
+    content: {
+      label: "Content"
+    },
+    class: {
+      label: "Class"
+    },
+    attrs: {
+      label: "Attributes"
+    }
+  },
+  h4: {
+    element: {
+      label: "Element"
+    },
+    content: {
+      label: "Content"
+    },
+    class: {
+      label: "Class"
+    },
+    attrs: {
+      label: "Attributes"
+    }
+  },
+  h5: {
+    element: {
+      label: "Element"
+    },
+    content: {
+      label: "Content"
+    },
+    class: {
+      label: "Class"
+    },
+    attrs: {
+      label: "Attributes"
+    }
+  },
+  h6: {
+    element: {
+      label: "Element"
+    },
+    content: {
+      label: "Content"
+    },
+    class: {
+      label: "Class"
+    },
+    attrs: {
+      label: "Attributes"
     }
   },
   input: {
