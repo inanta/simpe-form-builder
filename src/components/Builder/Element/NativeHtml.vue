@@ -2,7 +2,8 @@
   <div
     v-if="
       internalProperties.element === 'input' &&
-      internalProperties.type === 'radio'
+      (internalProperties.type === 'radio' ||
+        internalProperties.type === 'checkbox')
     "
     class="flex flex-col"
   >
@@ -13,31 +14,17 @@
       ><input
         :id="internalProperties.name + '_' + item.value"
         :checked="item.value === value"
-        :name="internalProperties.name"
+        :name="
+          internalProperties.name +
+          (internalProperties.type === 'checkbox' ? '[]' : '')
+        "
         :value="item.value"
+        :type="internalProperties.type"
         class="mr-2"
-        type="radio"
         @input="$emit('input', $event)"
       />{{ item.label }}</label
     >
   </div>
-  <template
-    v-else-if="
-      internalProperties.element === 'input' &&
-      internalProperties.type === 'checkbox'
-    "
-  >
-    <label :for="internalProperties.name"
-      ><input
-        :id="internalProperties.name"
-        :name="internalProperties.name"
-        v-bind="cleanAttributes(internalProperties)"
-        class="mr-2"
-        type="checkbox"
-        @input="onInputChecked"
-      />{{ internalProperties["checkbox-label"] }}</label
-    >
-  </template>
   <component
     :is="internalProperties.element"
     v-else-if="
@@ -162,13 +149,15 @@ export default {
       return cleaned_attributes;
     },
     cleanAttributeItems(items) {
-      if (Array.isArray(items)) {
-        return items;
-      } else if (
-        typeof items.value !== "undefined" &&
-        Array.isArray(items.value)
-      ) {
-        return items.value;
+      if (typeof items !== "undefined") {
+        if (Array.isArray(items)) {
+          return items;
+        } else if (
+          typeof items.value !== "undefined" &&
+          Array.isArray(items.value)
+        ) {
+          return items.value;
+        }
       }
 
       return [];
