@@ -20,11 +20,11 @@
     </template>
     <div class="ml-auto w-1/3">
       <div class="flex flex-row">
-        <div class="mr-auto flex-1 whitespace-nowrap py-2 font-bold">
+        <div class="mr-auto py-2 font-bold">
           {{ paymentOptionName }}
         </div>
-        <div class="ml-auto flex-1 px-4 py-2">{{ formattedPrice }}</div>
-        <div class="flex-1">
+        <div class="ml-auto px-4 py-2">{{ formattedPrice }}</div>
+        <div class="">
           <div class="w-max rounded border">
             <button
               class="w-9 border-r px-3 py-1.5 text-base text-black outline-none"
@@ -34,7 +34,7 @@
             </button>
             <input
               v-model="quantity"
-              class="w-20 appearance-none rounded-sm border-none bg-white px-3 py-1.5 text-center text-base text-black outline-none focus:border-primary"
+              class="w-16 appearance-none rounded-sm border-none bg-white px-3 py-1.5 text-center text-base text-black outline-none focus:border-primary"
               type="text"
               min="0"
             />
@@ -46,7 +46,7 @@
             </button>
           </div>
         </div>
-        <div class="flex-1 px-4 py-2">{{ formattedTotalPrice }}</div>
+        <div class="px-4 py-2">{{ formattedTotalPrice }}</div>
       </div>
     </div>
     <div></div>
