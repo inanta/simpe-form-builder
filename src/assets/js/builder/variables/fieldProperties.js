@@ -95,12 +95,15 @@ export default {
     label: {
       label: "Label"
     },
+    type: {
+      label: "Type"
+    },
     items: {
       label: "Items",
       rules: [
         {
           property: "type",
-          values: ["radio"]
+          values: ["checkbox", "radio"]
         }
       ]
     },
@@ -141,7 +144,26 @@ export default {
       ]
     },
     placeholder: {
-      label: "Placeholder"
+      label: "Placeholder",
+      rules: [
+        {
+          property: "type",
+          values: [
+            "text",
+            "search",
+            "url",
+            "tel",
+            "email",
+            "password",
+            "number",
+            "date",
+            "month",
+            "week",
+            "time",
+            "datetime-local"
+          ]
+        }
+      ]
     },
     step: {
       label: "Step",
@@ -149,27 +171,6 @@ export default {
         {
           property: "type",
           values: ["number", "range"]
-        }
-      ]
-    },
-    type: {
-      label: "Type"
-    },
-    "checkbox-label": {
-      label: "Checkbox Label",
-      rules: [
-        {
-          property: "type",
-          values: ["checkbox"]
-        }
-      ]
-    },
-    "checked-value": {
-      label: "Checkbox Value",
-      rules: [
-        {
-          property: "type",
-          values: ["checkbox"]
         }
       ]
     },
