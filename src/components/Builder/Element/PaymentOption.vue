@@ -20,7 +20,7 @@
     </template>
     <div class="ml-auto w-1/3">
       <div class="flex flex-row">
-        <div class="mr-auto flex-1 py-2 font-bold">
+        <div class="mr-auto flex-1 whitespace-nowrap py-2 font-bold">
           {{ paymentOptionName }}
         </div>
         <div class="ml-auto flex-1 px-4 py-2">{{ formattedPrice }}</div>
