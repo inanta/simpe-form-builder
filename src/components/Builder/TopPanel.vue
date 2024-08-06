@@ -27,6 +27,12 @@
      -->
     <div class="flex space-x-3">
       <button
+        class="mr-auto rounded-sm bg-primary py-2 px-4 text-on-primary"
+        @click="importApp"
+      >
+        <span class="mdi mdi-import"></span> Import
+      </button>
+      <button
         class="ml-auto rounded-sm bg-primary py-2 px-4 text-on-primary"
         @click="$emit('preview')"
       >
@@ -38,6 +44,12 @@
       >
         <span class="mdi mdi-content-save"></span> Save
       </button>
+      <input
+        ref="import"
+        style="display: none"
+        type="file"
+        @change="onImportFileChange"
+      />
     </div>
   </div>
 </template>
@@ -75,6 +87,7 @@ export default {
   emits: {
     columnsChange: null,
     containerTypeChange: null,
+    import: null,
     preview: null,
     primaryKeyChange: null,
     save: null,
@@ -105,13 +118,6 @@ export default {
     }
   },
   watch: {
-    // edit: {
-    //   handler: function (value) {
-    //     console.log("waTCH is edit", value);
-    //     // this.selectedPrimaryKey = value;
-    //   },
-    //   immediate: false
-    // },
     containerType: {
       handler: function (value) {
         this.selectedContainerType = value;
@@ -120,7 +126,6 @@ export default {
     },
     table: {
       handler: function (value) {
-        // console.log("WATCHED TABLE", value, this.edit);
         this.selectedTable = value;
 
         // if (value === "") {
@@ -199,6 +204,9 @@ export default {
         });
       }
     },
+    importApp: function () {
+      this.$refs.import.click();
+    },
     currentTableChanged: function (value) {
       const self = this;
 
@@ -216,6 +224,27 @@ export default {
       const self = this;
 
       self.$emit("containerTypeChange", value);
+    },
+    onImportFileChange: function () {
+      const self = this;
+
+      if (typeof self.$refs.import.files[0] !== "undefined") {
+        const reader = new FileReader();
+
+        reader.addEventListener(
+          "load",
+          function () {
+            const app = JSON.parse(reader.result);
+
+            app.columns = app.elements;
+
+            self.$emit("import", app);
+          },
+          false
+        );
+
+        reader.readAsText(self.$refs.import.files[0]);
+      }
     }
   }
 };

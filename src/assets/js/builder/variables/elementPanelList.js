@@ -18,6 +18,12 @@ export default {
 
           if (element.tag === tag) {
             return element;
+          } else if (
+            typeof element.tags !== "undefined" &&
+            element.tags.length > 0 &&
+            element.tags.includes(tag)
+          ) {
+            return element;
           }
         }
       }
@@ -56,7 +62,8 @@ export default {
         icon: "mdi mdi-format-title",
         name: "Heading",
         sort: 0,
-        tag: "h1"
+        tag: "h1",
+        tags: ["h1", "h2", "h3", "h4", "h5", "h6"]
       },
       {
         content: "",

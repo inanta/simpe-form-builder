@@ -1,6 +1,10 @@
 <template>
   <div class="relative mx-4 mb-4">
-    <top-panel @preview="showPreview" @save="save"></top-panel>
+    <top-panel
+      @import="importApp"
+      @preview="showPreview"
+      @save="save"
+    ></top-panel>
     <hr class="border-top my-4 border-gray-300" />
     <div class="pb-2">
       <input
@@ -32,131 +36,135 @@
               <span class="mdi mdi-source-branch"></span> View Logic
             </button>
           </div> -->
-          <template
-            v-for="(container, index) in containers"
-            :key="container.name"
-          >
-            <div
-              v-if="index == selectedContainer"
-              class="mr-4 flex-shrink flex-grow"
+          <form :name="slugifiedAppName">
+            <template
+              v-for="(container, index) in containers"
+              :key="container.name"
             >
               <div
-                class="rounded border border-mid-gray px-2 py-4 dark:border-surface--dark-300 dark:bg-surface--dark-300 dark:text-on-surface--dark-300"
-                @dragenter.self="onContainerDragEnter(container)"
+                v-if="index == selectedContainer"
+                class="mr-4 flex-shrink flex-grow"
               >
-                <template
-                  v-for="(row, row_index) in container.rows"
-                  :key="row_index"
+                <div
+                  class="rounded border border-mid-gray px-2 py-4 dark:border-surface--dark-300 dark:bg-surface--dark-300 dark:text-on-surface--dark-300"
+                  @dragenter.self="onContainerDragEnter(container)"
                 >
-                  <div
-                    :class="'grid-cols-' + row.grid"
-                    class="grid gap-0"
-                    @dragover.prevent
+                  <template
+                    v-for="(row, row_index) in container.rows"
+                    :key="row_index"
                   >
-                    <template
-                      v-for="(column, column_index) in row.columns"
-                      :key="column_index"
+                    <div
+                      :class="'grid-cols-' + row.grid"
+                      class="grid gap-0"
+                      @dragover.prevent
                     >
-                      <div
-                        v-if="column.type == 'empty' && row.showEmptyColumn"
-                        class="flex content-center items-center rounded-sm px-2 py-1 text-primary"
+                      <template
+                        v-for="(column, column_index) in row.columns"
+                        :key="column_index"
+                      >
+                        <div
+                          v-if="column.type == 'empty' && row.showEmptyColumn"
+                          class="flex content-center items-center rounded-sm px-2 py-1 text-primary"
+                        >
+                          <empty-column-placeholder
+                            :column="column_index"
+                            :container="index"
+                            :element="dragColumn.name"
+                            :is-add-inside-row="true"
+                            :row="row_index"
+                            @add-element="addElement"
+                          ></empty-column-placeholder>
+                        </div>
+                        <div v-if="column.type != 'empty'">
+                          <builder-app-field
+                            :builder="true"
+                            :column="column_index"
+                            :column-count="row.columns.length"
+                            :focus="column.is_focused"
+                            :label="column.label"
+                            :properties="column"
+                            :row="row_index"
+                            :row-count="container.rows.length"
+                            :select="column.is_selected"
+                            @blur="setFocus()"
+                            @copy-code="onCopyCode(column)"
+                            @create-and-move-to-row-above="
+                              onCreateAndMoveToRowAbove(
+                                index,
+                                row_index,
+                                column_index,
+                                column
+                              )
+                            "
+                            @create-and-move-to-row-below="
+                              onCreateAndMoveToRowBelow(
+                                index,
+                                row_index,
+                                column_index,
+                                column
+                              )
+                            "
+                            @create-logic="
+                              onCreateLogic(index, row_index, column_index)
+                            "
+                            @duplicate="
+                              onDuplicate(index, row_index, column_index)
+                            "
+                            @focus="setFocus(index, row_index, column_index)"
+                            @move-to-row-above="
+                              onMoveToRowAbove(
+                                index,
+                                row_index,
+                                column_index,
+                                column
+                              )
+                            "
+                            @move-to-row-below="
+                              onMoveToRowBelow(
+                                index,
+                                row_index,
+                                column_index,
+                                column
+                              )
+                            "
+                            @remove="
+                              onRemoveItem(index, row_index, column_index)
+                            "
+                            @select="setSelect(index, row_index, column_index)"
+                            @switch-column="onSwitchColumn"
+                          ></builder-app-field>
+                        </div>
+                      </template>
+                    </div>
+                    <div
+                      class="px-2"
+                      :class="{
+                        'h-1': !row.showNewEmptyRowPlaceholder && row.grid != 0
+                      }"
+                      @dragenter="onNewRowDragEnter(row)"
+                    >
+                      <template
+                        v-if="
+                          row.showNewEmptyRowPlaceholder ||
+                          (row_index == 0 && row.grid == 0)
+                        "
                       >
                         <empty-column-placeholder
-                          :column="column_index"
+                          :column="0"
                           :container="index"
                           :element="dragColumn.name"
-                          :is-add-inside-row="true"
+                          :is-add-inside-row="row.grid == 0 ? true : false"
                           :row="row_index"
                           @add-element="addElement"
                         ></empty-column-placeholder>
-                      </div>
-                      <div v-if="column.type != 'empty'">
-                        <builder-app-field
-                          :builder="true"
-                          :column="column_index"
-                          :column-count="row.columns.length"
-                          :focus="column.is_focused"
-                          :label="column.label"
-                          :properties="column"
-                          :row="row_index"
-                          :row-count="container.rows.length"
-                          :select="column.is_selected"
-                          @blur="setFocus()"
-                          @copy-code="onCopyCode(column)"
-                          @create-and-move-to-row-above="
-                            onCreateAndMoveToRowAbove(
-                              index,
-                              row_index,
-                              column_index,
-                              column
-                            )
-                          "
-                          @create-and-move-to-row-below="
-                            onCreateAndMoveToRowBelow(
-                              index,
-                              row_index,
-                              column_index,
-                              column
-                            )
-                          "
-                          @create-logic="
-                            onCreateLogic(index, row_index, column_index)
-                          "
-                          @duplicate="
-                            onDuplicate(index, row_index, column_index)
-                          "
-                          @focus="setFocus(index, row_index, column_index)"
-                          @move-to-row-above="
-                            onMoveToRowAbove(
-                              index,
-                              row_index,
-                              column_index,
-                              column
-                            )
-                          "
-                          @move-to-row-below="
-                            onMoveToRowBelow(
-                              index,
-                              row_index,
-                              column_index,
-                              column
-                            )
-                          "
-                          @remove="onRemoveItem(index, row_index, column_index)"
-                          @select="setSelect(index, row_index, column_index)"
-                          @switch-column="onSwitchColumn"
-                        ></builder-app-field>
-                      </div>
-                    </template>
-                  </div>
-                  <div
-                    class="px-2"
-                    :class="{
-                      'h-1': !row.showNewEmptyRowPlaceholder && row.grid != 0
-                    }"
-                    @dragenter="onNewRowDragEnter(row)"
-                  >
-                    <template
-                      v-if="
-                        row.showNewEmptyRowPlaceholder ||
-                        (row_index == 0 && row.grid == 0)
-                      "
-                    >
-                      <empty-column-placeholder
-                        :column="0"
-                        :container="index"
-                        :element="dragColumn.name"
-                        :is-add-inside-row="row.grid == 0 ? true : false"
-                        :row="row_index"
-                        @add-element="addElement"
-                      ></empty-column-placeholder>
-                    </template>
-                  </div>
-                </template>
+                      </template>
+                    </div>
+                  </template>
+                </div>
               </div>
-            </div>
-            <!-- Is table attribute needed? -->
-          </template>
+              <!-- Is table attribute needed? -->
+            </template>
+          </form>
         </div>
       </div>
       <div
@@ -214,6 +222,7 @@
 <script>
 import { useBuilderStore } from "@/stores/builder.js";
 
+import { saveAs } from "file-saver";
 import slugify from "slugify";
 
 import FieldPropertiesPanel from "@/components/Builder/Panel/FieldPropertiesPanel.vue";
@@ -272,7 +281,11 @@ export default {
       isPanelToggled: true
     };
   },
-  computed: {},
+  computed: {
+    slugifiedAppName: function () {
+      return slugify(this.app.name, { lower: true });
+    }
+  },
   mounted: function () {
     const self = this;
 
@@ -366,6 +379,14 @@ export default {
       }
 
       this.removeEmptyPlaceholder();
+    },
+    importApp: function (app) {
+      this.app = app;
+      this.isEdit = true;
+      this.selectedTable = app.table;
+      this.selectedPrimaryKey = app.pk;
+
+      this.clearItems();
     },
     onComputedFieldsSave: function (value) {
       this.app["computed_fields"] = value;
@@ -791,7 +812,7 @@ export default {
 
       let app = {
         name: self.app.name,
-        slug: slugify(self.app.name, { lower: true }),
+        slug: self.slugifiedAppName,
         table: self.selectedTable,
         pk: self.selectedPrimaryKey,
         container_type: self.selectedContainerType
@@ -827,8 +848,14 @@ export default {
       // app.field_logics = self.app.field_logics;
       app = JSON.parse(JSON.stringify(app));
 
-      alert("Info", "Please check the console log to view the generated JSON.");
+      // alert("Info", "Please check the console log to view the generated JSON.");
       console.log(app);
+
+      let blob = new Blob([JSON.stringify(app, null, 2)], {
+        type: "application/json;charset=utf-8"
+      });
+
+      saveAs(blob, app.name + ".json");
 
       // AppBuilder.save(app).then(function () {
       //   self.$router.push("/app/builder/view");

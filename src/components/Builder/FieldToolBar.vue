@@ -2,6 +2,7 @@
   <div v-if="!isHidden" class="absolute right-0 top-0 z-10 p-1.5 text-xs">
     <button
       class="ml-1 inline-block h-6 w-6 rounded bg-negative p-1 text-center dark:bg-negative--dark"
+      type="button"
       @click="$emit('remove')"
       @dragstart.prevent
     >
@@ -9,12 +10,14 @@
     </button>
     <button
       class="ml-1 inline-block h-6 w-6 rounded bg-primary p-1 text-center dark:bg-primary--dark"
+      type="button"
       @click="$emit('copyCode')"
     >
       <span class="mdi mdi-code-json text-on-primary"></span>
     </button>
     <button
       class="ml-1 inline-block h-6 w-6 rounded bg-primary p-1 text-center dark:bg-primary--dark"
+      type="button"
       @click="$emit('duplicate')"
     >
       <span class="mdi mdi-content-duplicate text-on-primary"></span>
@@ -22,6 +25,7 @@
     <button
       v-if="row !== 0"
       class="ml-1 inline-block h-6 w-6 rounded bg-primary p-1 text-center dark:bg-primary--dark"
+      type="button"
       @click="$emit('moveToRowAbove')"
     >
       <span class="mdi mdi-arrow-collapse-up text-on-primary"></span>
@@ -29,6 +33,7 @@
     <button
       v-if="row !== rowCount - 1"
       class="ml-1 inline-block h-6 w-6 rounded bg-primary p-1 text-center dark:bg-primary--dark"
+      type="button"
       @click="$emit('moveToRowBelow')"
     >
       <span class="mdi mdi-arrow-collapse-down text-on-primary"></span>
@@ -36,6 +41,7 @@
     <button
       v-if="columnCount > 2"
       class="ml-1 inline-block h-6 w-6 rounded bg-primary p-1 text-center dark:bg-primary--dark"
+      type="button"
       @click="$emit('createAndMoveToRowAbove')"
     >
       <span class="mdi mdi-arrow-expand-up text-on-primary"></span>
@@ -43,6 +49,7 @@
     <button
       v-if="columnCount > 2"
       class="ml-1 inline-block h-6 w-6 rounded bg-primary p-1 text-center dark:bg-primary--dark"
+      type="button"
       @click="$emit('createAndMoveToRowBelow')"
     >
       <span class="mdi mdi-arrow-expand-down text-on-primary"></span>

@@ -2,12 +2,18 @@
   <span v-if="savedContent === '' && builder === true" class="text-gray-500"
     >Empty Text</span
   >
-  <component :is="inlineTextElement" v-else class="dark:text-white">
+  <component
+    :is="inlineTextElement"
+    v-else
+    class="dark:text-white"
+    v-bind="cleanAttributes(properties)"
+  >
     {{ savedContent }}
   </component>
 </template>
 
 <script>
+import cleanAttributes from "@/assets/js/builder/cleanAttributes.js";
 import delay from "@/assets/js/delay.js";
 
 import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
@@ -38,6 +44,12 @@ export default {
     label: {
       type: String,
       default: ""
+    },
+    properties: {
+      type: Object,
+      default: function () {
+        return {};
+      }
     }
   },
   data: function () {
@@ -97,6 +109,11 @@ export default {
   },
   mounted: function () {},
   methods: {
+    cleanAttributes(attributes) {
+      const cleaned_attributes = cleanAttributes(attributes, []);
+
+      return cleaned_attributes;
+    },
     fetch: function () {
       const self = this;
       const api = JSON.parse(JSON.stringify(this.inlineTextContent));
@@ -209,6 +226,9 @@ fieldProperties["inline-text"] = {
   },
   "inline-text-content": {
     label: "Content"
+  },
+  attrs: {
+    label: "Attributes"
   }
 };
 

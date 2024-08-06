@@ -6,7 +6,7 @@
   >
     <div
       v-if="isShown"
-      class="absolute left-0 top-0 h-full w-full bg-white dark:bg-surface--dark-300 dark:text-on-surface--dark-300"
+      class="absolute left-0 top-0 z-10 h-full w-full bg-white dark:bg-surface--dark-300 dark:text-on-surface--dark-300"
     >
       <div
         class="grid grid-cols-2 rounded bg-primary px-4 py-1.5 text-lg text-on-primary"
