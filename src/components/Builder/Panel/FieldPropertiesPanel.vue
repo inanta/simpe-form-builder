@@ -148,6 +148,7 @@ import FieldPropertyElementSelection from "@/components/Builder/FieldProperty/Fi
 import FieldPropertyValidationCollection from "@/components/Builder/FieldProperty/FieldPropertyValidationCollection.vue";
 import FieldPropertyValueSource from "@/components/Builder/FieldProperty/FieldPropertyValueSource.vue";
 import FieldPropertyRepeatInput from "@/components/Builder/FieldProperty/FieldPropertyRepeatInput.vue";
+import FieldPropertyUppyUploader from "@/components/Builder/FieldProperty/FieldPropertyUppyUploader.vue";
 
 import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
 import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions.js";
@@ -166,7 +167,8 @@ export default {
     FieldPropertyElementSelection,
     FieldPropertyValidationCollection,
     FieldPropertyValueSource,
-    FieldPropertyRepeatInput
+    FieldPropertyRepeatInput,
+    FieldPropertyUppyUploader
   },
   props: {
     containers: {
