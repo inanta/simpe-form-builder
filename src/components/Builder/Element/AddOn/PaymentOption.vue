@@ -2,10 +2,10 @@
   <div class="flex flex-row">
     <template v-if="paymentOptionType == 'title-description'">
       <div class="w-1/3 font-bold">
-        <pre>{{ paymentOptionTitle }}</pre>
+        <pre class="whitespace-pre-wrap">{{ paymentOptionTitle }}</pre>
       </div>
       <div class="w-1/3">
-        <pre>{{ paymentOptionDescription }}</pre>
+        <pre class="whitespace-pre-wrap">{{ paymentOptionDescription }}</pre>
       </div>
     </template>
     <template v-else>
@@ -73,6 +73,10 @@ export default {
       type: String,
       default: ""
     },
+    paymentOptionEndDate: {
+      type: String,
+      default: ""
+    },
     paymentOptionMax: {
       type: String,
       default: "999"
@@ -90,6 +94,10 @@ export default {
       default: ""
     },
     paymentOptionPrice: {
+      type: String,
+      default: ""
+    },
+    paymentOptionStartDate: {
       type: String,
       default: ""
     },
@@ -196,6 +204,12 @@ fieldProperties["payment-option"] = {
   "payment-option-max": {
     label: "Max"
   },
+  "payment-option-start-date": {
+    label: "Start Date"
+  },
+  "payment-option-end-date": {
+    label: "End Date"
+  },
   "payment-option-is-required": {
     label: "Is Required"
   }
@@ -209,6 +223,22 @@ fieldPropertyOptions.addOption("payment-option-type", [
   {
     name: "Picture",
     value: "picture"
+  }
+]);
+
+fieldPropertyOptions.addOption(
+  "payment-option-picture",
+  "FieldPropertyUppyUploader"
+);
+
+fieldPropertyOptions.addOption("payment-option-is-required", [
+  {
+    name: "No",
+    value: false
+  },
+  {
+    name: "Yes",
+    value: true
   }
 ]);
 </script>
