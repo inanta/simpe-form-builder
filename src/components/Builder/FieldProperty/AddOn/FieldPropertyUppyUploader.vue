@@ -67,10 +67,8 @@ export default {
         maxFiles = 1,
         uploadFolder = "modules/_admin/uploads";
 
-      var t =
-        uploadFolder == "assets" ? "assets_presign_url" : "upload_presign_url";
-      var t_register =
-        uploadFolder == "assets" ? "assets_create" : "upload_create";
+      var t = "upload_presign_url";
+      var t_register = "upload_create";
       var config = {
         autoProceed: false,
         restrictions: {
@@ -132,11 +130,8 @@ export default {
               })
               .then(function (data) {
                 return {
-                  method: uploadFolder == "assets" ? "PUT" : "POST",
-                  url:
-                    uploadFolder == "assets"
-                      ? data.presign.urls[0].upload_url
-                      : data.presign.upload_url,
+                  method: "POST",
+                  url: data.presign.upload_url,
                   fields: data.presign.upload_url_payload
                 };
               });
