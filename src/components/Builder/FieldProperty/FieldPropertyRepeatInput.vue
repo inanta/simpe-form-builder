@@ -87,7 +87,7 @@ export default {
     return {
       addContainerHeight: "auto",
       showAdd: false,
-      value: [{ app: "", field: "" }]
+      value: [{}]
     };
   },
   watch: {

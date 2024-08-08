@@ -2,10 +2,10 @@
   <div class="flex flex-row">
     <template v-if="paymentOptionType == 'title-description'">
       <div class="w-1/3 font-bold">
-        <pre class="whitespace-pre-wrap">{{ paymentOptionTitle }}</pre>
+        <pre class="whitespace-pre-wrap">{{ title }}</pre>
       </div>
       <div class="w-1/3">
-        <pre class="whitespace-pre-wrap">{{ paymentOptionDescription }}</pre>
+        <pre class="whitespace-pre-wrap">{{ description }}</pre>
       </div>
     </template>
     <template v-else>
@@ -19,34 +19,42 @@
       </div>
     </template>
     <div class="ml-auto w-1/3">
-      <div class="flex flex-row">
-        <div class="mr-auto py-2 font-bold">
-          {{ paymentOptionName }}
-        </div>
-        <div class="ml-auto px-4 py-2">{{ formattedPrice }}</div>
-        <div class="">
-          <div class="w-max rounded border">
-            <button
-              class="w-9 border-r px-3 py-1.5 text-base text-black outline-none"
-              @click="onMinusButtonClick"
-            >
-              -
-            </button>
-            <input
-              v-model="quantity"
-              class="w-16 appearance-none rounded-sm border-none bg-white px-3 py-1.5 text-center text-base text-black outline-none focus:border-primary"
-              type="text"
-              min="0"
-            />
-            <button
-              class="w-9 border-l px-3 py-1.5 text-base text-black outline-none"
-              @click="onPlusButtonClick"
-            >
-              +
-            </button>
+      <div
+        v-for="(item, itemIndex) in paymentOptionItems"
+        :key="item.name"
+        class="mb-1"
+      >
+        <div class="flex flex-row">
+          <div class="mr-auto py-2 font-bold">
+            {{ item.name }}
+          </div>
+          <div class="ml-auto px-4 py-2">{{ formatPrice(item.price) }}</div>
+          <div class="">
+            <div class="w-max rounded border">
+              <button
+                class="w-9 border-r px-3 py-1.5 text-base text-black outline-none"
+                @click="onMinusButtonClick(itemIndex)"
+              >
+                -
+              </button>
+              <input
+                v-model="quantity[itemIndex]"
+                class="w-16 appearance-none rounded-sm border-none bg-white px-3 py-1.5 text-center text-base text-black outline-none focus:border-primary"
+                type="text"
+                min="0"
+              />
+              <button
+                class="w-9 border-l px-3 py-1.5 text-base text-black outline-none"
+                @click="onPlusButtonClick(itemIndex)"
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <div class="px-4 py-2">
+            {{ formatPrice(quantity[itemIndex] * item.price) }}
           </div>
         </div>
-        <div class="px-4 py-2">{{ formattedTotalPrice }}</div>
       </div>
     </div>
     <div></div>
@@ -77,6 +85,17 @@ export default {
       type: String,
       default: ""
     },
+    paymentOptionItems: {
+      type: Array,
+      default: function () {
+        return [
+          {
+            name: "Per",
+            price: "0"
+          }
+        ];
+      }
+    },
     paymentOptionMax: {
       type: String,
       default: "999"
@@ -85,15 +104,7 @@ export default {
       type: String,
       default: "0"
     },
-    paymentOptionName: {
-      type: String,
-      default: ""
-    },
     paymentOptionPicture: {
-      type: String,
-      default: ""
-    },
-    paymentOptionPrice: {
       type: String,
       default: ""
     },
@@ -112,37 +123,82 @@ export default {
   },
   data: function () {
     return {
-      quantity: 0
+      quantity: []
     };
   },
   computed: {
-    formattedPrice: function () {
-      return new Intl.NumberFormat("en-AU", {
-        style: "currency",
-        currency: "AUD"
-      }).format(this.paymentOptionPrice);
+    title: function () {
+      if (this.paymentOptionTitle === "" && this.builder) {
+        return "Title";
+      }
+
+      return this.paymentOptionTitle;
     },
-    formattedTotalPrice: function () {
-      return new Intl.NumberFormat("en-AU", {
-        style: "currency",
-        currency: "AUD"
-      }).format(this.paymentOptionPrice * this.quantity);
+    description: function () {
+      if (this.paymentOptionDescription === "" && this.builder) {
+        return "Description";
+      }
+
+      return this.paymentOptionDescription;
+    },
+    maxQuantity: function () {
+      let max = 999;
+
+      if (
+        this.paymentOptionMax !== "" &&
+        Number.isFinite(this.paymentOptionMax)
+      ) {
+        max = Number.parseFloat(this.paymentOptionMax);
+      }
+
+      return max;
+    },
+    minQuantity: function () {
+      let min = 0;
+
+      if (
+        this.paymentOptionMin !== "" &&
+        Number.isFinite(this.paymentOptionMin)
+      ) {
+        min = Number.parseFloat(this.paymentOptionMin);
+      }
+
+      return min;
     }
   },
-  mounted: function () {},
+  watch: {
+    paymentOptionItems: {
+      handler: function (values) {
+        for (let index = 0; index < values.length; index++) {
+          this.quantity[index] = 0;
+        }
+      },
+      immediate: true
+    }
+  },
   methods: {
-    onMinusButtonClick: function () {
-      if (this.quantity - 1 < 0) {
-        this.quantity = 0;
+    formatPrice: function (price) {
+      if (isNaN(price)) {
+        price = 0;
+      }
+
+      return new Intl.NumberFormat("en-AU", {
+        style: "currency",
+        currency: "AUD"
+      }).format(price);
+    },
+    onMinusButtonClick: function (index) {
+      if (this.quantity[index] - 1 < this.minQuantity) {
+        this.quantity[index] = this.minQuantity;
       } else {
-        this.quantity -= 1;
+        this.quantity[index] -= 1;
       }
     },
-    onPlusButtonClick: function () {
-      if (this.quantity + 1 > this.paymentOptionMax) {
-        this.quantity = this.paymentOptionMax;
+    onPlusButtonClick: function (index) {
+      if (this.quantity[index] + 1 > this.maxQuantity) {
+        this.quantity[index] = this.maxQuantity;
       } else {
-        this.quantity += 1;
+        this.quantity[index] += 1;
       }
     }
   }
@@ -161,7 +217,8 @@ fieldProperties["payment-option"] = {
     label: "Label"
   },
   "payment-option-type": {
-    label: "Type"
+    label: "Type",
+    default: "title-description"
   },
   "payment-option-title": {
     label: "Title",
@@ -192,11 +249,8 @@ fieldProperties["payment-option"] = {
       }
     ]
   },
-  "payment-option-name": {
-    label: "Option Name"
-  },
-  "payment-option-price": {
-    label: "Price"
+  "payment-option-items": {
+    label: "Items"
   },
   "payment-option-min": {
     label: "Min"
@@ -225,6 +279,19 @@ fieldPropertyOptions.addOption("payment-option-type", [
     value: "picture"
   }
 ]);
+
+fieldPropertyOptions.addOption(
+  "payment-option-items",
+  "FieldPropertyRepeatInput",
+  {
+    addButtonLabel: "Add Items",
+    columns: [
+      { name: "name", placeholder: "Name" },
+      { name: "price", placeholder: "Price" }
+    ],
+    display: "column"
+  }
+);
 
 fieldPropertyOptions.addOption(
   "payment-option-picture",
