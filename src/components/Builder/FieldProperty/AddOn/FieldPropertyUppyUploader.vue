@@ -53,7 +53,13 @@ export default {
   mounted: function () {
     this.value = this.properties[this.fieldProperty];
 
-    this.init();
+    const csrfElement = document.querySelector('[name="csrf"]');
+
+    if (csrfElement !== null && typeof Uppy !== "undefined") {
+      this.init();
+    } else {
+      alert("CSRF token is unavailable or Uppy has not been properly included");
+    }
   },
   methods: {
     init: function () {
