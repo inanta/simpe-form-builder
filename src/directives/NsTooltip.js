@@ -2,6 +2,12 @@ import { createPopper } from "@popperjs/core";
 
 export default {
   mounted: function (el, binding) {
+    function addClasses(element, classes) {
+      for (let index = 0; index < classes.length; index++) {
+        element.classList.add(classes[index]);
+      }
+    }
+
     let tooltip = document.createElement("div");
 
     if (typeof binding.arg === "undefined") {
@@ -14,14 +20,17 @@ export default {
     el.title = "";
     el.tooltipElement = tooltip;
 
-    tooltip.classList.add("bg-surface--dark-100/60");
-    tooltip.classList.add("dark:bg-surface--dark-100/60");
-    tooltip.classList.add("hidden");
-    tooltip.classList.add("px-2");
-    tooltip.classList.add("py-1");
-    tooltip.classList.add("rounded");
-    tooltip.classList.add("shadow");
-    tooltip.classList.add("text-white");
+    addClasses(tooltip, [
+      "bg-surface--dark-100/60",
+      "dark:bg-surface--dark-100/60",
+      "hidden",
+      "px-2",
+      "py-1",
+      "rounded",
+      "shadow",
+      "text-white",
+      "z-10"
+    ]);
 
     document.body.appendChild(tooltip);
 
