@@ -137,39 +137,22 @@
 </template>
 
 <script>
-import FieldPropertyColumnSelector from "@/components/Builder/FieldProperty/FieldPropertyColumnSelector.vue";
-import FieldPropertyValueCollection from "@/components/Builder/FieldProperty/FieldPropertyValueCollection.vue";
-import FieldPropertyValueCollections from "@/components/Builder/FieldProperty/FieldPropertyValueCollections.vue";
-import FieldPropertyTableColumnSelector from "@/components/Builder/FieldProperty/FieldPropertyTableColumnSelector.vue";
-import FieldPropertyValueCollectionFormat from "@/components/Builder/FieldProperty/FieldPropertyValueCollectionFormat.vue";
-import FieldPropertyFilterCollection from "@/components/Builder/FieldProperty/FieldPropertyFilterCollection.vue";
-import FieldPropertySortCollection from "@/components/Builder/FieldProperty/FieldPropertySortCollection.vue";
-import FieldPropertyElementSelection from "@/components/Builder/FieldProperty/FieldPropertyElementSelection.vue";
-import FieldPropertyValidationCollection from "@/components/Builder/FieldProperty/FieldPropertyValidationCollection.vue";
-import FieldPropertyValueSource from "@/components/Builder/FieldProperty/FieldPropertyValueSource.vue";
-import FieldPropertyRepeatInput from "@/components/Builder/FieldProperty/FieldPropertyRepeatInput.vue";
-import FieldPropertyUppyUploader from "@/components/Builder/FieldProperty/FieldPropertyUppyUploader.vue";
+import Components from "@/components/Builder/FieldProperty/index.js";
+import AddOnComponents from "@/components/Builder/FieldProperty/add-on.js";
 
 import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
 import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions.js";
 import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
+for (const key in AddOnComponents) {
+  if (Object.hasOwnProperty.call(AddOnComponents, key)) {
+    Components[key] = AddOnComponents[key];
+  }
+}
+
 export default {
   name: "FieldPropertiesPanel",
-  components: {
-    FieldPropertyColumnSelector,
-    FieldPropertyValueCollection,
-    FieldPropertyValueCollections,
-    FieldPropertyTableColumnSelector,
-    FieldPropertyValueCollectionFormat,
-    FieldPropertyFilterCollection,
-    FieldPropertySortCollection,
-    FieldPropertyElementSelection,
-    FieldPropertyValidationCollection,
-    FieldPropertyValueSource,
-    FieldPropertyRepeatInput,
-    FieldPropertyUppyUploader
-  },
+  components: Components,
   props: {
     containers: {
       type: Object,
