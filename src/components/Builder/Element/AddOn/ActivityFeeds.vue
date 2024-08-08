@@ -470,7 +470,8 @@ fieldPropertyOptions.addOption(
     columns: [
       { name: "app", placeholder: "App" },
       { name: "message", placeholder: "message" }
-    ]
+    ],
+    display: "column"
   }
 );
 

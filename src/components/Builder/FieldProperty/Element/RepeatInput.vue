@@ -2,7 +2,11 @@
   <div
     v-for="(row, row_index) in rows"
     :key="row_index"
-    class="mb-1 flex space-x-1"
+    class="mb-1 flex"
+    :class="{
+      'space-x-1': display === 'column',
+      'flex-col space-y-1': display === 'row'
+    }"
   >
     <div v-for="column in columns" :key="column.name">
       <input
@@ -15,26 +19,35 @@
         @input="onInput"
       />
     </div>
-    <div>
+    <div
+      :class="{
+        'text-center': display === 'row'
+      }"
+    >
       <button
-        class="rounded-full px-2 py-1 text-on-primary"
+        class="px-2 py-1 text-on-primary"
         :class="{
           'bg-primary': row_index !== 0,
-          'bg-mid-gray': row_index === 0
+          'bg-mid-gray': row_index === 0,
+          'rounded-full': display === 'column',
+          'w-full rounded-sm': display === 'row'
         }"
         :disabled="row_index === 0"
         @click="onRemoveRowClick(row_index)"
       >
         <i class="mdi mdi-minus"></i>
       </button>
+      <hr v-if="display === 'row'" class="my-2" />
     </div>
   </div>
   <div class="py-2 text-center">
     <button
-      class="rounded-full px-2 py-1 text-on-primary"
+      class="px-2 py-1 text-on-primary"
       :class="{
         'bg-primary dark:bg-primary--dark': isAbleToAddRow,
-        'bg-mid-gray': !isAbleToAddRow
+        'bg-mid-gray': !isAbleToAddRow,
+        'rounded-full': display === 'column',
+        'w-full rounded-sm': display === 'row'
       }"
       :disabled="!isAbleToAddRow"
       @click="onAddNewRowClick"
@@ -52,6 +65,10 @@ export default {
       default: function () {
         return [];
       }
+    },
+    display: {
+      type: String,
+      default: "column"
     },
     modelValue: {
       type: Array,

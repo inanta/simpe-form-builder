@@ -20,6 +20,7 @@
         <repeat-input
           v-model="value"
           :columns="configuration.columns"
+          :display="configuration.display"
         ></repeat-input>
         <div class="pt-2 text-center">
           <button
@@ -63,7 +64,8 @@ export default {
               name: "value",
               placeholder: "Value"
             }
-          ]
+          ],
+          display: "column"
         };
       }
     },
