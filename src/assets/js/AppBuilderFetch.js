@@ -130,9 +130,50 @@ export default {
       });
   },
   save: function (app) {
+    const token = document
+      .querySelector('[name="csrf"]')
+      .getAttribute("content");
+
+    const data = {
+      authenticity_token: token,
+      form_id: "162949",
+      page_id: "3590121",
+      slug: "",
+      slug2: "",
+      slug3: "",
+      slugs: "",
+      resource_id: "new",
+      parent_resource_id: "",
+      parent_resource_class: "",
+      _method: "POST",
+      app: JSON.stringify(app),
+      webapp_action: "create",
+      webapp_item_id: "",
+      // webapp_item_enabled: "on",
+      webapp_item_title: app.name,
+      // webapp_item_slug: app.slug,
+      // webapp_item_publishdate: "",
+      // webapp_item_expirydate: "",
+      // webapp_item_weighting: "0",
+      // "ooc_custom_field-app": ["", JSON.stringify(app)],
+      // webapp_item_slug_base: "apps",
+      webapp_table: "apps",
+      utf8: "✓"
+      // webapp_schema_id: "1743699",
+      // webapp_schema_name: "modules/admin/webapps/apps"
+    };
+
+    // const url = baseURI + "/appii/?t=webapps_item&a=add";
+    // const url = baseURI + "/app/api/v1/builder/save";
+    const url = baseURI + "/appii/webapp";
+
     return axios
-      .post(baseURI + "/app/api/builder/save", {
-        app
+      .post(url, data, {
+        headers: {
+          Accept: "*/*",
+          Pragma: "no-cache",
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        }
       })
       .then(function (data) {
         return data.data;
