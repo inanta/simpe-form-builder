@@ -664,6 +664,8 @@ export default {
           typeof self.app.containers !== "undefined" &&
           Array.isArray(self.app.containers)
         ) {
+          self.containers = [];
+
           for (let index = 0; index < self.app.containers.length; index++) {
             const container = self.app.containers[index];
 
