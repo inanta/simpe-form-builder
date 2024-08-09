@@ -5,8 +5,8 @@ const routes = [
   {
     path: "/",
     name: "App Builder View",
-    // component: () => import("../views/AppBuilderView.vue")
-    component: () => import("../views/AppBuilder.vue")
+    component: () => import("../views/AppBuilderView.vue")
+    // component: () => import("../views/AppBuilder.vue")
   },
   // {
   //   path: "/app/builder/view",
