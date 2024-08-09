@@ -222,7 +222,7 @@
 <script>
 import { useBuilderStore } from "@/stores/builder.js";
 
-import { saveAs } from "file-saver";
+// import { saveAs } from "file-saver";
 import slugify from "slugify";
 
 import FieldPropertiesPanel from "@/components/Builder/Panel/FieldPropertiesPanel.vue";
@@ -846,22 +846,19 @@ export default {
       app.containers = containers;
       app.rows = rows;
       app.elements = columns;
-      // app.computed_fields = self.app.computed_fields;
-      // app.field_logics = self.app.field_logics;
+      app.computed_fields = self.app.computed_fields;
+      app.field_logics = self.app.field_logics;
       app = JSON.parse(JSON.stringify(app));
 
-      // alert("Info", "Please check the console log to view the generated JSON.");
-      console.log(app);
-
-      let blob = new Blob([JSON.stringify(app, null, 2)], {
-        type: "application/json;charset=utf-8"
-      });
-
-      saveAs(blob, app.name + ".json");
-
-      // AppBuilder.save(app).then(function () {
-      //   self.$router.push("/app/builder/view");
+      // let blob = new Blob([JSON.stringify(app, null, 2)], {
+      //   type: "application/json;charset=utf-8"
       // });
+
+      // saveAs(blob, app.name + ".json");
+
+      AppBuilder.save(app).then(function () {
+        self.$router.push("/app/builder/view");
+      });
     }
   }
 };
