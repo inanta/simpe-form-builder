@@ -4,15 +4,14 @@ import { createRouter, createWebHashHistory } from "vue-router";
 const routes = [
   {
     path: "/",
+    name: "App Builder Index",
+    component: () => import("../views/AppBuilderView.vue")
+  },
+  {
+    path: "/app/builder/view",
     name: "App Builder View",
     component: () => import("../views/AppBuilderView.vue")
-    // component: () => import("../views/AppBuilder.vue")
   },
-  // {
-  //   path: "/app/builder/view",
-  //   name: "App Builder View",
-  //   component: () => import("../views/AppBuilderView.vue")
-  // },
   {
     path: "/app/builder/build/:name?",
     name: "App Builder",

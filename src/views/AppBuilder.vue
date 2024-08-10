@@ -299,6 +299,8 @@ export default {
         self.selectedTable = app.table;
         self.selectedPrimaryKey = app.pk;
         self.selectedContainerType = app.container_type;
+
+        self.clearItems();
       });
     } else {
       const store = useBuilderStore();

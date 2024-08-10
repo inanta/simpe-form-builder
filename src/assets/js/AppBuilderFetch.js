@@ -114,13 +114,29 @@ export default {
         ? "/app/api/v1/builder/apps/"
         : "/app/api/v1/apps/") + slug;
 
-    return axios.get(baseURI + endpoint).then(function (data) {
-      return data.data;
-    });
+    return axios
+      .get(baseURI + endpoint, {
+        headers: {
+          Accept: "*/*",
+          Pragma: "no-cache"
+        }
+      })
+      .then(function (data) {
+        data.data.columns = data.data.elements;
+
+        console.log("data", data.data);
+
+        return data.data;
+      });
   },
   getAll: function () {
     return axios
-      .get(baseURI + "/app/api/v1/builder/apps")
+      .get(baseURI + "/app/api/v1/builder/apps", {
+        headers: {
+          Accept: "*/*",
+          Pragma: "no-cache"
+        }
+      })
       .then(function (data) {
         return {
           headers: data.data.headers,
