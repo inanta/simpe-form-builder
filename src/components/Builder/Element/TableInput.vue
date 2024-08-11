@@ -27,6 +27,7 @@
         <div v-else class="flex pb-3">
           <button
             class="ml-auto rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark"
+            type="button"
             @click="onAddItemButtonClick"
           >
             {{ tableInputManualAddItemLabel }}
@@ -48,6 +49,7 @@
           <div class="text-center">
             <button
               title="Delete"
+              type="button"
               @click="onDeleteTableItemButtonClick(props.item)"
             >
               <span class="mdi mdi-delete mdi-24px"></span>
@@ -93,7 +95,7 @@
           </template>
           <div class="flex justify-end px-2 py-2">
             <button
-              class="rounded bg-primary px-3 py-2 text-on-primary"
+              class="rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
               @click="onModalAddButtonClick"
             >
               <i class="mdi mdi-plus"></i> Add
@@ -209,17 +211,14 @@ export default {
       autocompletePlaceholder: "",
       autocompleteSearchColumn: null,
       autocompleteSelectedItem: {},
-
-      tableHeaders: [],
-      tableItems: [],
       currentTableItem: {},
       field: [],
-
-      table: [],
-
       isModalShown: false,
+      table: [],
+      modalFields: [],
       modalTitle: "",
-      modalFields: []
+      tableHeaders: [],
+      tableItems: []
     };
   },
   computed: {},

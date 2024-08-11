@@ -42,7 +42,11 @@
                 @input="onItemInput"
               />
               <div v-else>
-                <button title="Edit" @click="onDeleteItemClick(i)">
+                <button
+                  title="Edit"
+                  type="button"
+                  @click="onDeleteItemClick(i)"
+                >
                   <span class="mdi mdi-delete mdi-24px"></span>
                 </button>
               </div>
@@ -53,6 +57,7 @@
       <div v-if="!readonly" class="flex pt-3">
         <button
           class="mx-auto rounded bg-primary px-3 py-2 text-on-primary"
+          type="button"
           @click="onAddNewItemButtonClick"
         >
           {{ addItemLabel }}

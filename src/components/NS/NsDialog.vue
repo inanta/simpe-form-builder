@@ -9,7 +9,7 @@
       >
         <div
           v-if="isShown"
-          class="fixed left-0 top-0 z-50 h-full w-full overflow-hidden bg-black/10 backdrop-blur-sm dark:bg-white/10"
+          class="fixed left-0 top-0 z-50 h-full w-full overflow-hidden bg-black/10 backdrop-blur-sm dark:bg-white/30"
         ></div>
       </Transition>
       <Transition
@@ -23,7 +23,7 @@
         >
           <div
             :style="{ width: modalWidth }"
-            class="top-[10%] z-20 flex w-max flex-col rounded border border-light-gray bg-white shadow dark:border-none dark:bg-surface--dark-600 dark:text-on-surface--dark-600 md:mx-auto md:my-7"
+            class="top-[10%] z-20 flex w-max flex-col rounded border border-light-gray bg-white shadow dark:border-none dark:bg-surface--dark-400 dark:text-on-surface--dark-400 md:mx-auto md:my-7"
           >
             <div
               v-if="hasTitle"

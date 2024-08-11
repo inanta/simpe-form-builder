@@ -215,7 +215,6 @@ export default {
   emits: ["input"],
   data: function () {
     return {
-      gridColumns: [],
       gridData: {},
       gridRows: []
     };
@@ -347,16 +346,26 @@ export default {
     }
   },
   watch: {
+    gridInputAdditionalColumns: {
+      handler: function () {
+        this.initGridData();
+      },
+      immediate: true
+    },
+    gridInputAdditionalRows: {
+      handler: function () {
+        this.initGridData();
+      },
+      immediate: true
+    },
     gridInputColumns: {
-      handler: function (value) {
-        this.gridColumns = value;
+      handler: function () {
         this.initGridData();
       },
       immediate: true
     },
     gridInputRows: {
-      handler: function (value) {
-        this.gridRows = value;
+      handler: function () {
         this.initGridData();
       },
       immediate: true
@@ -634,6 +643,18 @@ fieldProperties["grid-input"] = {
       }
     ]
   },
+  "grid-input-save-mode": {
+    label: "Mode"
+  },
+  "grid-input-target-db": {
+    label: "Save To Database",
+    rules: [
+      {
+        property: "grid-input-save-mode",
+        values: "db"
+      }
+    ]
+  },
   "grid-input-show-border": {
     label: "Show Border"
   },
@@ -776,6 +797,47 @@ fieldPropertyOptions.addOption(
   "FieldPropertyValueCollection",
   undefined,
   ["grid-input"]
+);
+
+fieldPropertyOptions.addOption("grid-input-save-mode", [
+  {
+    name: "Inline",
+    value: "inline"
+  },
+  {
+    name: "Database",
+    value: "db"
+  }
+]);
+
+fieldPropertyOptions.addOption(
+  "grid-input-target-db",
+  "FieldPropertyTableColumnSelector",
+  {
+    additionalColumnAttributes: [
+      {
+        label: "Format",
+        name: "format",
+        value: "general",
+        options: [
+          { label: "Currency", value: "currency" },
+          { label: "Date", value: "date" },
+          { label: "Date Time", value: "date-time" },
+          { label: "General", value: "general" },
+          { label: "Number", value: "number" }
+        ]
+      }
+    ],
+    additionalFields: [
+      {
+        label: "Join Column",
+        name: "join_column"
+      }
+    ],
+    showColumnsSelector: true
+  },
+  ["table-input"],
+  ""
 );
 
 fieldPropertyOptions.addOption("grid-input-show-border", [

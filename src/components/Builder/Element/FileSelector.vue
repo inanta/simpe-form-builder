@@ -108,6 +108,7 @@
     <button
       v-if="isSelectButtonShown"
       class="rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
+      type="button"
       @click="onSelectButtonClick"
     >
       {{ selectButtonLabel }}

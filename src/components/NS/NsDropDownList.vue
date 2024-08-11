@@ -18,7 +18,7 @@
       <ul
         v-if="isShown"
         ref="items"
-        class="z-30 max-h-40 overflow-auto rounded border border-mid-gray bg-white text-black shadow dark:border-surface--dark-600 dark:bg-surface--dark-600 dark:text-on-surface--dark-600"
+        class="z-50 max-h-40 overflow-auto rounded border border-mid-gray bg-white text-black shadow dark:border-surface--dark-600 dark:bg-surface--dark-600 dark:text-on-surface--dark-600"
       >
         <li
           v-for="(item, index) in filteredItems"

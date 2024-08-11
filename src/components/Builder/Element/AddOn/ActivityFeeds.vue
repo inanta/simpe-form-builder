@@ -24,7 +24,8 @@
                 ></rich-text-editor>
                 <div>
                   <button
-                    class="mt-2 rounded bg-primary px-2.5 py-1.5 text-on-primary"
+                    class="mt-2 rounded bg-primary px-2.5 py-1.5 text-on-primary dark:bg-primary--dark"
+                    type="button"
                     :class="{
                       'bg-primary': !isSending,
                       'bg-mid-gray': isSending
@@ -483,7 +484,8 @@ fieldPropertyOptions.addOption(
     columns: [
       { name: "app", placeholder: "App" },
       { name: "message", placeholder: "message" }
-    ]
+    ],
+    display: "column"
   }
 );
 
@@ -495,7 +497,8 @@ fieldPropertyOptions.addOption(
     columns: [
       { name: "app", placeholder: "App" },
       { name: "message", placeholder: "message" }
-    ]
+    ],
+    display: "column"
   }
 );
 

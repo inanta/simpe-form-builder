@@ -3,12 +3,20 @@
     <div>
       <div class="flex">
         <div>
-          <button class="text-2xl" @click="onPreviousYearButtonClick">
+          <button
+            class="text-2xl"
+            type="button"
+            @click="onPreviousYearButtonClick"
+          >
             <span class="mdi mdi-chevron-double-left"></span>
           </button>
         </div>
         <div>
-          <button class="text-2xl" @click="onPreviousMonthButtonClick">
+          <button
+            class="text-2xl"
+            type="button"
+            @click="onPreviousMonthButtonClick"
+          >
             <span class="mdi mdi-chevron-left"></span>
           </button>
         </div>
@@ -16,12 +24,16 @@
           {{ currentMonth }} {{ currentYear }}
         </div>
         <div>
-          <button class="text-2xl" @click="onNextMonthButtonClick">
+          <button
+            type="button"
+            class="text-2xl"
+            @click="onNextMonthButtonClick"
+          >
             <span class="mdi mdi-chevron-right"></span>
           </button>
         </div>
         <div>
-          <button class="text-2xl" @click="onNextYearButtonClick">
+          <button type="button" class="text-2xl" @click="onNextYearButtonClick">
             <span class="mdi mdi-chevron-double-right"></span>
           </button>
         </div>

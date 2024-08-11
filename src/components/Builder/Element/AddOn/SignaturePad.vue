@@ -16,6 +16,7 @@
           <button
             v-if="!readonly"
             class="rounded-sm bg-negative px-1.5 py-0.5 text-lg text-on-negative dark:bg-negative--dark"
+            type="button"
             @click="onClearButtonClick"
           >
             <span class="mdi mdi-delete"></span>
@@ -24,7 +25,12 @@
         <img class="w-full" :src="savedSignature" />
       </div>
       <template v-else>
-        <button v-if="!readonly" class="mx-auto" @click="onShowPadButtonClick">
+        <button
+          v-if="!readonly"
+          class="mx-auto"
+          type="button"
+          @click="onShowPadButtonClick"
+        >
           <span class="mdi mdi-draw"></span> {{ signaturePadPlaceholder }}
         </button>
       </template>
