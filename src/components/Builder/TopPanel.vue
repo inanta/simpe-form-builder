@@ -17,11 +17,16 @@
       </button>
       <button
         class="ml-auto rounded-sm bg-primary py-2 px-4 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
+        @click="$emit('download')"
+      >
+        <span class="mdi mdi-download"></span> Download
+      </button>
+      <button
+        class="ml-2 rounded-sm bg-primary py-2 px-4 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
         @click="$emit('preview')"
       >
         <span class="mdi mdi-eye"></span> Preview
       </button>
-
       <button
         class="ml-2 rounded-sm bg-primary py-2 px-4 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
         @click="$emit('save')"
@@ -102,6 +107,7 @@ export default {
   emits: {
     columnsChange: null,
     containerTypeChange: null,
+    download: null,
     import: null,
     preview: null,
     primaryKeyChange: null,
