@@ -1,15 +1,28 @@
 <template>
   <div class="relative mx-4 mb-4">
     <top-panel
-      @import="importApp"
+      :table="selectedTable"
+      :pk="selectedPrimaryKey"
+      :container-type="selectedContainerType"
+      :edit="isEdit"
+      @columns-change="
+        columns = $event;
+        clearItems();
+      "
+      @container-type-change="selectedContainerType = $event"
+      @download="save(true)"
+      @import="onImport"
+      @primary-key-change="selectedPrimaryKey = $event"
       @preview="showPreview"
       @save="save"
+      @selected-table-change="tableChange"
     ></top-panel>
-    <hr class="border-top my-4 border-gray-300" />
-    <div class="pb-2">
+    <hr class="border-top my-3 border-gray-300" />
+    <div class="pb-3">
       <input
         v-model="app.name"
         class="w-full rounded-sm border border-mid-gray px-3 py-1.5 text-2xl outline-none dark:border-surface--dark-500 dark:bg-surface--dark-500 dark:text-surface-500"
+        placeholder="App Name"
         type="text"
       />
     </div>
@@ -28,14 +41,14 @@
     <div ref="mainContainer" class="flex">
       <div class="flex-grow">
         <div>
-          <!-- <div class="flex px-4 pb-2">
+          <div v-if="configurations.builder.fieldLogic" class="flex px-4 pb-2">
             <button
               class="ml-auto rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark"
               @click="onViewLogicButtonClick"
             >
               <span class="mdi mdi-source-branch"></span> View Logic
             </button>
-          </div> -->
+          </div>
           <form :name="slugifiedAppName">
             <template
               v-for="(container, index) in containers"
@@ -181,21 +194,21 @@
           @close="setSelect"
           @toggle="isPanelToggled = !isPanelToggled"
         ></field-properties-panel>
-        <div>
+        <div class="pb-3">
           <html-element-panel
             @dragstart="onDragStart"
             @dragend="onDragEnd"
             @toggle="isPanelToggled = !isPanelToggled"
           ></html-element-panel>
         </div>
-        <!-- <div class="py-3">
+        <div v-if="configurations.builder.computedField" class="pb-3">
           <button
             class="w-full rounded-sm bg-primary p-2 text-on-primary"
             @click="isComputedFieldSidePanelShown = true"
           >
             Computed Fields
           </button>
-        </div> -->
+        </div>
       </div>
     </div>
     <app-preview
@@ -206,13 +219,15 @@
     <app-alert></app-alert>
   </div>
   <app-builder-computed-fields
+    v-if="configurations.builder.computedField"
     :show="isComputedFieldSidePanelShown"
     :values="app['computed_fields']"
     @close="isComputedFieldSidePanelShown = false"
     @save="onComputedFieldsSave"
   ></app-builder-computed-fields>
   <app-builder-field-logic
-    :app="app"
+    v-if="configurations.builder.fieldLogic"
+    :containers="containers"
     :show="isFieldLogicSidePanelShown"
     @close="isFieldLogicSidePanelShown = false"
     @save="onFieldLogicSave"
@@ -222,7 +237,7 @@
 <script>
 import { useBuilderStore } from "@/stores/builder.js";
 
-// import { saveAs } from "file-saver";
+import { saveAs } from "file-saver";
 import slugify from "slugify";
 
 import FieldPropertiesPanel from "@/components/Builder/Panel/FieldPropertiesPanel.vue";
@@ -240,6 +255,7 @@ import AppBuilderFieldLogic from "@/components/Builder/AppBuilderFieldLogic.vue"
 import AppPreview from "@/components/Builder/AppPreview.vue";
 import AppBuilder from "@/assets/js/AppBuilder";
 
+import configurations from "@/assets/js/builder/variables/configurations";
 import createEmptyContainer from "@/assets/js/builder/createEmptyContainer.js";
 import createContainerRow from "@/assets/js/builder/createContainerRow.js";
 import fixRow from "@/assets/js/builder/fixRow.js";
@@ -265,6 +281,7 @@ export default {
   data: function () {
     return {
       app: { name: "App Name" },
+      configurations: configurations,
       containerConfigModal: false,
       isEdit: false,
       selectedTable: null,
@@ -381,14 +398,6 @@ export default {
       }
 
       this.removeEmptyPlaceholder();
-    },
-    importApp: function (app) {
-      this.app = app;
-      this.isEdit = true;
-      this.selectedTable = app.table;
-      this.selectedPrimaryKey = app.pk;
-
-      this.clearItems();
     },
     onComputedFieldsSave: function (value) {
       this.app["computed_fields"] = value;
@@ -558,6 +567,14 @@ export default {
           }
         }
       }
+    },
+    onImport: function (app) {
+      this.app = app;
+      this.isEdit = true;
+      this.selectedTable = app.table;
+      this.selectedPrimaryKey = app.pk;
+
+      this.clearItems();
     },
     onMoveToRowAbove: function (container, row, column) {
       let removed_item = this.removeItem(container, row, column)[0];
@@ -807,7 +824,7 @@ export default {
         });
       }
     },
-    save: function () {
+    save: function (download) {
       const self = this;
 
       let containers = [];
@@ -852,15 +869,17 @@ export default {
       app.field_logics = self.app.field_logics;
       app = JSON.parse(JSON.stringify(app));
 
-      // let blob = new Blob([JSON.stringify(app, null, 2)], {
-      //   type: "application/json;charset=utf-8"
-      // });
+      if (typeof download === "undefined" || download === false) {
+        AppBuilder.save(app).then(function () {
+          self.$router.push("/app/builder/view");
+        });
+      } else {
+        let blob = new Blob([JSON.stringify(app, null, 2)], {
+          type: "application/json;charset=utf-8"
+        });
 
-      // saveAs(blob, app.name + ".json");
-
-      AppBuilder.save(app).then(function () {
-        self.$router.push("/app/builder/view");
-      });
+        saveAs(blob, app.name + ".json");
+      }
     }
   }
 };
