@@ -1,67 +1,82 @@
 <template>
-  <div class="mb-2 mt-2">
-    <!-- <div class="col-span-2" :class="{ 'col-span-4': selectedTable === '-' }">
-      <option-drop-down
-        :items="tables"
-        :value="selectedTable"
-        label="Table"
-        @option-change="currentTableChanged"
-      ></option-drop-down>
-    </div>
-    <div v-if="selectedTable !== '-'" class="col-span-2">
-      <option-drop-down
-        :items="databaseColumnNames"
-        :value="selectedPrimaryKey"
-        label="Primary Key"
-        @option-change="changePrimaryKey"
-      ></option-drop-down>
-    </div>
-    <div class="col-span-2">
-      <option-drop-down
-        :items="containerTypes"
-        :value="selectedContainerType"
-        label="Container Type"
-        @option-change="changeContainerType"
-      ></option-drop-down>
-    </div>
-     -->
-    <div class="flex space-x-3">
+  <div class="mt-3 dark:text-on-surface--dark-100">
+    <div class="flex w-full">
       <button
-        class="mr-auto rounded-sm bg-primary py-2 px-4 text-on-primary"
-        @click="importApp"
+        class="rounded-sm bg-primary py-2 px-4 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
+        @click="onImportButtonClick"
       >
         <span class="mdi mdi-import"></span> Import
       </button>
       <button
-        class="ml-auto rounded-sm bg-primary py-2 px-4 text-on-primary"
+        v-if="configurations.builder.databaseSelection"
+        class="mr-auto ml-2 rounded-sm bg-primary py-2 px-4 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
+        @click="isDatabaseSelectionShown = true"
+      >
+        <span class="mdi mdi-database-cog"></span> Selected Database:
+        {{ selectedTable }}
+      </button>
+      <button
+        class="ml-auto rounded-sm bg-primary py-2 px-4 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
         @click="$emit('preview')"
       >
         <span class="mdi mdi-eye"></span> Preview
       </button>
+
       <button
-        class="rounded-sm bg-primary py-2 px-4 text-on-primary"
+        class="ml-2 rounded-sm bg-primary py-2 px-4 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
         @click="$emit('save')"
       >
         <span class="mdi mdi-content-save"></span> Save
       </button>
-      <input
-        ref="import"
-        style="display: none"
-        type="file"
-        @change="onImportFileChange"
-      />
     </div>
+    <input
+      ref="import"
+      style="display: none"
+      type="file"
+      @change="onImportFileChange"
+    />
+    <ns-dialog
+      v-if="configurations.builder.databaseSelection"
+      :show="isDatabaseSelectionShown"
+      @close="isDatabaseSelectionShown = false"
+    >
+      <template #title>Select Database</template>
+      <div class="p-5">
+        <div class="flex space-x-2">
+          <ns-drop-down-list
+            v-model="selectedTable"
+            class="w-full appearance-none rounded-sm border bg-white px-3 py-1.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
+            :items="tables"
+            @change="onCurrentTableChanged"
+          ></ns-drop-down-list>
+          <ns-drop-down-list
+            v-model="selectedPrimaryKey"
+            class="w-full appearance-none rounded-sm border bg-white px-3 py-1.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
+            :items="databaseColumnNames"
+            @change="onChangePrimaryKey"
+          ></ns-drop-down-list>
+          <ns-drop-down-list
+            v-model="selectedContainerType"
+            class="w-full appearance-none rounded-sm border bg-white px-3 py-1.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
+            :items="containerTypes"
+            @change="onChangeContainerType"
+          ></ns-drop-down-list>
+        </div>
+      </div>
+    </ns-dialog>
   </div>
 </template>
 
 <script>
-// import OptionDropDown from "@/components/Builder/OptionDropDown.vue";
+import NsDropDownList from "@/components/NS/NsDropDownList.vue";
+import NsDialog from "@/components/NS/NsDialog.vue";
 
+import configurations from "@/assets/js/builder/variables/configurations.js";
 import AppBuilder from "@/assets/js/AppBuilder.js";
 
 export default {
   name: "TopPanel",
-  // components: { OptionDropDown },
+  components: { NsDropDownList, NsDialog },
   props: {
     containerType: {
       type: String,
@@ -99,6 +114,8 @@ export default {
       tables: [],
       selectedTable: "",
       columns: [],
+      configurations: configurations,
+      isDatabaseSelectionShown: false,
       selectedPrimaryKey: "-",
       containerTypes: ["Single Container", "Tabs", "Accordion"],
       selectedContainerType: "Single Container",
@@ -128,24 +145,9 @@ export default {
       handler: function (value) {
         this.selectedTable = value;
 
-        // if (value === "") {
-
-        // }
-
         if (this.tables.length === 0) {
           this.getTables(value);
         }
-
-        // if (value !== "") {
-        // if (value !== "" && this.selectedTable !== value) {
-        //   this.getTableColumns();
-        // }
-
-        // if (value === "") {
-        //   this.getTables(true);
-        // } else {
-        //   this.getTables(false);
-        // }
       },
       immediate: false
     },
@@ -204,10 +206,17 @@ export default {
         });
       }
     },
-    importApp: function () {
-      this.$refs.import.click();
+    onChangePrimaryKey: function (value) {
+      const self = this;
+
+      self.$emit("primaryKeyChange", value);
     },
-    currentTableChanged: function (value) {
+    onChangeContainerType: function (value) {
+      const self = this;
+
+      self.$emit("containerTypeChange", value);
+    },
+    onCurrentTableChanged: function (value) {
       const self = this;
 
       self.selectedTable = value;
@@ -215,15 +224,8 @@ export default {
 
       self.$emit("selectedTableChange", value);
     },
-    changePrimaryKey: function (value) {
-      const self = this;
-
-      self.$emit("primaryKeyChange", value);
-    },
-    changeContainerType: function (value) {
-      const self = this;
-
-      self.$emit("containerTypeChange", value);
+    onImportButtonClick: function () {
+      this.$refs.import.click();
     },
     onImportFileChange: function () {
       const self = this;
