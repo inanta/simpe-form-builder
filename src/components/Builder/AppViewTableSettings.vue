@@ -51,11 +51,11 @@
                   v-model="header.format"
                   class="w-full appearance-none rounded-sm border px-1.5 py-1 text-base outline-none focus:border-primary dark:border-surface--dark-500 dark:bg-surface--dark-500 dark:focus:border-surface--dark-600"
                 >
+                  <option value="currency">Currency</option>
                   <option value="date">Date</option>
                   <option value="date-time">Date Time</option>
                   <option value="general">General</option>
                   <option value="number">Number</option>
-                  <option value="currency">Currency</option>
                   <option value="picture-url">Picture URL</option>
                   <option value="html">HTML</option>
                 </select>
