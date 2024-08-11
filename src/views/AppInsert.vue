@@ -66,45 +66,47 @@
             {{ container.name }}
           </button>
         </div>
-        <template
-          v-for="(container, index) in containers"
-          :key="container.name"
-        >
-          <div
-            v-show="index == selectedContainer"
-            class="flex-shrink flex-grow"
+        <form :name="app.slug">
+          <template
+            v-for="(container, index) in containers"
+            :key="container.name"
           >
-            <div :data-app="app.slug" class="px-5 py-3">
-              <div
-                v-for="(row, row_index) in container.rows"
-                :key="row_index"
-                :class="'grid-cols-' + row.columns.length"
-                class="grid gap-2"
-              >
+            <div
+              v-show="index == selectedContainer"
+              class="flex-shrink flex-grow"
+            >
+              <div :data-app="app.slug" class="px-5 py-3">
                 <div
-                  v-for="(column, column_index) in row.columns"
-                  :key="column_index"
-                  class="overflow-hidden"
+                  v-for="(row, row_index) in container.rows"
+                  :key="row_index"
+                  :class="'grid-cols-' + row.columns.length"
+                  class="grid gap-2"
                 >
-                  <app-field
-                    :app="app"
-                    :data="values"
-                    :error="errors[column.name]"
-                    :properties="column"
-                    :show-invalid="showInvalid"
-                    :value="values[column.name]"
-                    :visible="visibilities[column.name]"
-                    @visibility-changed="onVisibilityChanged"
-                    @input="onInput"
-                    @invalid="onInvalid"
-                    @keyup.enter="saveConfirmation"
-                    @valid="onValid"
-                  ></app-field>
+                  <div
+                    v-for="(column, column_index) in row.columns"
+                    :key="column_index"
+                    class="overflow-hidden"
+                  >
+                    <app-field
+                      :app="app"
+                      :data="values"
+                      :error="errors[column.name]"
+                      :properties="column"
+                      :show-invalid="showInvalid"
+                      :value="values[column.name]"
+                      :visible="visibilities[column.name]"
+                      @visibility-changed="onVisibilityChanged"
+                      @input="onInput"
+                      @invalid="onInvalid"
+                      @keyup.enter="saveConfirmation"
+                      @valid="onValid"
+                    ></app-field>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </template>
+          </template>
+        </form>
       </div>
     </div>
   </div>
