@@ -209,13 +209,15 @@ import NsSidePanel from "@/components/NS/NsSidePanel.vue";
 import NsDropDownList from "@/components/NS/NsDropDownList.vue";
 import AppBuilderFieldLogicAction from "@/components/Builder/AppBuilderFieldLogicAction.vue";
 
+import iterateColumns from "@/assets/js/builder/iterateColumns.js";
+
 export default {
   components: { NsSidePanel, NsDropDownList, AppBuilderFieldLogicAction },
   props: {
-    app: {
-      type: Object,
+    containers: {
+      type: Array,
       default: function () {
-        return {};
+        return [];
       }
     },
     show: {
@@ -267,21 +269,31 @@ export default {
     fields: function () {
       const fields = [];
 
-      for (let index = 0; index < this.app.columns.length; index++) {
-        const field = this.app.columns[index];
-        let label = field.label;
+      iterateColumns(
+        this.containers,
+        function (container_index, row_index, column_index, column) {
+          if (column.type !== "empty") {
+            let label = "";
 
-        if (label != "") {
-          label += " (" + field.name + ")";
-        } else {
-          label = field.name;
+            if (typeof column.label !== "undefined" && column.label !== "") {
+              label = column.label;
+            }
+
+            if (typeof column.name !== "undefined" && column.name !== "") {
+              if (label != "") {
+                label += " (" + column.name + ")";
+              }
+            }
+
+            if (label !== "") {
+              fields.push({
+                label: label,
+                value: column.name
+              });
+            }
+          }
         }
-
-        fields.push({
-          label: label,
-          value: field.name
-        });
-      }
+      );
 
       return fields;
     },
@@ -304,19 +316,6 @@ export default {
           value: "gt"
         }
       ];
-    }
-  },
-  watch: {
-    app: function (value) {
-      this.conditionSets = [];
-
-      if (typeof value.field_logics !== "undefined") {
-        for (let index = 0; index < value.field_logics.length; index++) {
-          const conditionSet = value.field_logics[index];
-
-          this.conditionSets.push(conditionSet);
-        }
-      }
     }
   },
   mounted: function () {},
