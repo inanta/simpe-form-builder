@@ -5,7 +5,7 @@
       href="javascript:;"
       @click="add"
     >
-      <span class="mdi mdi-plus"></span>Set Format
+      <span class="mdi mdi-plus"></span> {{ addButtonLabel }}
     </button>
     <transition
       name="show-add-transition"
@@ -134,11 +134,8 @@
 </template>
 
 <script>
-// TODO There are hard-coded name here "one-to-many-input"
-import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
-
 export default {
-  name: "FieldPropertyValueCollectionFormat",
+  name: "FieldPropertyValueCollectionProperties",
   props: {
     configuration: {
       type: Object,
@@ -165,28 +162,21 @@ export default {
   },
   data: function () {
     return {
-      columnProperties: [
-        {
-          label: "Format",
-          name: "format",
-          value: "general",
-          options: [
-            { label: "Date", value: "date" },
-            { label: "Date Time", value: "date-time" },
-            { label: "Currency", value: "currency" },
-            { label: "General", value: "general" },
-            { label: "Number", value: "number" }
-          ]
-        }
-      ],
+      columnProperties: [],
       currentColumn: {},
       fields: [],
       showAdd: false,
       showColumnProperties: false
     };
   },
-
   computed: {
+    addButtonLabel: function () {
+      if (typeof this.configuration.addButtonLabel !== "undefined") {
+        return this.configuration.addButtonLabel;
+      }
+
+      return "Set Properties";
+    },
     additionalFieldProperties: function () {
       const self = this;
       let addditional_column_attributes = [];
@@ -199,16 +189,7 @@ export default {
       return addditional_column_attributes;
     },
     fieldSourceName: function () {
-      return typeof fieldProperties["one-to-many-input"][
-        this.configuration.source
-      ] !== "undefined" &&
-        typeof fieldProperties["one-to-many-input"][this.configuration.source][
-          "label"
-        ] !== "undefined"
-        ? fieldProperties["one-to-many-input"][this.configuration.source][
-            "label"
-          ]
-        : "";
+      return "";
     },
     hasFields: function () {
       return this.fields.length > 0;
@@ -224,7 +205,7 @@ export default {
 
       let current_values = {};
 
-      self.fields.splice(0);
+      self.fields = [];
 
       if (
         typeof self.properties[self.fieldProperty] !== "undefined" &&
@@ -285,7 +266,7 @@ export default {
         }
       }
 
-      self.columnProperties.splice(1);
+      self.columnProperties = [];
 
       for (
         let index = 0;
@@ -317,7 +298,6 @@ export default {
 
           if (typeof values[attribute.name] !== "undefined") {
             // Set value to recently modified value
-            console.log(values[attribute.name]);
             column[attribute.name] = values[attribute.name];
           } else if (
             typeof column[attribute.name] === "undefined" &&

@@ -1,6 +1,7 @@
 import FieldPropertyColumnSelector from "@/components/Builder/FieldProperty/FieldPropertyColumnSelector.vue";
 import FieldPropertyValueCollection from "@/components/Builder/FieldProperty/FieldPropertyValueCollection.vue";
 import FieldPropertyValueCollections from "@/components/Builder/FieldProperty/FieldPropertyValueCollections.vue";
+import FieldPropertyValueCollectionProperties from "@/components/Builder/FieldProperty/FieldPropertyValueCollectionProperties.vue";
 import FieldPropertyTableColumnSelector from "@/components/Builder/FieldProperty/FieldPropertyTableColumnSelector.vue";
 import FieldPropertyValueCollectionFormat from "@/components/Builder/FieldProperty/FieldPropertyValueCollectionFormat.vue";
 import FieldPropertyFilterCollection from "@/components/Builder/FieldProperty/FieldPropertyFilterCollection.vue";
@@ -14,6 +15,7 @@ export default {
   FieldPropertyColumnSelector,
   FieldPropertyValueCollection,
   FieldPropertyValueCollections,
+  FieldPropertyValueCollectionProperties,
   FieldPropertyTableColumnSelector,
   FieldPropertyValueCollectionFormat,
   FieldPropertyFilterCollection,

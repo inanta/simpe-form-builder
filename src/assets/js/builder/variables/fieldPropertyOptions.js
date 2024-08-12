@@ -33,16 +33,22 @@ export default {
   },
   checked: {
     fields: ["input"],
-    options: [
-      {
-        name: "No",
-        value: false
-      },
-      {
-        name: "Yes",
-        value: true
-      }
-    ]
+    options: "FieldPropertyValueCollectionProperties",
+    configuration: {
+      source: "items",
+      additionalFieldProperties: [
+        {
+          label: "Is Checked",
+          name: "checked",
+          value: false,
+          options: [
+            { label: "No", value: false },
+            { label: "Yes", value: true }
+          ]
+        }
+      ],
+      addButtonLabel: "Set Checked"
+    }
   },
   disabled: {
     fields: ["input", "select", "textarea"],

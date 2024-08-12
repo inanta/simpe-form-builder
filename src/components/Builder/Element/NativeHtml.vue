@@ -8,12 +8,16 @@
     class="flex flex-col"
   >
     <label
-      v-for="item in cleanAttributeItems(properties.items)"
+      v-for="(item, itemIndex) in cleanAttributeItems(properties.items)"
       :key="item.name"
       :for="internalProperties.name + '_' + item.value"
       ><input
         :id="internalProperties.name + '_' + item.value"
-        :checked="item.value === value"
+        :checked="
+          typeof internalProperties.checked != 'undefined' &&
+          typeof internalProperties.checked[itemIndex] !== 'undefined' &&
+          internalProperties.checked[itemIndex].checked
+        "
         :name="
           internalProperties.name +
           (internalProperties.type === 'checkbox' ? '[]' : '')
@@ -22,8 +26,8 @@
         :type="internalProperties.type"
         class="mr-2"
         @input="$emit('input', $event)"
-      />{{ item.label }}</label
-    >
+      />{{ item.label }}
+    </label>
   </div>
   <component
     :is="internalProperties.element"
@@ -162,18 +166,7 @@ export default {
 
       return [];
     },
-    initializeValue: function () {
-      if (
-        this.internalProperties.element === "input" &&
-        this.internalProperties.type === "checkbox"
-      ) {
-        if (this.internalProperties["checked-value"] === this.value) {
-          this.internalProperties.checked = true;
-        } else {
-          this.internalProperties.checked = false;
-        }
-      }
-    },
+    initializeValue: function () {},
     itemElement(element, item) {
       if (typeof item.element !== "undefined" && item.element !== "") {
         return item.element;
