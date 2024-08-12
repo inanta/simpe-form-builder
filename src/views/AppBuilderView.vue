@@ -129,6 +129,7 @@
             <template #item.action="props">
               <div class="text-center">
                 <button
+                  v-if="configurations.builder.showViewButton"
                   v-tooltip
                   title="View App"
                   @click.stop="$router.push('/app/view/' + props.item.slug)"
@@ -144,6 +145,7 @@
                   <span class="mdi mdi-application-edit mdi-24px"></span>
                 </button>
                 <button
+                  v-if="configurations.builder.showExportButton"
                   v-tooltip
                   class="ml-2"
                   title="Export As JSON"
@@ -152,6 +154,7 @@
                   <span class="mdi mdi-code-json mdi-24px"></span>
                 </button>
                 <button
+                  v-if="configurations.builder.showMoreButton"
                   v-tooltip
                   class="ml-2"
                   title="More Settings"
@@ -232,6 +235,7 @@
 </template>
 
 <script>
+import configurations from "@/assets/js/builder/variables/configurations";
 import messages from "@/assets/js/builder/app/messages.js";
 import { useBuilderStore } from "@/stores/builder.js";
 
@@ -258,6 +262,7 @@ export default {
       app_id_column: "",
       currentApp: null,
       currentSettings: {},
+      configurations: configurations,
       headers: [],
       isAppSettingsShown: false,
       isCheckedAll: false,
@@ -413,8 +418,11 @@ export default {
       }
     },
     onTableRowClick: function (item) {
-      // console.log("CLICKED", item);
-      this.$router.push("/app/view/" + item.slug);
+      if (this.configurations.builder.rowClickOption === "view") {
+        this.$router.push("/app/view/" + item.slug);
+      } else {
+        this.$router.push("/app/builder/build/" + item.slug);
+      }
     }
   }
 };
