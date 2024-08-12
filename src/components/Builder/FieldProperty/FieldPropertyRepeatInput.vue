@@ -101,6 +101,10 @@ export default {
     }
   },
   methods: {
+    closeAddItems: function () {
+      this.showAdd = false;
+      this.addContainerHeight = "auto";
+    },
     onAddButtonClick: function () {
       const self = this;
 
@@ -117,12 +121,10 @@ export default {
       });
     },
     onCancelButtonClick: function () {
-      this.showAdd = false;
-      this.addContainerHeight = "auto";
+      this.closeAddItems();
     },
     onSaveButtonClick: function () {
-      this.showAdd = false;
-      this.addContainerHeight = "auto";
+      this.closeAddItems();
 
       this.$emit("change", this.fieldProperty, this.value);
     }
