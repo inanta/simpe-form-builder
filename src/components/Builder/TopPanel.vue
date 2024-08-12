@@ -149,10 +149,12 @@ export default {
     },
     table: {
       handler: function (value) {
-        this.selectedTable = value;
+        if (configurations.builder.databaseSelection) {
+          this.selectedTable = value;
 
-        if (this.tables.length === 0) {
-          this.getTables(value);
+          if (this.tables.length === 0) {
+            this.getTables(value);
+          }
         }
       },
       immediate: false
