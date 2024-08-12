@@ -49,7 +49,12 @@ export default {
       slugs.push(app.slug);
     }
     return axios
-      .post(baseURI + "/app/api/builder/delete", slugs)
+      .post(baseURI + "/app/api/v1/builder/delete", slugs, {
+        headers: {
+          Accept: "*/*",
+          Pragma: "no-cache"
+        }
+      })
       .then(function (data) {
         return data.data;
       });
@@ -150,6 +155,8 @@ export default {
       .querySelector('[name="csrf"]')
       .getAttribute("content");
 
+    let action = "create";
+
     const data = {
       authenticity_token: token,
       form_id: "162949",
@@ -163,24 +170,18 @@ export default {
       parent_resource_class: "",
       _method: "POST",
       app: JSON.stringify(app),
-      webapp_action: "create",
+      webapp_action: action,
       webapp_item_id: "",
-      // webapp_item_enabled: "on",
       webapp_item_title: app.name,
-      // webapp_item_slug: app.slug,
-      // webapp_item_publishdate: "",
-      // webapp_item_expirydate: "",
-      // webapp_item_weighting: "0",
-      // "ooc_custom_field-app": ["", JSON.stringify(app)],
-      // webapp_item_slug_base: "apps",
       webapp_table: "apps",
       utf8: "✓"
-      // webapp_schema_id: "1743699",
-      // webapp_schema_name: "modules/admin/webapps/apps"
     };
 
-    // const url = baseURI + "/appii/?t=webapps_item&a=add";
-    // const url = baseURI + "/app/api/v1/builder/save";
+    if (typeof app.id !== "undefined" && app.id !== "") {
+      data.webapp_action = "update";
+      data.webapp_item_id = app.id;
+    }
+
     const url = baseURI + "/appii/webapp";
 
     return axios
