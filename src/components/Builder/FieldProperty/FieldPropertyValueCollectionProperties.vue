@@ -314,7 +314,7 @@ export default {
     },
     save: function () {
       const self = this;
-      const allowed_attributes = ["format", "label", "name", "value"];
+      const allowed_attributes = ["value"];
       const default_values = {};
 
       for (
