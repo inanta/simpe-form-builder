@@ -72,6 +72,15 @@ export default {
         return data.data;
       });
   },
+  duplicate: function (app) {
+    const self = this;
+
+    return this.get(app.slug, true).then(function (app) {
+      delete app.id;
+
+      return self.save(app);
+    });
+  },
   exportApp: function (app) {
     return axios
       .get(baseURI + "/app/api/v1/builder/export/" + app.slug)

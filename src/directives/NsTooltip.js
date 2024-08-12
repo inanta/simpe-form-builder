@@ -21,8 +21,8 @@ export default {
     el.tooltipElement = tooltip;
 
     addClasses(tooltip, [
-      "bg-surface--dark-100/60",
-      "dark:bg-surface--dark-100/60",
+      "bg-surface--dark-100/70",
+      "dark:bg-surface--dark-100/70",
       "hidden",
       "px-2",
       "py-1",

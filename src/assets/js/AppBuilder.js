@@ -16,6 +16,10 @@ export default {
   deleteRecords: function (app, items) {
     return fetch.deleteRecords(app, items);
   },
+  /* Duplicate */
+  duplicate: function (app) {
+    return fetch.duplicate(app);
+  },
   /* Export app */
   exportApp: function (slug) {
     return fetch.exportApp(slug);

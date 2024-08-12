@@ -145,6 +145,15 @@
                   <span class="mdi mdi-application-edit mdi-24px"></span>
                 </button>
                 <button
+                  v-if="configurations.builder.showDuplicateButton"
+                  v-tooltip
+                  class="ml-2"
+                  title="Duplicate"
+                  @click.stop="duplicate(props.item)"
+                >
+                  <span class="mdi mdi-content-duplicate mdi-24px"></span>
+                </button>
+                <button
                   v-if="configurations.builder.showExportButton"
                   v-tooltip
                   class="ml-2"
@@ -325,6 +334,13 @@ export default {
       }
 
       self.isCheckedAll = is_checked_all;
+    },
+    duplicate: function (app) {
+      let self = this;
+
+      AppBuilder.duplicate(app).then(function () {
+        self.getAll(self.app);
+      });
     },
     deleteSelected: function () {
       const self = this;

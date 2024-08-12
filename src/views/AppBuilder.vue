@@ -334,9 +334,9 @@ export default {
         self.isEdit = false; // Not working
         self.selectedTable = "";
       }
-    }
 
-    self.clearItems();
+      self.clearItems();
+    }
 
     document.addEventListener("keydown", self.onKeyDown);
     window.addEventListener("scroll", this.onWindowScroll);
