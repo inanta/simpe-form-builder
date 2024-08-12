@@ -839,6 +839,11 @@ export default {
         container_type: self.selectedContainerType
       };
 
+      // TODO: We should find a better way to do this
+      if (self.app.id !== "undefined" && self.app.id !== "") {
+        app.id = self.app.id;
+      }
+
       iterateColumns(
         self.containers,
         function (container_index, row_index, column_index, column) {
