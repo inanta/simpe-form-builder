@@ -93,17 +93,23 @@ export default {
   watch: {
     properties: function () {
       this.closeAddItems();
+      this.initializeItems();
     }
   },
   mounted: function () {
-    if (typeof this.properties[this.fieldProperty] !== "undefined") {
-      this.value = this.properties[this.fieldProperty];
-    }
+    this.initializeItems();
   },
   methods: {
     closeAddItems: function () {
-      this.showAdd = false;
-      this.addContainerHeight = "auto";
+      if (this.showAdd) {
+        this.showAdd = false;
+        this.addContainerHeight = "auto";
+      }
+    },
+    initializeItems: function () {
+      if (typeof this.properties[this.fieldProperty] !== "undefined") {
+        this.value = this.properties[this.fieldProperty];
+      }
     },
     onAddButtonClick: function () {
       const self = this;
