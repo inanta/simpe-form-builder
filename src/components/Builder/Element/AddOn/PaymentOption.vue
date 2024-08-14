@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import configurations from "@/assets/js/builder/variables/configurations.js";
 import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
 import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
 import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
@@ -182,9 +183,9 @@ export default {
         price = 0;
       }
 
-      return new Intl.NumberFormat("en-AU", {
+      return new Intl.NumberFormat(configurations.locale, {
         style: "currency",
-        currency: "AUD"
+        currency: configurations.currency
       }).format(price);
     },
     onMinusButtonClick: function (index) {
@@ -296,6 +297,16 @@ fieldPropertyOptions.addOption(
 fieldPropertyOptions.addOption(
   "payment-option-picture",
   "FieldPropertyUppyUploader"
+);
+
+fieldPropertyOptions.addOption(
+  "payment-option-start-date",
+  "FieldPropertyDateTimeSelection"
+);
+
+fieldPropertyOptions.addOption(
+  "payment-option-end-date",
+  "FieldPropertyDateTimeSelection"
 );
 
 fieldPropertyOptions.addOption("payment-option-is-required", [

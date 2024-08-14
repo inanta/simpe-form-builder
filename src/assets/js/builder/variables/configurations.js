@@ -10,5 +10,7 @@ export default {
     showMoreButton: false,
     showViewButton: false
   },
+  locale: "en-AU",
+  currency: "AUD",
   appBuilderFile: "AppBuilderFetch"
 };

@@ -27,6 +27,7 @@
             v-model="datePickerValue"
             :exclude-days="excludedDays"
             :first-day-of-week="firstDayOfWeek"
+            :locale="validatedLocale"
           ></ns-calendar>
         </div>
         <template v-if="mode == 'date-time-picker'">

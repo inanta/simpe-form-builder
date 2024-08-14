@@ -159,6 +159,7 @@
 </template>
 
 <script>
+import configurations from "@/assets/js/builder/variables/configurations.js";
 import NsProgressBar from "@/components/NS/NsProgressBar.vue";
 
 export default {
@@ -545,11 +546,11 @@ export default {
 
         return date_string;
       } else if (format === "number") {
-        return Intl.NumberFormat("id-ID").format(value);
+        return Intl.NumberFormat(configurations.locale).format(value);
       } else if (format === "currency") {
-        return Intl.NumberFormat("id-ID", {
+        return Intl.NumberFormat(configurations.locale, {
           style: "currency",
-          currency: "IDR"
+          currency: configurations.currency
         }).format(value);
       }
 

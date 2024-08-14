@@ -95,6 +95,10 @@ export default {
       type: Number,
       default: 0
     },
+    locale: {
+      type: String,
+      default: ""
+    },
     modelValue: {
       type: String,
       default: ""
@@ -208,6 +212,15 @@ export default {
       }
 
       return week_days;
+    },
+    validatedLocale: function () {
+      if (this.locale == "") {
+        const preferred_locales = navigator.languages;
+
+        return preferred_locales[0];
+      }
+
+      return this.locale;
     }
   },
   watch: {
@@ -223,19 +236,17 @@ export default {
     }
   },
   mounted: function () {
-    const preferredLocales = navigator.languages;
-    const currentLocale = preferredLocales[0];
     const now = new Date();
 
     let dateFormatter = null;
 
     this.date = new Date(now.getFullYear(), now.getMonth());
 
-    let weekDaysFormatter = new Intl.DateTimeFormat(currentLocale, {
+    let weekDaysFormatter = new Intl.DateTimeFormat(this.validatedLocale, {
       weekday: "long"
     });
 
-    let shortWeekDaysFormatter = new Intl.DateTimeFormat(currentLocale, {
+    let shortWeekDaysFormatter = new Intl.DateTimeFormat(this.validatedLocale, {
       weekday: "narrow"
     });
 
@@ -253,7 +264,7 @@ export default {
       });
     }
 
-    dateFormatter = new Intl.DateTimeFormat(currentLocale, {
+    dateFormatter = new Intl.DateTimeFormat(this.validatedLocale, {
       month: "long"
     });
 
