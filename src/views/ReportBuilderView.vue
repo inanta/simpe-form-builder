@@ -293,7 +293,7 @@ export default {
       }
 
       ReportBuilder.delete(selected).then(function () {
-        self.getAll(self.app);
+        self.getAll();
       });
     },
     edit: function (item) {

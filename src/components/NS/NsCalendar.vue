@@ -38,7 +38,6 @@
           </button>
         </div>
       </div>
-
       <div class="p-2">
         <div class="flex">
           <div
@@ -295,5 +294,3 @@ export default {
   }
 };
 </script>
-
-<style scoped></style>

@@ -39,18 +39,6 @@ export default {
         return [];
       }
     }
-    // columns: {
-    //   type: Array,
-    //   default: function () {
-    //     return [];
-    //   }
-    // },
-    // modelValue: {
-    //   type: Array,
-    //   default: function () {
-    //     return [];
-    //   }
-    // }
   },
   emits: {
     add: null,
@@ -60,7 +48,6 @@ export default {
   data: function () {
     return {
       rows: []
-      // values: []
     };
   },
   computed: {
@@ -80,27 +67,10 @@ export default {
     }
   },
   watch: {
-    // modelValue: {
-    //   handler: function (value) {
-    //     this.rows = JSON.parse(JSON.stringify(value));
-    //   },
-    //   immediate: true
-    // }
-    // rows: {
-    //   handler: function () {
-    //     // console.log("ROWS CHANGED", value);
-    //     // this.$emit("update:modelValue", this.rows);
-    //   },
-    //   immediate: true,
-    //   deep: true
-    // },
     value: {
       handler: function (values) {
-        console.log("VH", values);
-
         if (Array.isArray(values) && values.length > 0) {
           for (let index = 0; index < values.length; index++) {
-            // const value = values[index];
             this.rows.push({});
           }
         } else {
@@ -110,16 +80,8 @@ export default {
       immediate: true
     }
   },
-  mounted: function () {
-    // this.rows.push({});
-  },
   methods: {
-    onChange: function () {
-      console.log("SAVED CHANGED");
-    },
-    // addRow: function () {
-    //   this.rows.push({});
-    // },
+    onChange: function () {},
     onAddRowButtonClick: function () {
       this.rows.push({});
 

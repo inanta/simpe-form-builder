@@ -45,18 +45,19 @@
                   ></ns-drop-down-list>
                 </div>
                 <div class="w-2/5">
-                  <date-time-picker
+                  <ns-date-time-picker
                     v-if="
                       getInputType(selectedFilter.name) == 'date' ||
                       getInputType(selectedFilter.name) == 'date-time'
                     "
                     v-model="selectedFilter.value"
-                    :date-time-picker-mode="
+                    class="w-full appearance-none rounded-sm border px-3 py-1.5 text-base outline-none focus:border-primary dark:border-surface--dark-500 dark:bg-surface--dark-500 dark:focus:border-surface--dark-600"
+                    :mode="
                       getInputType(selectedFilter.name) == 'date-time'
                         ? 'date-time-picker'
                         : 'date-picker'
                     "
-                  ></date-time-picker>
+                  ></ns-date-time-picker>
                   <input
                     v-else
                     v-model="selectedFilter.value"
@@ -90,9 +91,9 @@
 </template>
 
 <script>
-import NsSidePanel from "@/components/NS/NsSidePanel.vue";
+import NsDateTimePicker from "@/components/NS/NsDateTimePicker.vue";
 import NsDropDownList from "@/components/NS/NsDropDownList.vue";
-import DateTimePicker from "@/components/Builder/Element/DateTimePicker.vue";
+import NsSidePanel from "@/components/NS/NsSidePanel.vue";
 
 import NsTooltip from "@/directives/NsTooltip";
 import AppBuilder from "@/assets/js/AppBuilder.js";
@@ -104,9 +105,9 @@ import getPropertyValue from "@/assets/js/getPropertyValue.js";
 export default {
   name: "Field",
   components: {
-    NsSidePanel,
+    NsDateTimePicker,
     NsDropDownList,
-    DateTimePicker
+    NsSidePanel
   },
   directives: { tooltip: NsTooltip },
   props: {

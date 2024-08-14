@@ -17,7 +17,7 @@
     >
       <span class="mdi mdi-delete mdi-24px"></span>
     </button>
-    <drop-down-button
+    <ns-drop-down-button
       v-if="additionalActionButtons.length > 0"
       v-tooltip
       align="right"
@@ -26,8 +26,8 @@
       <template #content>
         <span class="mdi mdi-dots-vertical mdi-24px"></span>
       </template>
-      <template #arrow><span></span></template>
-      <drop-down-button-item
+      <template #caret><span></span></template>
+      <ns-drop-down-button-item
         v-for="button in additionalActionButtons"
         :key="button"
       >
@@ -38,21 +38,21 @@
           <span v-if="button.icon" :class="button.icon"></span>
           {{ button.label }}
         </button>
-      </drop-down-button-item>
-    </drop-down-button>
+      </ns-drop-down-button-item>
+    </ns-drop-down-button>
   </div>
 </template>
 
 <script>
 import NsTooltip from "@/directives/NsTooltip";
 
-import DropDownButton from "@/components/Builder/DropDownButton.vue";
-import DropDownButtonItem from "@/components/Builder/DropDownButtonItem.vue";
+import NsDropDownButton from "@/components/NS/NsDropDownButton.vue";
+import NsDropDownButtonItem from "@/components/NS/NsDropDownButtonItem.vue";
 
 export default {
   components: {
-    DropDownButton,
-    DropDownButtonItem
+    NsDropDownButton,
+    NsDropDownButtonItem
   },
   directives: { tooltip: NsTooltip },
   props: {

@@ -186,9 +186,6 @@ export default {
       this.field = selectedAction.field;
 
       this.formAction = "edit";
-
-      console.log("id", index);
-
       this.actionID = selectedAction.id;
       this.isAddNewActionFormShown = true;
     },

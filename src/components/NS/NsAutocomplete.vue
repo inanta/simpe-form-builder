@@ -19,33 +19,35 @@
     <slot name="loading">
       <div v-if="loading" class="v-autocomplete-loading"></div>
     </slot>
-    <div
-      v-if="show"
-      ref="items"
-      class="ns-autocomplete-list max-h-40 overflow-scroll rounded bg-white shadow dark:border-surface--dark-600 dark:bg-surface--dark-600 dark:text-on-surface--dark-600"
-      @mouseleave="cursor = -1"
-    >
+    <teleport to="body">
       <div
-        v-for="(item, i) in filteredItems"
-        :key="i"
-        :class="{
-          'ns-autocomplete-item-active bg-primary text-on-primary dark:bg-primary--dark':
-            i === cursor
-        }"
-        class="ns-autocomplete-list-item cursor-pointer rounded-sm px-3 py-1.5"
-        @click="onClickItem(item)"
-        @mouseover="cursor = i"
+        v-if="show"
+        ref="items"
+        class="ns-autocomplete-list max-h-40 overflow-scroll rounded bg-white shadow dark:border-surface--dark-600 dark:bg-surface--dark-600 dark:text-on-surface--dark-600"
+        @mouseleave="cursor = -1"
       >
-        <slot :item="item" name="item">
-          <div>
-            <div class="text-md">{{ item[labelField] }}</div>
-            <div class="text-md">
-              <small>{{ item[descriptionField] }}</small>
+        <div
+          v-for="(item, i) in filteredItems"
+          :key="i"
+          :class="{
+            'ns-autocomplete-item-active bg-primary text-on-primary dark:bg-primary--dark':
+              i === cursor
+          }"
+          class="ns-autocomplete-list-item cursor-pointer rounded-sm px-3 py-1.5"
+          @click="onClickItem(item)"
+          @mouseover="cursor = i"
+        >
+          <slot :item="item" name="item">
+            <div>
+              <div class="text-md">{{ item[labelField] }}</div>
+              <div class="text-md">
+                <small>{{ item[descriptionField] }}</small>
+              </div>
             </div>
-          </div>
-        </slot>
+          </slot>
+        </div>
       </div>
-    </div>
+    </teleport>
   </div>
 </template>
 

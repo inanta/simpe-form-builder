@@ -38,7 +38,7 @@
               <template #caret>
                 <i class="mdi mdi-chevron-down"></i>
               </template>
-              <ns-drop-down-button-item v-if="true"
+              <ns-drop-down-button-item v-if="hasImportFeature"
                 ><a
                   class="inline-block w-full px-3 py-2 text-left"
                   href="#"

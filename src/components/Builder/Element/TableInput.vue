@@ -69,19 +69,20 @@
             <div v-if="modal_field.source === 'user'" class="flex px-2 py-1">
               <div class="w-1/4 py-2">{{ modal_field.label }}</div>
               <div class="w-3/4">
-                <date-time-picker
+                <ns-date-time-picker
                   v-if="
                     modal_field.format == 'date' ||
                     modal_field.format == 'date-time'
                   "
                   ref="fields"
                   v-model="currentTableItem[modal_field.value]"
-                  :date-time-picker-mode="
+                  class="w-full appearance-none rounded-sm border px-3 py-1.5 text-base outline-none focus:border-primary dark:border-surface--dark-500 dark:bg-surface--dark-500 dark:focus:border-surface--dark-600"
+                  :mode="
                     modal_field.format == 'date-time'
                       ? 'date-time-picker'
                       : 'date-picker'
                   "
-                ></date-time-picker>
+                ></ns-date-time-picker>
                 <input
                   v-else
                   ref="fields"
@@ -111,25 +112,30 @@
 import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
 import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
 import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
+import postAPI from "@/assets/js/postAPI.js";
 
 import NsAutocomplete from "@/components/NS/NsAutocomplete.vue";
+import NsDateTimePicker from "@/components/NS/NsDateTimePicker.vue";
 import NsDialog from "@/components/NS/NsDialog.vue";
 import DataTable from "@/components/DataTable.vue";
 import InlineTable from "@/components/Builder/Element/InlineTable.vue";
-import DateTimePicker from "@/components/Builder/Element/DateTimePicker.vue";
-
-import AppBuilder from "@/assets/js/AppBuilder";
 
 export default {
   components: {
     NsAutocomplete,
+    NsDateTimePicker,
     NsDialog,
     DataTable,
-    InlineTable,
-    DateTimePicker
+    InlineTable
   },
   inheritAttrs: false,
   props: {
+    app: {
+      type: Object,
+      default: function () {
+        return {};
+      }
+    },
     error: {
       type: Boolean,
       default: false
@@ -302,43 +308,23 @@ export default {
     },
     fetchItems: function (search = "") {
       const self = this;
-      let filters = null;
 
       if (
         typeof self.tableInputTable !== "undefined" &&
-        typeof self.tableInputTable.columns !== "undefined"
+        typeof self.tableInputTable.search_column !== "undefined"
       ) {
-        let columns = self.tableInputTable.columns.map(function (item) {
-          return item.name;
-        });
-
-        if (typeof self.tableInputTable.search_column !== "undefined") {
-          self.autocompleteSearchColumn = self.tableInputTable.search_column;
-        }
-
-        if (search !== "") {
-          filters = {
-            operator: "and",
-            conditions: [
-              {
-                condition: "contains",
-                field: self.tableInputTable.search_column,
-                value: search
-              }
-            ]
-          };
-        }
-
-        AppBuilder.data({
-          table: self.tableInputTable.table,
-          columns: columns,
-          filters: filters,
-          sort: null,
-          limit: 5
-        }).then(function (results) {
-          self.autocompleteItems = results.records;
-        });
+        self.autocompleteSearchColumn = self.tableInputTable.search_column;
       }
+
+      postAPI("app/api/v1/elements/" + this.app.slug + "/" + this.name, {
+        search: search
+      })
+        .then(function (response) {
+          self.autocompleteItems = response.items;
+        })
+        .catch(function () {
+          console.log("Error", "Unable to get items", "error");
+        });
     },
     onAddItemButtonClick: function (item) {
       this.shouldShowAddItemModal(item);

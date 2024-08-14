@@ -1,5 +1,6 @@
 export default {
   builder: {
+    title: "App Builder",
     databaseSelection: false,
     computedField: false,
     fieldLogic: false,

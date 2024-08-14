@@ -68,24 +68,24 @@ export default {
       default: "Hour"
     },
     maxHour: {
-      type: Number,
-      default: 23
+      type: String,
+      default: "23"
     },
     maxMinute: {
-      type: Number,
-      default: 59
+      type: String,
+      default: "59"
     },
     minHour: {
-      type: Number,
-      default: 0
+      type: String,
+      default: "0"
     },
     minMinute: {
-      type: Number,
-      default: 0
+      type: String,
+      default: "0"
     },
     minuteInterval: {
-      type: Number,
-      default: 1
+      type: String,
+      default: "1"
     },
     minutePickerLabel: {
       type: String,
@@ -105,7 +105,7 @@ export default {
     },
     value: {
       type: String,
-      default: "00:00"
+      default: ""
     }
   },
   emits: ["change", "hour-change", "minute-change", "update:modelValue"],
@@ -154,18 +154,18 @@ export default {
       let start_minute = 0;
       let end_minute = 59;
 
-      if (this.minMinute > 0) {
-        start_minute = this.minMinute;
+      if (this.validatedMinMinute > 0) {
+        start_minute = this.validatedMinMinute;
       }
 
-      if (this.maxMinute < 59) {
-        end_minute = this.maxMinute;
+      if (this.validatedMaxMinute < 59) {
+        end_minute = this.validatedMaxMinute;
       }
 
       for (
         let minute = start_minute;
         minute <= end_minute;
-        minute += this.minuteInterval
+        minute += this.validatedMinuteInterval
       ) {
         minutes.push(
           this.minuteFormat == "MM" || this.minuteFormat == "mm"
@@ -175,6 +175,31 @@ export default {
       }
 
       return minutes;
+    },
+    validatedMaxHour: function () {
+      const parsed = parseInt(this.maxHour);
+
+      return isNaN(parsed) ? 23 : parsed;
+    },
+    validatedMaxMinute: function () {
+      const parsed = parseInt(this.maxMinute);
+
+      return isNaN(parsed) ? 59 : parsed;
+    },
+    validatedMinHour: function () {
+      const parsed = parseInt(this.minHour);
+
+      return isNaN(parsed) ? 0 : parsed;
+    },
+    validatedMinMinute: function () {
+      const parsed = parseInt(this.minMinute);
+
+      return isNaN(parsed) ? 0 : parsed;
+    },
+    validatedMinuteInterval: function () {
+      const parsed = parseInt(this.minuteInterval);
+
+      return isNaN(parsed) ? 1 : parsed;
     }
   },
   watch: {
@@ -201,12 +226,7 @@ export default {
     },
     modelValue: {
       handler: function (value) {
-        if (value !== "") {
-          const time = value.split(":");
-
-          this.timeValue.hour = time[0];
-          this.timeValue.minute = time[1];
-        }
+        this.setValue(value);
       },
       immediate: true
     },
@@ -219,21 +239,18 @@ export default {
     },
     value: {
       handler: function (value) {
-        if (value !== "") {
-          const time = value.split(":");
-
-          this.timeValue.hour = time[0];
-          this.timeValue.minute = time[1];
-        }
-      }
+        this.setValue(value);
+      },
+      immediate: true
     }
   },
   methods: {
     onHourDownButtonClick: function () {
-      let selected_hour = parseInt(this.timeValue.hour) - 1;
+      let to_index = this.hours.indexOf(this.timeValue.hour) - 1;
+      let selected_hour = this.hours[0];
 
-      if (isNaN(selected_hour) || selected_hour < 0) {
-        selected_hour = 0;
+      if (to_index > 0) {
+        selected_hour = this.hours[to_index];
       }
 
       this.timeValue.hour =
@@ -242,11 +259,12 @@ export default {
           : selected_hour.toString();
     },
     onHourUpButtonClick: function () {
-      let selected_hour = parseInt(this.timeValue.hour) + 1;
-      let max_hour = this.hourFormat == "H" || this.hourFormat == "h" ? 12 : 23;
+      let max_index = this.hours.length - 1;
+      let to_index = this.hours.indexOf(this.timeValue.hour) + 1;
+      let selected_hour = this.hours[max_index];
 
-      if (isNaN(selected_hour) || selected_hour > max_hour) {
-        selected_hour = max_hour;
+      if (to_index <= max_index) {
+        selected_hour = this.hours[to_index];
       }
 
       this.timeValue.hour =
@@ -255,10 +273,11 @@ export default {
           : selected_hour.toString();
     },
     onMinuteDownButtonClick: function () {
-      let selected_minute = parseInt(this.timeValue.minute) - 1;
+      let to_index = this.minutes.indexOf(this.timeValue.minute) - 1;
+      let selected_minute = this.minutes[0];
 
-      if (isNaN(selected_minute) || selected_minute < 0) {
-        selected_minute = 0;
+      if (to_index > 0) {
+        selected_minute = this.minutes[to_index];
       }
 
       this.timeValue.minute =
@@ -267,10 +286,12 @@ export default {
           : selected_minute.toString();
     },
     onMinuteUpButtonClick: function () {
-      let selected_minute = parseInt(this.timeValue.minute) + 1;
+      let max_index = this.minutes.length - 1;
+      let to_index = this.minutes.indexOf(this.timeValue.minute) + 1;
+      let selected_minute = this.minutes[max_index];
 
-      if (isNaN(selected_minute) || selected_minute > 59) {
-        selected_minute = 59;
+      if (to_index <= max_index) {
+        selected_minute = this.minutes[to_index];
       }
 
       this.timeValue.minute =
@@ -279,9 +300,20 @@ export default {
           : selected_minute.toString();
 
       this.$emit("minute-change");
+    },
+    setValue: function (value) {
+      if (value !== "") {
+        const time = value.split(":");
+
+        if (this.timeValue.hour != time[0]) {
+          this.timeValue.hour = time[0];
+        }
+
+        if (this.timeValue.minute != time[1]) {
+          this.timeValue.minute = time[1];
+        }
+      }
     }
   }
 };
 </script>
-
-<style scoped></style>

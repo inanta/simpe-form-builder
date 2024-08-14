@@ -117,9 +117,7 @@
                                 column
                               )
                             "
-                            @create-logic="
-                              onCreateLogic(index, row_index, column_index)
-                            "
+                            @create-logic="onCreateLogic"
                             @duplicate="
                               onDuplicate(index, row_index, column_index)
                             "
@@ -333,9 +331,9 @@ export default {
       } else {
         self.isEdit = false; // Not working
         self.selectedTable = "";
-      }
 
-      self.clearItems();
+        self.clearItems();
+      }
     }
 
     document.addEventListener("keydown", self.onKeyDown);
@@ -460,9 +458,8 @@ export default {
 
       fixRow(this.containers[container].rows);
     },
-    onCreateLogic: function (container, row, column) {
+    onCreateLogic: function () {
       this.isFieldLogicSidePanelShown = true;
-      console.log("Create Logic", container, row, column);
     },
     onDragEnd: function () {
       this.dragColumn = {};
@@ -531,7 +528,6 @@ export default {
         navigator.clipboard
           .readText()
           .then((clipboardText) => {
-            console.log(clipboardText);
             try {
               const field = JSON.parse(clipboardText);
 

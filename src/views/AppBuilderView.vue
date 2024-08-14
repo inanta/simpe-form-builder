@@ -3,7 +3,9 @@
     class="bg-white text-black dark:bg-surface--dark-100 dark:text-on-surface--dark-100"
   >
     <div class="px-4 pb-4">
-      <div class="px-1 py-2 text-2xl font-bold">App Builder</div>
+      <div class="px-1 py-2 text-2xl font-bold">
+        {{ configurations.builder.title }}
+      </div>
       <div
         class="mb-4 mt-2 rounded-md border border-light-gray shadow-center dark:border-surface--dark-300 dark:bg-surface--dark-300"
       >
@@ -434,7 +436,7 @@ export default {
       }
     },
     onTableRowClick: function (item) {
-      if (this.configurations.builder.rowClickOption === "view") {
+      if (this.configurations.builder.rowClickAction === "view") {
         this.$router.push("/app/view/" + item.slug);
       } else {
         this.$router.push("/app/builder/build/" + item.slug);
