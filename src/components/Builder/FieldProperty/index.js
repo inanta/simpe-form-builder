@@ -1,4 +1,5 @@
 import FieldPropertyColumnSelector from "@/components/Builder/FieldProperty/FieldPropertyColumnSelector.vue";
+import FieldPropertyDateTimeSelection from "@/components/Builder/FieldProperty/FieldPropertyDateTimeSelection.vue";
 import FieldPropertyValueCollection from "@/components/Builder/FieldProperty/FieldPropertyValueCollection.vue";
 import FieldPropertyValueCollections from "@/components/Builder/FieldProperty/FieldPropertyValueCollections.vue";
 import FieldPropertyValueCollectionProperties from "@/components/Builder/FieldProperty/FieldPropertyValueCollectionProperties.vue";
@@ -13,6 +14,7 @@ import FieldPropertyRepeatInput from "@/components/Builder/FieldProperty/FieldPr
 
 export default {
   FieldPropertyColumnSelector,
+  FieldPropertyDateTimeSelection,
   FieldPropertyValueCollection,
   FieldPropertyValueCollections,
   FieldPropertyValueCollectionProperties,
