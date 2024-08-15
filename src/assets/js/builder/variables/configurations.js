@@ -2,7 +2,8 @@ export default {
   builder: {
     title: "App Builder",
     databaseSelection: false,
-    computedField: false,
+    hiddenFields: true,
+    computedFields: false,
     fieldLogic: false,
     rowClickAction: "edit",
     showDuplicateButton: true,

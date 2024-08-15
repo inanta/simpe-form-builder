@@ -199,10 +199,18 @@
             @toggle="isPanelToggled = !isPanelToggled"
           ></html-element-panel>
         </div>
-        <div v-if="configurations.builder.computedField" class="pb-3">
+        <div v-if="configurations.builder.hiddenFields" class="pb-3">
           <button
             class="w-full rounded-sm bg-primary p-2 text-on-primary"
-            @click="isComputedFieldSidePanelShown = true"
+            @click="isHiddenFieldsSidePanelShown = true"
+          >
+            Hidden Fields
+          </button>
+        </div>
+        <div v-if="configurations.builder.computedFields" class="pb-3">
+          <button
+            class="w-full rounded-sm bg-primary p-2 text-on-primary"
+            @click="isComputedFieldsSidePanelShown = true"
           >
             Computed Fields
           </button>
@@ -216,11 +224,18 @@
     ></app-preview>
     <app-alert></app-alert>
   </div>
+  <app-builder-hidden-fields
+    v-if="configurations.builder.hiddenFields"
+    :show="isHiddenFieldsSidePanelShown"
+    :values="app['hidden_fields']"
+    @close="isHiddenFieldsSidePanelShown = false"
+    @save="onHiddenFieldsSave"
+  ></app-builder-hidden-fields>
   <app-builder-computed-fields
-    v-if="configurations.builder.computedField"
-    :show="isComputedFieldSidePanelShown"
+    v-if="configurations.builder.computedFields"
+    :show="isComputedFieldsSidePanelShown"
     :values="app['computed_fields']"
-    @close="isComputedFieldSidePanelShown = false"
+    @close="isComputedFieldsSidePanelShown = false"
     @save="onComputedFieldsSave"
   ></app-builder-computed-fields>
   <app-builder-field-logic
@@ -247,6 +262,7 @@ import ContainerTabsSettings from "../components/Builder/ContainerTabsSettings.v
 import EmptyColumnPlaceholder from "@/components/Builder/EmptyColumnPlaceholder.vue";
 import BuilderAppField from "@/components/Builder/BuilderAppField.vue";
 import AppAlert from "@/components/Builder/AppAlert.vue";
+import AppBuilderHiddenFields from "@/components/Builder/AppBuilderHiddenFields.vue";
 import AppBuilderComputedFields from "@/components/Builder/AppBuilderComputedFields.vue";
 import AppBuilderFieldLogic from "@/components/Builder/AppBuilderFieldLogic.vue";
 
@@ -263,6 +279,7 @@ import alert from "@/assets/js/builder/alert.js";
 export default {
   name: "App",
   components: {
+    AppBuilderHiddenFields,
     AppBuilderComputedFields,
     AppBuilderFieldLogic,
     BuilderAppField,
@@ -291,7 +308,8 @@ export default {
       selectedColumn: {},
       dragColumn: {},
       isPreviewShown: false,
-      isComputedFieldSidePanelShown: false,
+      isComputedFieldsSidePanelShown: false,
+      isHiddenFieldsSidePanelShown: false,
       isFieldLogicSidePanelShown: false,
       isPanelToggled: true
     };
@@ -520,6 +538,9 @@ export default {
     },
     onFieldLogicSave: function (value) {
       this.app["field_logics"] = value;
+    },
+    onHiddenFieldsSave: function (value) {
+      this.app["hidden_fields"] = value;
     },
     onKeyDown: function (event) {
       const self = this;
@@ -866,6 +887,7 @@ export default {
       app.containers = containers;
       app.rows = rows;
       app.elements = columns;
+      app.hidden_fields = self.app.hidden_fields;
       app.computed_fields = self.app.computed_fields;
       app.field_logics = self.app.field_logics;
       app = JSON.parse(JSON.stringify(app));
