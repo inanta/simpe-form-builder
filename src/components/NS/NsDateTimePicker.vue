@@ -75,9 +75,9 @@ export default {
       default: ""
     },
     excludeDays: {
-      type: Object,
+      type: Array,
       default: function () {
-        return {};
+        return [];
       }
     },
     locale: {
@@ -149,12 +149,9 @@ export default {
     excludedDays: function () {
       const days = [];
 
-      if (
-        typeof this.excludeDays.value != "undefined" &&
-        Array.isArray(this.excludeDays.value)
-      ) {
-        for (let index = 0; index < this.excludeDays.value.length; index++) {
-          const day = parseInt(this.excludeDays.value[index].value);
+      if (Array.isArray(this.excludeDays)) {
+        for (let index = 0; index < this.excludeDays.length; index++) {
+          const day = parseInt(this.excludeDays[index]);
 
           if (!isNaN(day)) {
             days.push(day);

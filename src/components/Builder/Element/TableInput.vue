@@ -243,10 +243,11 @@ export default {
     },
     tableInputTable: {
       handler: function () {
-        const self = this;
+        this.setTableHeaders();
 
-        self.setTableHeaders();
-        self.fetchItems();
+        if (this.tableInputSource === "db") {
+          this.fetchItems();
+        }
       },
       immediate: true
     },
@@ -330,10 +331,8 @@ export default {
       this.shouldShowAddItemModal(item);
     },
     onModalAddButtonClick: function () {
-      const self = this;
-
-      self.addTableItem();
-      self.isModalShown = false;
+      this.addTableItem();
+      this.isModalShown = false;
     },
     onAutocompleteInput: async function (item) {
       if (typeof item !== "undefined" && item !== null) {
@@ -341,11 +340,9 @@ export default {
       }
     },
     onAutocompleteKeyup: function (event) {
-      const self = this;
-
       const value = event.target.value;
 
-      self.fetchItems(value);
+      this.fetchItems(value);
     },
     onDeleteTableItemButtonClick: function (item) {
       const self = this;

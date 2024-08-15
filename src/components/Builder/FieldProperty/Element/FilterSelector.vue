@@ -228,9 +228,7 @@ export default {
   },
   watch: {
     currentFilter: {
-      handler: function (value) {
-        console.log("CV", value);
-      }
+      handler: function () {}
     },
     modelValue: {
       handler: function (value) {

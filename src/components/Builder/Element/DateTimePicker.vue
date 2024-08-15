@@ -2,7 +2,7 @@
   <ns-date-time-picker
     v-model="dateTimePickerValue"
     :date-picker-label="dateTimePickerDatePickerLabel"
-    :exclude-days="dateTimePickerExcludeDays"
+    :exclude-days="validatedExcludeDays"
     :locale="dateTimePickerLocale"
     :max-hour="dateTimePickerMaxHour"
     :max-minute="dateTimePickerMaxMinute"
@@ -25,6 +25,7 @@ import NsDateTimePicker from "@/components/NS/NsDateTimePicker.vue";
 import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
 import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions.js";
 import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
+import getAPI from "@/assets/js/getAPI.js";
 
 export default {
   components: {
@@ -95,6 +96,10 @@ export default {
       type: String,
       default: "timestamp"
     },
+    dateTimePickerValidationEndpoint: {
+      type: String,
+      default: ""
+    },
     name: {
       type: String,
       default: ""
@@ -115,8 +120,34 @@ export default {
   emits: ["input"],
   data: function () {
     return {
-      dateTimePickerValue: ""
+      dateTimePickerValue: "",
+      rules: {}
     };
+  },
+  computed: {
+    validatedExcludeDays: function () {
+      if (typeof this.rules.excludeDays !== "undefined") {
+        return this.rules.excludeDays;
+      } else {
+        const days = [];
+
+        if (Array.isArray(this.dateTimePickerExcludeDays)) {
+          for (
+            let index = 0;
+            index < this.dateTimePickerExcludeDays.length;
+            index++
+          ) {
+            const day = parseInt(this.dateTimePickerExcludeDays[index].value);
+
+            if (!isNaN(day)) {
+              days.push(day);
+            }
+          }
+        }
+
+        return days;
+      }
+    }
   },
   watch: {
     dateTimePickerValue: {
@@ -134,6 +165,32 @@ export default {
         this.dateTimePickerValue = value;
       },
       immediate: false
+    }
+  },
+  mounted: function () {
+    const self = this;
+
+    if (this.dateTimePickerValidationEndpoint) {
+      getAPI(this.dateTimePickerValidationEndpoint).then(function (response) {
+        const attributes = {
+          "exclude-days": "excludeDays",
+          "max-hour": "maxHour",
+          "max-minute": "maxMinute",
+          "min-hour": "minHour",
+          "min-minute": "minMinute",
+          "minute-interval": "minuteInterval"
+        };
+
+        for (const key in attributes) {
+          if (Object.prototype.hasOwnProperty.call(attributes, key)) {
+            const attribute = attributes[key];
+
+            if (typeof response[key] !== "undefined") {
+              self.rules[attribute] = response[key];
+            }
+          }
+        }
+      });
     }
   }
 };
@@ -179,6 +236,10 @@ fieldProperties["date-time-picker"] = {
   },
   "date-time-picker-minute-interval": {
     label: "Minute Interval"
+  },
+  "date-time-picker-validation-endpoint": {
+    label: "Validation Endpoint",
+    type: "textarea"
   },
   readonly: {
     label: "Is Read Only"
