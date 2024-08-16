@@ -39,43 +39,51 @@ export default {
     };
   },
   mounted: function () {
-    const children = this.$slots.default();
-
-    for (let index = 0; index < children.length; index++) {
-      const element = children[index];
-
-      if (
-        typeof element.type === "object" &&
-        typeof element.type.name !== "undefined" &&
-        element.type.name === "NsTab"
-      ) {
-        this.tabs.push({
-          title:
-            typeof element.props !== "undefined" &&
-            element.props !== null &&
-            typeof element.props.title !== "undefined"
-              ? element.props.title
-              : "Tab " + (index + 1),
-          element: element,
-          order:
-            typeof element.props.order !== "undefined"
-              ? element.props.order
-              : index
-        });
-      }
-
-      this.tabs.sort(function (a, b) {
-        return a.order - b.order;
-      });
-    }
-
-    if (this.tabs.length > 0) {
-      this.$nextTick(function () {
-        this.selectTab(0);
-      });
-    }
+    this.initializeTabs();
   },
   methods: {
+    addTabs: function (children) {
+      for (let index = 0; index < children.length; index++) {
+        const element = children[index];
+
+        if (
+          typeof element.type === "object" &&
+          typeof element.type.name !== "undefined" &&
+          element.type.name === "NsTab"
+        ) {
+          this.tabs.push({
+            title:
+              typeof element.props !== "undefined" &&
+              element.props !== null &&
+              typeof element.props.title !== "undefined"
+                ? element.props.title
+                : "Tab " + (index + 1),
+            element: element,
+            order:
+              typeof element.props.order !== "undefined"
+                ? element.props.order
+                : index
+          });
+        } else if (element.type.toString() === "Symbol(Fragment)") {
+          this.addTabs(element.children);
+        }
+
+        this.tabs.sort(function (a, b) {
+          return a.order - b.order;
+        });
+      }
+    },
+    initializeTabs: function () {
+      const children = this.$slots.default();
+
+      this.addTabs(children);
+
+      if (this.tabs.length > 0) {
+        this.$nextTick(function () {
+          this.selectTab(0);
+        });
+      }
+    },
     selectTab(index) {
       this.selectedIndex = index;
 

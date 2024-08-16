@@ -1,5 +1,6 @@
 import axios from "axios";
 import qs from "qs";
+import slugify from "slugify";
 
 const baseURI = import.meta.env.VITE_FETCH_BASE_URL;
 
@@ -164,34 +165,50 @@ export default {
       .querySelector('[name="csrf"]')
       .getAttribute("content");
 
-    let action = "create";
+    // let action = "create";
+    // let url = baseURI + "/appii/?t=webapps_item&a=add";
+    let url = baseURI + "/app/api/v1/builder/save?t=webapps_item&a=add";
 
     const data = {
+      utf8: "✓",
       authenticity_token: token,
       form_id: "162949",
       page_id: "3590121",
-      slug: "",
-      slug2: "",
-      slug3: "",
-      slugs: "",
+      slug: "oocadmin",
+      slug2: "webapps",
+      slug3: "20441",
+      slugs: "add",
       resource_id: "new",
-      parent_resource_id: "",
-      parent_resource_class: "",
+      parent_resource_id: "modules/_admin/webapps/apps",
+      parent_resource_class: "CustomModelType",
       _method: "POST",
-      app: JSON.stringify(app),
-      webapp_action: action,
-      webapp_item_id: "",
+      // app: JSON.stringify(app),
+      // webapp_action: action,
+      // webapp_item_id: "",
+      // webapp_item_title: app.name,
+      // webapp_table: "apps",
+
+      webapp_item_enabled: "on",
       webapp_item_title: app.name,
-      webapp_table: "apps",
-      utf8: "✓"
+      webapp_item_slug: slugify(app.name, { lower: true }),
+      webapp_item_publishdate: "",
+      webapp_item_expirydate: "",
+      webapp_item_weighting: "0",
+      "ooc_custom_field-app": JSON.stringify(app),
+      // "ooc_custom_field-user": "35",
+      webapp_item_slug_base: "apps",
+      webapp_schema_id: "1743699",
+      webapp_schema_name: "modules/_admin/webapps/apps"
     };
 
     if (typeof app.id !== "undefined" && app.id !== "") {
-      data.webapp_action = "update";
-      data.webapp_item_id = app.id;
+      // data.webapp_action = "update";
+      // data.webapp_item_id = app.id;
+      url = baseURI + "/appii/?t=webapps_item&a=update";
     }
 
-    const url = baseURI + "/appii/webapp";
+    // const url = baseURI + "/appii/webapp";
+    // let url = baseURI + "/appii/?t=webapps_item&a=add";
 
     return axios
       .post(url, data, {
@@ -199,7 +216,8 @@ export default {
           Accept: "*/*",
           Pragma: "no-cache",
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        }
+        },
+        indices: false
       })
       .then(function (data) {
         return data.data;

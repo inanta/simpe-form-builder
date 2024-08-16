@@ -15,7 +15,7 @@
       <native-html
         v-if="getHtmlElements().includes(properties.element)"
         ref="fields"
-        :error="validateError === '' || !showInvalidMessage"
+        :error="validateError !== '' && showInvalidMessage"
         :value="value"
         :properties="properties"
         @input="onInput"
@@ -29,7 +29,7 @@
         :app="app"
         :builder="builder"
         :data="data"
-        :error="validateError === '' || !showInvalidMessage"
+        :error="validateError !== '' && showInvalidMessage"
         :properties="properties"
         :value="value"
         v-bind="properties"

@@ -1,4 +1,5 @@
 <template>
+  {{ value }}
   <div
     v-if="
       internalProperties.element === 'input' &&
@@ -37,8 +38,8 @@
       internalProperties.element == 'textarea'
     "
     :class="{
-      'border-mid-gray dark:border-surface--dark-500': error,
-      'border-negative dark:border-negative--dark': !error
+      'border-mid-gray dark:border-surface--dark-500': !error,
+      'border-negative dark:border-negative--dark': error
     }"
     :name="internalProperties.name"
     :value="value"
@@ -119,6 +120,7 @@ export default {
       immediate: true
     },
     value: function () {
+      console.log("value changed");
       this.initializeValue();
     }
   },
@@ -129,11 +131,14 @@ export default {
     cleanAttributes(attributes) {
       const cleaned_attributes = cleanAttributes(attributes, [
         "disabled",
+        "max",
+        "min",
         "multiple",
         "placeholder",
         "readonly",
         "rows",
         "size",
+        "step",
         "type"
       ]);
 

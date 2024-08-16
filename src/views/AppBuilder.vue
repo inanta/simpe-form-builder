@@ -41,8 +41,22 @@
     <div ref="mainContainer" class="flex">
       <div class="flex-grow">
         <div>
-          <div v-if="configurations.builder.fieldLogic" class="flex px-4 pb-2">
+          <div
+            v-if="
+              configurations.builder.fieldLogic ||
+              configurations.builder.customSettings.show
+            "
+            class="flex px-4 pb-2"
+          >
             <button
+              v-if="configurations.builder.customSettings.show"
+              class="ml-auto rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark"
+              @click="onCustomSettingsButtonClick"
+            >
+              <span class="mdi mdi-source-branch"></span> Custom Settings
+            </button>
+            <button
+              v-if="configurations.builder.fieldLogic"
               class="ml-auto rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark"
               @click="onViewLogicButtonClick"
             >
@@ -245,6 +259,13 @@
     @close="isFieldLogicSidePanelShown = false"
     @save="onFieldLogicSave"
   ></app-builder-field-logic>
+  <app-builder-custom-settings
+    v-if="configurations.builder.customSettings.show"
+    :containers="app['custom_settings']"
+    :show="isCustomSettingsSidePanelShown"
+    @close="isCustomSettingsSidePanelShown = false"
+    @save="onCustomSettingsSave"
+  ></app-builder-custom-settings>
 </template>
 
 <script>
@@ -265,6 +286,7 @@ import AppAlert from "@/components/Builder/AppAlert.vue";
 import AppBuilderHiddenFields from "@/components/Builder/AppBuilderHiddenFields.vue";
 import AppBuilderComputedFields from "@/components/Builder/AppBuilderComputedFields.vue";
 import AppBuilderFieldLogic from "@/components/Builder/AppBuilderFieldLogic.vue";
+import AppBuilderCustomSettings from "@/components/Builder/AppBuilderCustomSettings.vue";
 
 import AppPreview from "@/components/Builder/AppPreview.vue";
 import AppBuilder from "@/assets/js/AppBuilder";
@@ -282,6 +304,7 @@ export default {
     AppBuilderHiddenFields,
     AppBuilderComputedFields,
     AppBuilderFieldLogic,
+    AppBuilderCustomSettings,
     BuilderAppField,
     TopPanel,
     ContainerTabsViewSwitcher,
@@ -309,6 +332,7 @@ export default {
       dragColumn: {},
       isPreviewShown: false,
       isComputedFieldsSidePanelShown: false,
+      isCustomSettingsSidePanelShown: false,
       isHiddenFieldsSidePanelShown: false,
       isFieldLogicSidePanelShown: false,
       isPanelToggled: true
@@ -478,6 +502,12 @@ export default {
     },
     onCreateLogic: function () {
       this.isFieldLogicSidePanelShown = true;
+    },
+    onCustomSettingsButtonClick: function () {
+      this.isCustomSettingsSidePanelShown = true;
+    },
+    onCustomSettingsSave: function (value) {
+      this.app["custom_settings"] = value;
     },
     onDragEnd: function () {
       this.dragColumn = {};
