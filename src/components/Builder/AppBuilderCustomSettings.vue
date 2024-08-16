@@ -22,7 +22,7 @@
                   <native-html
                     :properties="cleanAttributes(field)"
                     :error="false"
-                    :value="field.value"
+                    :value="internalValues[field.name]"
                     @input="onInput"
                   ></native-html>
                 </div>
@@ -272,6 +272,7 @@ export default {
     //   this.internalValues.splice(index, 1);
     // },
     onSaveButtonClick: function () {
+      console.log(this.internalValues);
       this.$emit("save", this.internalValues);
       this.$emit("close");
     }

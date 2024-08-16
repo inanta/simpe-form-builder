@@ -1,5 +1,4 @@
 <template>
-  {{ value }}
   <div
     v-if="
       internalProperties.element === 'input' &&
