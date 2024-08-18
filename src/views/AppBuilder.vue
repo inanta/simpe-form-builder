@@ -53,7 +53,7 @@
               class="ml-auto rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark"
               @click="onCustomSettingsButtonClick"
             >
-              <span class="mdi mdi-source-branch"></span> Custom Settings
+              <span class="mdi mdi-cogs"></span> Settings
             </button>
             <button
               v-if="configurations.builder.fieldLogic"
@@ -261,7 +261,7 @@
   ></app-builder-field-logic>
   <app-builder-custom-settings
     v-if="configurations.builder.customSettings.show"
-    :containers="app['custom_settings']"
+    :values="app['custom_settings']"
     :show="isCustomSettingsSidePanelShown"
     @close="isCustomSettingsSidePanelShown = false"
     @save="onCustomSettingsSave"
@@ -920,6 +920,7 @@ export default {
       app.hidden_fields = self.app.hidden_fields;
       app.computed_fields = self.app.computed_fields;
       app.field_logics = self.app.field_logics;
+      app.custom_settings = self.app.custom_settings;
       app = JSON.parse(JSON.stringify(app));
 
       if (typeof download === "undefined" || download === false) {
