@@ -202,9 +202,12 @@ export default {
     };
 
     if (typeof app.id !== "undefined" && app.id !== "") {
-      // data.webapp_action = "update";
-      // data.webapp_item_id = app.id;
-      url = baseURI + "/appii/?t=webapps_item&a=update";
+      data.slugs = "edit";
+      data.webapp_item_id = app.id;
+
+      delete data.webapp_item_slug;
+
+      url = baseURI + "/appii/?t=webapps_item&a=edit";
     }
 
     // const url = baseURI + "/appii/webapp";
