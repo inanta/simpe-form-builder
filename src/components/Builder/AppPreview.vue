@@ -42,7 +42,6 @@
                     @visibility-changed="onVisibilityChanged"
                     @input="onInput"
                     @invalid="onInvalid"
-                    @keyup.enter="saveConfirmation"
                     @valid="onValid"
                   ></app-field>
                 </template>
@@ -66,6 +65,12 @@ export default {
     AppField
   },
   props: {
+    app: {
+      type: Object,
+      default: function () {
+        return {};
+      }
+    },
     show: {
       type: Boolean,
       default: false
@@ -80,7 +85,9 @@ export default {
   emits: ["close"],
   data: function () {
     return {
-      selectedContainer: 0
+      selectedContainer: 0,
+      showInvalid: false,
+      values: {}
     };
   },
   computed: {
@@ -91,6 +98,23 @@ export default {
       return this.containers;
     }
   },
-  methods: {}
+  methods: {
+    onInput: function (name, value, is_initial_value = false) {
+      // const app = onAppInput(this.app, this.values, name, value);
+
+      console.log(name, value);
+
+      if (!is_initial_value) {
+        this.isChangesMade = true;
+      }
+
+      // callHook(this.hooks, "onInsertPageValueChanged", app);
+    },
+    onInvalid: function (name) {
+      this.isValuesValid[name] = false;
+    },
+    onValid: function () {},
+    onVisibilityChanged: function () {}
+  }
 };
 </script>
