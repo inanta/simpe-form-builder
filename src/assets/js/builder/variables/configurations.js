@@ -19,14 +19,14 @@ export default {
             },
             {
               attributes: {
-                min: 0,
+                min: "0",
                 type: "number",
-                step: 1,
-                value: 300
+                step: "1"
               },
               element: "input",
               label: "Secure Download",
-              name: "download_expiry"
+              name: "download_expiry",
+              value: "300"
             }
           ]
         },
@@ -105,6 +105,8 @@ export default {
                 type: "checkbox"
               },
               element: "input",
+              label: "Enable Webhook",
+              items: [{ label: "Yes", value: "on" }],
               name: "webhook_enabled"
             },
             {
@@ -165,6 +167,7 @@ export default {
               },
               element: "input",
               label: "Send Form Data",
+              items: [{ label: "Yes", value: "on" }],
               name: "webhook_send_form_data",
               rules: [
                 {
@@ -179,6 +182,7 @@ export default {
               },
               element: "input",
               label: "Custom Payload",
+              items: [{ label: "Yes", value: "on" }],
               name: "webhook_send_custom_payload",
               rules: [
                 {
