@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import { Fragment } from "vue";
+
 export default {
   props: {},
   data: function () {
@@ -64,7 +66,7 @@ export default {
                 ? element.props.order
                 : index
           });
-        } else if (element.type.toString() === "Symbol(Fragment)") {
+        } else if (element.type === Fragment) {
           this.addTabs(element.children);
         }
 
@@ -85,9 +87,9 @@ export default {
       }
     },
     selectTab(index) {
-      this.selectedIndex = index;
-
       const self = this;
+
+      this.selectedIndex = index;
 
       setTimeout(function () {
         const tab_headers_container = self.$refs["tab-headers-container"];
