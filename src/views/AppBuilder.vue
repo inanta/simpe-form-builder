@@ -57,7 +57,7 @@
             </button>
             <button
               v-if="configurations.builder.fieldLogic"
-              class="ml-auto rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark"
+              class="ml-2 rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark"
               @click="onViewLogicButtonClick"
             >
               <span class="mdi mdi-source-branch"></span> View Logic
