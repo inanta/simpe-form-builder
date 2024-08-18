@@ -10,9 +10,8 @@
     <label
       v-for="(item, itemIndex) in cleanAttributeItems(properties.items)"
       :key="item.name"
-      :for="internalProperties.name + '_' + item.value"
-      ><input
-        :id="internalProperties.name + '_' + item.value"
+    >
+      <input
         :checked="
           typeof internalProperties.checked != 'undefined' &&
           typeof internalProperties.checked[itemIndex] !== 'undefined' &&
@@ -25,7 +24,7 @@
         :value="item.value"
         :type="internalProperties.type"
         class="mr-2"
-        @input="$emit('input', $event)"
+        @change="onInputChecked($event, itemIndex)"
       />{{ item.label }}
     </label>
   </div>
@@ -119,7 +118,6 @@ export default {
       immediate: true
     },
     value: function () {
-      console.log("value changed");
       this.initializeValue();
     }
   },
@@ -170,7 +168,29 @@ export default {
 
       return [];
     },
-    initializeValue: function () {},
+    initializeValue: function () {
+      if (
+        this.internalProperties.element === "input" &&
+        this.internalProperties.type === "checkbox"
+      ) {
+        const items =
+          typeof this.properties.items.value !== "undefined"
+            ? this.properties.items.value
+            : this.properties.items;
+
+        if (typeof this.internalProperties.checked === "undefined") {
+          this.internalProperties.checked = [];
+
+          for (let index = 0; index < items.length; index++) {
+            const item = items[index];
+
+            this.internalProperties.checked[index] = {};
+            this.internalProperties.checked[index].value = item.value;
+            this.internalProperties.checked[index].checked = false;
+          }
+        }
+      }
+    },
     itemElement(element, item) {
       if (typeof item.element !== "undefined" && item.element !== "") {
         return item.element;
@@ -178,22 +198,31 @@ export default {
 
       return element === "select" ? "option" : "";
     },
-    onInputChecked: function ($event) {
-      if ($event.target.checked) {
-        this.$emit("input", {
-          target: {
-            name: this.properties.name,
-            value: this.properties.value
-          }
-        });
-      } else {
-        this.$emit("input", {
-          target: {
-            name: this.properties.name,
-            value: false
-          }
-        });
+    onInputChecked: function ($event, item_index) {
+      const values = [];
+
+      this.internalProperties.checked[item_index].checked = $event.target
+        .checked
+        ? true
+        : false;
+
+      const items =
+        typeof this.properties.items.value !== "undefined"
+          ? this.properties.items.value
+          : this.properties.items;
+
+      for (let index = 0; index < items.length; index++) {
+        if (this.internalProperties.checked[index].checked) {
+          values.push(this.internalProperties.checked[index].value);
+        }
       }
+
+      this.$emit("input", {
+        target: {
+          name: this.properties.name,
+          value: values
+        }
+      });
     }
   }
 };
