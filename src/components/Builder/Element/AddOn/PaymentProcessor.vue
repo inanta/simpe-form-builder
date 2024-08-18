@@ -43,6 +43,9 @@ elementPanelList.addElement(
 fieldProperties["payment-processor"] = {
   label: {
     label: "Label"
+  },
+  payment_gateway: {
+    label: "Gateway"
   }
 };
 </script>
