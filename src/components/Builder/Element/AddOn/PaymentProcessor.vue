@@ -90,7 +90,7 @@
 <script>
 // import configurations from "@/assets/js/builder/variables/configurations.js";
 import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
-// import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
+import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
 import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
 export default {
@@ -99,6 +99,10 @@ export default {
     builder: {
       type: Boolean,
       default: false
+    },
+    paymentProcessorGateway: {
+      type: String,
+      default: ""
     }
   },
   data: function () {
@@ -144,8 +148,15 @@ fieldProperties["payment-processor"] = {
   label: {
     label: "Label"
   },
-  payment_gateway: {
+  "payment-processor-gateway": {
     label: "Gateway"
   }
 };
+
+fieldPropertyOptions.addOption("payment-processor-gateway", [
+  {
+    name: "Eway",
+    value: "eway"
+  }
+]);
 </script>
