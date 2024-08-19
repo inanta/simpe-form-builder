@@ -30,21 +30,23 @@
           </div>
           <div class="ml-auto px-4 py-2">{{ formatPrice(item.price) }}</div>
           <div class="">
-            <div class="w-max rounded border">
+            <div class="w-max rounded !border !border-mid-gray">
               <button
-                class="w-9 border-r px-3 py-1.5 text-base text-black outline-none"
+                class="!w-9 !border-r px-3 py-1.5 text-base text-black outline-none"
+                type="button"
                 @click="onMinusButtonClick(itemIndex)"
               >
                 -
               </button>
               <input
                 v-model="quantity[itemIndex]"
-                class="w-16 appearance-none rounded-sm border-none bg-white px-3 py-1.5 text-center text-base text-black outline-none focus:border-primary"
+                class="!w-16 appearance-none rounded-sm !border-none bg-white px-3 py-1.5 text-center text-base text-black outline-none focus:border-primary"
                 type="text"
                 min="0"
               />
               <button
-                class="w-9 border-l px-3 py-1.5 text-base text-black outline-none"
+                class="!w-9 !border-l px-3 py-1.5 text-base text-black outline-none"
+                type="button"
                 @click="onPlusButtonClick(itemIndex)"
               >
                 +

@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "./App.vue";
-import router from "../../../../../router/index.js";
+import router from "../../../../../router/front-end.js";
 
 import "@mdi/font/css/materialdesignicons.min.css";
 import "animate.css";

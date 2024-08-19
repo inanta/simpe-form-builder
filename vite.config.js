@@ -38,7 +38,11 @@ export default defineConfig({
         })
       ],
       input: {
-        ui: resolve(__dirname, "private/application/app/views/ui/index.html")
+        ui: resolve(__dirname, "private/application/app/views/ui/index.html"),
+        "front-end": resolve(
+          __dirname,
+          "private/application/app/views/front-end.html"
+        )
       },
       output: {
         assetFileNames: (assetInfo) => {

@@ -6,10 +6,15 @@ export default function callHook(hooks, name, app) {
   }
 
   try {
-    let hook = window.$$App.getHookByName(name, app.slug);
+    if (
+      typeof window.$$App !== "undefined" &&
+      window.$$App.getHookByName !== "undefined"
+    ) {
+      let hook = window.$$App.getHookByName(name, app.slug);
 
-    if (typeof hook === "function") {
-      result = hook(app);
+      if (typeof hook === "function") {
+        result = hook(app);
+      }
     }
   } catch (error) {
     console.warn(error);
