@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="px-4 pb-4">
+    <div>
       <div ref="mainContainer" class="relative mb-4 mt-2">
         <div
           ref="topButtonsContainer"
@@ -253,7 +253,7 @@ export default {
               const hook_result = callHook(self.hooks, "onRecordInserted", app);
 
               if (hook_result === undefined || hook_result === true) {
-                self.$router.push("/app/view/" + self.app.slug);
+                //self.$router.push("/app/view/" + self.app.slug);
               }
 
               self.disableCancelButton = false;
@@ -265,7 +265,7 @@ export default {
               typeof error.response.status !== "undefined" &&
               error.response.status === 401
             ) {
-              window.location.href = "/";
+              // window.location.href = "/";
             } else if (typeof error.response.data.errors !== "undefined") {
               self.errors = error.response.data.errors;
               self.showInvalid = true;
