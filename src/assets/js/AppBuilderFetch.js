@@ -257,11 +257,48 @@ export default {
       });
   },
   insertRecord: function (app, data) {
+    const new_data = {};
+
+    new_data["form"] = { properties_attributes: {} };
+
+    for (const key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        const element = data[key];
+
+        new_data["form"]["properties_attributes"][key] = element;
+      }
+    }
+
+    new_data["authenticity_token"] = app.custom_settings["authenticity_token"];
+    new_data["form_id"] = app.custom_settings["form_id"];
+    new_data["download_expiry"] = app.custom_settings["download_expiry"];
+    new_data["resource_id"] = "new";
+
     return axios
-      .post(baseURI + "/app/api/v1/records/" + app.slug, data)
+      .post(baseURI + "/api/customizations", new_data, {
+        headers: {
+          Accept: "*/*",
+          Pragma: "no-cache",
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        }
+      })
       .then(function (data) {
+        window.location.href = app.custom_settings["redirect"];
+
         return data.data;
       });
+
+    // return axios
+    //   .post(baseURI + "/app/api/v1/records/" + app.slug, data, {
+    //     headers: {
+    //       Accept: "*/*",
+    //       Pragma: "no-cache",
+    //       "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+    //     }
+    //   })
+    //   .then(function (data) {
+    //     return data.data;
+    //   });
   },
   insertRecords: function (app, data) {
     return axios
