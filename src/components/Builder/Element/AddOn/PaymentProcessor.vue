@@ -1,14 +1,26 @@
 <template>
   <div>
-    <!-- <template v-if="builder">
-      <div
-        class="rounded border border-mid-gray p-3 text-center text-lg font-semibold text-mid-gray shadow-inner"
-      >
-        Payment section will be displayed here
-      </div>
-    </template> -->
     <div class="payment-fields">
-      <div class="flex flex-col pb-3">
+      <div
+        v-if="paymentProcessorDefineAmount === 'yes'"
+        class="!mb-0 flex flex-col pb-3"
+      >
+        <label for="username">Amount</label>
+        <input
+          type="number"
+          name="amount"
+          placeholder=""
+          :class="{
+            'border-mid-gray dark:border-surface--dark-500': !error,
+            'border-negative dark:border-negative--dark': error
+          }"
+          class="w-full appearance-none rounded-sm border bg-white px-3 py-1.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
+        />
+      </div>
+      <div v-else>
+        <input type="hidden" :value="paymentProcessorAmount" name="amount" />
+      </div>
+      <div class="!mb-0 flex flex-col pb-3">
         <label for="username">Full Name (On The Card)</label>
         <input
           type="text"
@@ -21,7 +33,7 @@
           class="w-full appearance-none rounded-sm border bg-white px-3 py-1.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
         />
       </div>
-      <div class="flex flex-col pb-3">
+      <div class="!mb-0 flex flex-col pb-3">
         <label for="cardNumber">Card Number</label>
         <input
           type="text"
@@ -33,9 +45,10 @@
             'border-negative dark:border-negative--dark': error
           }"
           class="w-full appearance-none rounded-sm border bg-white px-3 py-1.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
+          @input="onCCInput"
         />
       </div>
-      <div class="flex flex-col pb-3">
+      <div class="!mb-0 flex flex-col pb-3">
         <label>Expiration</label>
         <div class="flex flex-row space-x-2">
           <select
@@ -88,6 +101,7 @@
 </template>
 
 <script>
+/* global cc_format */
 // import configurations from "@/assets/js/builder/variables/configurations.js";
 import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
 import fieldPropertyOptions from "@/assets/js/builder/variables/fieldPropertyOptions";
@@ -100,23 +114,53 @@ export default {
       type: Boolean,
       default: false
     },
+    error: {
+      type: Boolean,
+      default: false
+    },
+    name: {
+      type: String,
+      default: ""
+    },
     paymentProcessorGateway: {
       type: String,
       default: ""
+    },
+    paymentProcessorDefineAmount: {
+      type: String,
+      default: "no"
+    },
+    paymentProcessorAmount: {
+      type: String,
+      default: "0"
     }
   },
   data: function () {
     return {
-      script: null,
+      scripts: [],
       years: []
     };
   },
   mounted: function () {
-    this.script = document.createElement("script");
-    this.script.src = "https://secure.ewaypayments.com/scripts/eCrypt.min.js";
-    this.script.async = true;
-    this.script.defer = true;
-    document.head.appendChild(this.script);
+    const baseURI = import.meta.env.VITE_FETCH_BASE_URL;
+
+    const scripts = [
+      "https://secure.ewaypayments.com/scripts/eCrypt.min.js",
+      baseURI + "/assets/modules/homepage/js/jquery-3.2.1.min.js",
+      baseURI + "/assets/modules/ooc_ecommerce/js/ecommerce_common.js",
+      baseURI + "/assets/modules/_admin/js/custom/formbuilder/formbuilder.js"
+    ];
+
+    for (let index = 0; index < scripts.length; index++) {
+      const script = document.createElement("script");
+
+      script.src = scripts[index];
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+
+      this.scripts.push(script);
+    }
 
     const date = new Date();
 
@@ -129,11 +173,24 @@ export default {
     }
   },
   beforeUnmount: function () {
-    if (this.script) {
-      document.head.removeChild(this.script);
+    for (let index = 0; index < this.scripts.length; index++) {
+      const script = this.scripts[index];
+
+      document.head.removeChild(script);
     }
   },
-  methods: {}
+  methods: {
+    onCCInput: function ($event) {
+      let value = $event.target.value.match(/\d/g),
+        result = "";
+
+      if (value) {
+        result = cc_format(value.join(""));
+      }
+
+      $event.target.value = result;
+    }
+  }
 };
 
 elementPanelList.addElement(
@@ -145,18 +202,38 @@ elementPanelList.addElement(
 );
 
 fieldProperties["payment-processor"] = {
+  name: {
+    label: "Name"
+  },
   label: {
     label: "Label"
   },
   "payment-processor-gateway": {
     label: "Gateway"
+  },
+  "payment-processor-define-amount": {
+    label: "Allow User Define Amount"
+  },
+  "payment-processor-amount": {
+    label: "Amount"
   }
 };
 
 fieldPropertyOptions.addOption("payment-processor-gateway", [
   {
     name: "Eway",
-    value: "eway"
+    value: "248"
+  }
+]);
+
+fieldPropertyOptions.addOption("payment-processor-define-amount", [
+  {
+    name: "No",
+    value: "no"
+  },
+  {
+    name: "Yes",
+    value: "yes"
   }
 ]);
 </script>
