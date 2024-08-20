@@ -216,6 +216,9 @@ elementPanelList.addElement(
 );
 
 fieldProperties["payment-option"] = {
+  name: {
+    label: "Name"
+  },
   label: {
     label: "Label"
   },
