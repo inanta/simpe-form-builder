@@ -1,10 +1,10 @@
 <template>
   <transition
-    name="custom-classes-transition"
+    name="field-classes-transition"
     enter-active-class="animate__animated animate__fadeInDown animate__faster"
     leave-active-class="animate__animated animate__fadeOutUp animate__faster"
   >
-    <div v-show="visible" class="py-1.5">
+    <div v-show="visible" ref="field" class="py-1.5">
       <label
         v-if="fieldLabel !== ''"
         :for="properties.name"
@@ -15,7 +15,7 @@
       <native-html
         v-if="getHtmlElements().includes(properties.element)"
         ref="fields"
-        :error="validateError !== '' && showInvalidMessage"
+        :error="validationError !== '' && showInvalidMessage"
         :value="value"
         :properties="properties"
         @input="onInput"
@@ -29,7 +29,7 @@
         :app="app"
         :builder="builder"
         :data="data"
-        :error="validateError !== '' && showInvalidMessage"
+        :error="validationError !== '' && showInvalidMessage"
         :properties="properties"
         :value="value"
         v-bind="properties"
@@ -37,12 +37,22 @@
       >
         <template v-if="properties.content">{{ properties.content }}</template>
       </component>
+
       <div
-        v-if="validateError !== '' && showInvalidMessage"
-        class="overflow-hidden text-negative dark:text-negative--dark"
+        class="overflow-hidden text-negative transition-all dark:text-negative--dark"
+        :style="{
+          'max-height':
+            validationError !== '' && showInvalidMessage ? '20rem' : '0'
+        }"
       >
-        <div class="animate__animated animate__fadeInDown">
-          <span class="mdi mdi-alert"></span> {{ validateError }}
+        <div
+          class="transition-all"
+          :class="{
+            invisible: validationError === '',
+            visible: validationError !== ''
+          }"
+        >
+          <span class="mdi mdi-alert-circle"></span> {{ validationError }}
         </div>
       </div>
     </div>
@@ -132,7 +142,7 @@ export default {
         { tag: "hr", hasValidation: false }
       ],
       showInvalidMessage: false,
-      validateError: ""
+      validationError: ""
     };
   },
   computed: {
@@ -143,6 +153,7 @@ export default {
       ) {
         return this.properties.label;
       }
+
       return "";
     }
   },
@@ -150,7 +161,7 @@ export default {
     error: {
       handler: function (value) {
         if (typeof value[0] !== "undefined" && value[0] !== "") {
-          this.validateError = value[0];
+          this.validationError = value[0];
         }
       },
       immediate: true
@@ -163,7 +174,12 @@ export default {
     },
     value: {
       handler: function (value) {
-        this.validateValue(value, this.data);
+        if (
+          typeof this.properties.name !== "undefined" &&
+          this.properties.name !== ""
+        ) {
+          this.validateValue(value, this.data);
+        }
       },
       immediate: true
     },
@@ -176,6 +192,20 @@ export default {
       immediate: false
     }
   },
+  // mounted: function () {
+  //   const self = this;
+
+  //   document.addEventListener("app:validationError", function (event) {
+  //     if (event.detail.name === self.properties.name) {
+  //       if (typeof self.$refs["field"] !== "undefined") {
+  //         self.$refs["field"].scrollIntoView({
+  //           behavior: "smooth",
+  //           block: "center"
+  //         });
+  //       }
+  //     }
+  //   });
+  // },
   methods: {
     getHtmlElements: function (validation = null) {
       if (validation !== null) {
@@ -193,23 +223,12 @@ export default {
       });
     },
     onInput: function (event) {
-      const self = this;
-
       if (event.target.name !== "") {
-        self.validateError = validateField(
-          self.properties.validation,
-          event.target.value,
-          self.data
-        );
-
-        if (self.validateError !== "") {
-          self.showInvalidMessage = true;
-          self.$emit("invalid", event.target.name);
-        } else {
-          self.$emit("valid", event.target.name);
+        if (this.validateValue(event.target.value, this.data)) {
+          this.showInvalidMessage = true;
         }
 
-        self.$emit(
+        this.$emit(
           "input",
           event.target.name,
           event.target.value,
@@ -223,20 +242,20 @@ export default {
       this.$emit("keyup", event);
     },
     validateValue: function (value, data) {
-      const self = this;
+      this.validationError = validateField(
+        this.properties.validation,
+        value,
+        data
+      );
 
-      if (typeof self.properties.name !== "undefined") {
-        self.validateError = validateField(
-          self.properties.validation,
-          value,
-          data
-        );
+      if (this.validationError !== "") {
+        this.$emit("invalid", this.properties.name);
 
-        if (self.validateError !== "") {
-          self.$emit("invalid", self.properties.name);
-        } else {
-          self.$emit("valid", self.properties.name);
-        }
+        return true;
+      } else {
+        this.$emit("valid", this.properties.name);
+
+        return false;
       }
     }
   }

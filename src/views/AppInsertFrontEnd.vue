@@ -81,6 +81,7 @@
                     class="overflow-hidden"
                   >
                     <app-field
+                      ref="fields"
                       :app="app"
                       :data="values"
                       :error="errors[column.name]"
@@ -275,6 +276,41 @@ export default {
             self.disableSaveButton = false;
           });
       } else {
+        for (const key in this.isValuesValid) {
+          if (Object.prototype.hasOwnProperty.call(this.isValuesValid, key)) {
+            const valid = this.isValuesValid[key];
+
+            if (!valid) {
+              for (
+                let index = 0;
+                index < this.$refs["fields"].length;
+                index++
+              ) {
+                const field = this.$refs["fields"][index];
+
+                if (
+                  typeof field.properties.name !== "undefined" &&
+                  key === field.properties.name
+                ) {
+                  field.$el.scrollIntoView({ behavior: "smooth" });
+
+                  break;
+                }
+              }
+
+              // document.dispatchEvent(
+              //   new CustomEvent("app:validationError", {
+              //     detail: {
+              //       name: key
+              //     }
+              //   })
+              // );
+
+              break;
+            }
+          }
+        }
+
         self.showInvalid = true;
       }
     },
