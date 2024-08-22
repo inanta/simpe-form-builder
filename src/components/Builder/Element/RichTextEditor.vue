@@ -5,6 +5,9 @@
 </template>
 
 <script>
+import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
+import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
+
 import Quill from "quill/dist/quill.js";
 import "quill/dist/quill.snow.css";
 
@@ -30,6 +33,14 @@ export default {
         return {};
       }
     },
+    placeholder: {
+      type: String,
+      default: ""
+    },
+    readonly: {
+      type: Boolean,
+      value: false
+    },
     value: {
       type: String,
       default: ""
@@ -42,10 +53,21 @@ export default {
     };
   },
   watch: {
+    placeholder: {
+      handler: function (value) {
+        if (this.editor !== null && value !== this.editor.root.innerHTML) {
+          this.editor.root.dataset.placeholder = value;
+          this.editor.root.setAttribute("data-placeholder", value);
+        }
+      },
+      immediate: false
+    },
     value: {
       handler: function (value) {
         if (this.editor !== null && value !== this.editor.root.innerHTML) {
-          this.editor.clipboard.dangerouslyPasteHTML(value);
+          const delta = this.editor.clipboard.convert(value);
+
+          this.editor.setContents(delta);
         }
       },
       immediate: false
@@ -65,7 +87,9 @@ export default {
 
     self.editor = new Quill(self.$refs.editor, {
       modules: Object.assign({}, modules, self.modules),
-      theme: "snow"
+      theme: "snow",
+      placeholder: this.placeholder,
+      readOnly: !(this.builder || this.readonly)
     });
 
     if (self.value != "") {
@@ -80,6 +104,38 @@ export default {
         }
       });
     });
+  }
+};
+
+elementPanelList.addElement(
+  "general",
+  "Rich Text",
+  "Rich Text",
+  "rich-text-editor",
+  "mdi mdi-format-font"
+);
+
+fieldProperties["rich-text-editor"] = {
+  name: {
+    label: "Name"
+  },
+  label: {
+    label: "Label"
+  },
+  placeholder: {
+    label: "Placeholder"
+  },
+  value: {
+    label: "Value"
+  },
+  readonly: {
+    label: "Is Read Only"
+  },
+  attrs: {
+    label: "Attributes"
+  },
+  validation: {
+    label: "Validation"
   }
 };
 </script>
