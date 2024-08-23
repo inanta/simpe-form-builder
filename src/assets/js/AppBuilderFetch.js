@@ -1,3 +1,5 @@
+/* global eCrypt */
+
 import axios from "axios";
 import qs from "qs";
 import slugify from "slugify";
@@ -207,7 +209,8 @@ export default {
 
       delete data.webapp_item_slug;
 
-      url = baseURI + "/appii/?t=webapps_item&a=edit";
+      // url = baseURI + "/appii/?t=webapps_item&a=edit";
+      url = baseURI + "/app/api/v1/builder/save?t=webapps_item&a=edit";
     }
 
     // const url = baseURI + "/appii/webapp";
@@ -265,7 +268,113 @@ export default {
       });
   },
   insertRecord: function (app, data) {
+    const send = function (data) {
+      return axios
+        .post(baseURI + "/api/customizations", data, {
+          headers: {
+            Accept: "*/*",
+            Pragma: "no-cache",
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+          }
+        })
+        .then(function (data) {
+          window.location.href = app.custom_settings["redirect"];
+
+          return data.data;
+        });
+    };
+
     const new_data = {};
+
+    const eway_encrypt_key =
+      "zHjlINCr1W2XOulo6FN+z0iWerBaTBxrIMf6DEpkWz/xTQqqVgwFL3JRpbVC8tCNwyeFL2gk8Veto42Q//8BckThIdOLkrmzuvqzzTfQIP31467j+Gx69ksSa4rEe2tvj4W6Du5QmX3b6VM4+qzzhg6Vi7PHRYhtQwJ3SaCtycNYC73GjK5EAKJIjeSSPQkQNDSKYOm3DONIlvNikV/oev5QkglbOKvdEWFE3A5Dol9wvs2BjsdIEX6/dqUccpdUreSzDIiWMv38pukwuVZn+e0Mc661E5YNGjjDqRvK8tul8AThsWiQstC6S8MzWnjaCwfeCQlBIS5QrEyjs1i37w==";
+
+    var amount = "input[name=amount]";
+    var card_name = "input[name=card_holder]";
+    var card_num = "input[name=card_number]";
+    var card_cvv = "input[name=card_cvv]";
+    var card_exp_mm = "[name=card_exp_mm]";
+    var card_exp_yy = "[name=card_exp_yy]";
+
+    var card_num_ = document.querySelector(card_num).value
+      ? document.querySelector(card_num).value.replace(/\s/g, "")
+      : ""; // cleanup for submission
+    var card_cvv_ = document.querySelector(card_cvv).value
+      ? document.querySelector(card_cvv).value.replace(/\s/g, "")
+      : "";
+
+    console.log("card_num_", card_num_);
+    console.log("card_cvv_", card_cvv_);
+
+    // var card_num_ = $(card_num).val()
+    //   ? $(card_num).val().replace(/\s/g, "")
+    //   : ""; // cleanup for submission
+    // var card_cvv_ = $(card_cvv).val()
+    //   ? $(card_cvv).val().replace(/\s/g, "")
+    //   : "";
+
+    // document.querySelector('input[name="eway_card_number"]').value =
+    //   eCrypt.encryptValue(card_num_, eway_encrypt_key);
+    // document.querySelector('input[name="eway_card_cvv"]').value =
+    //   eCrypt.encryptValue(card_cvv_, eway_encrypt_key);
+
+    // $('input[name="eway_card_number"]').val(
+    //   eCrypt.encryptValue(card_num_, eway_encrypt_key)
+    // );
+    // $('input[name="eway_card_cvv"]').val(
+    //   eCrypt.encryptValue(card_cvv_, eway_encrypt_key)
+    // );
+    // prevent actual card send to http
+
+    // $(card_num).prop("disabled", true);
+    // $(card_cvv).prop("disabled", true);
+
+    // formdata = the_form.serializeArray();
+
+    // if is payment forms, then submit using ajax
+    // if (payment > 0) {
+    console.log("Form submit start");
+    // $.ajax({
+    //   method: "POST",
+    //   url: "/api/ooc-form-payments",
+    //   headers: {
+    //     "X-CSRF-Token": token,
+    //     "X-Requested-With": "XMLHttpRequest",
+    //     accept: "application/json"
+    //   },
+    //   data: formdata,
+    //   error: function (err) {
+    //     var errors = err.responseText;
+
+    //     var output_msg = "";
+    //     for (var key in errors) {
+    //       if (errors.hasOwnProperty(key)) {
+    //         var error = errors[key];
+
+    //         for (var errorKey in error) {
+    //           if (error.hasOwnProperty(errorKey)) {
+    //             var errorItem = error[errorKey];
+
+    //             output_msg += errorKey + ": " + errorItem[0] + "\n";
+    //           }
+    //         }
+    //       }
+    //     }
+
+    //     if (output_msg) {
+    //       alert(output_msg);
+    //     }
+    //     console.log("error", err);
+    //   },
+    //   success: function (response) {
+    //     console.log("Form submitted successful");
+    //     //alert('Form submitted successful');
+    //     //location.reload();
+    //   }
+    // }).done(function (response) {
+    //   ProcessResponse(response, self, "eway");
+    // });
+    // }
 
     new_data["form"] = { properties_attributes: {} };
 
@@ -277,24 +386,69 @@ export default {
       }
     }
 
+    if (document.querySelector('[name="h-captcha-response"]')) {
+      new_data["h-captcha-response"] = document.querySelector(
+        '[name="h-captcha-response"]'
+      ).value;
+    }
+
     new_data["authenticity_token"] = app.custom_settings["authenticity_token"];
     new_data["form_id"] = app.custom_settings["form_id"];
     new_data["download_expiry"] = app.custom_settings["download_expiry"];
     new_data["resource_id"] = "new";
 
-    return axios
-      .post(baseURI + "/api/customizations", new_data, {
-        headers: {
-          Accept: "*/*",
-          Pragma: "no-cache",
-          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        }
-      })
-      .then(function (data) {
-        window.location.href = app.custom_settings["redirect"];
+    if (document.querySelector(amount)) {
+      new_data["amount"] = document.querySelector(amount).value;
+      new_data["payment_method"] = 248;
+      new_data["card_holder"] = document.querySelector(card_name).value;
+      new_data["card_exp_mm"] = document.querySelector(card_exp_mm).value;
+      new_data["card_exp_yy"] = document.querySelector(card_exp_yy).value;
+      new_data["eway_card_number"] = eCrypt.encryptValue(
+        card_num_,
+        eway_encrypt_key
+      );
+      new_data["eway_card_cvv"] = eCrypt.encryptValue(
+        card_cvv_,
+        eway_encrypt_key
+      );
 
-        return data.data;
-      });
+      return axios
+        .post(baseURI + "/api/ooc-form-payments", new_data, {
+          headers: {
+            Accept: "*/*",
+            Pragma: "no-cache",
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+          }
+        })
+        .then(function (response) {
+          console.log(response.data);
+
+          if (response.data.error) {
+            alert(response.data.err_message);
+
+            return response;
+          } else {
+            send(new_data);
+          }
+          // send();
+        });
+    } else {
+      return send(new_data);
+    }
+
+    // return axios
+    //   .post(baseURI + "/api/customizations", new_data, {
+    //     headers: {
+    //       Accept: "*/*",
+    //       Pragma: "no-cache",
+    //       "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+    //     }
+    //   })
+    //   .then(function (data) {
+    //     window.location.href = app.custom_settings["redirect"];
+
+    //     return data.data;
+    //   });
 
     // return axios
     //   .post(baseURI + "/app/api/v1/records/" + app.slug, data, {
