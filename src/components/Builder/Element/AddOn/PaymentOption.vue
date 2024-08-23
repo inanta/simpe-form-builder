@@ -76,6 +76,10 @@ export default {
       type: Boolean,
       default: false
     },
+    name: {
+      type: String,
+      default: ""
+    },
     label: {
       type: String,
       default: ""
@@ -124,6 +128,7 @@ export default {
       default: "title-description"
     }
   },
+  emits: ["input"],
   data: function () {
     return {
       quantity: []
@@ -176,6 +181,31 @@ export default {
           this.quantity[index] = 0;
         }
       },
+      immediate: true
+    },
+    quantity: {
+      handler: function (values) {
+        const composed_values = [];
+
+        for (let index = 0; index < this.paymentOptionItems.length; index++) {
+          const item = this.paymentOptionItems[index];
+
+          composed_values.push({
+            name: item.name,
+            price: item.price,
+            quantity: values[index],
+            total: values[index] * item.price
+          });
+        }
+
+        this.$emit("input", {
+          target: {
+            name: this.name,
+            value: JSON.stringify(composed_values)
+          }
+        });
+      },
+      deep: true,
       immediate: true
     }
   },
