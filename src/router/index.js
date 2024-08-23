@@ -16,12 +16,12 @@ const routes = [
     path: "/app/builder/build/:name?",
     name: "App Builder",
     component: () => import("../views/AppBuilder.vue")
+  },
+  {
+    path: "/app/view/:name",
+    name: "App View",
+    component: () => import("../views/AppView.vue")
   }
-  // {
-  //   path: "/app/view/:name",
-  //   name: "App View",
-  //   component: () => import("../views/AppView.vue")
-  // },
   // {
   //   path: "/app/insert/:name/:parameter?/:value?",
   //   name: "App Insert",

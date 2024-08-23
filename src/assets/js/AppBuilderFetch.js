@@ -234,7 +234,15 @@ export default {
         baseURI +
           "/app/api/v1/records/" +
           app +
-          (query_string === "" ? "" : "?" + query_string)
+          (query_string === "" ? "" : "?" + query_string),
+        {
+          headers: {
+            Accept: "*/*",
+            Pragma: "no-cache",
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+          },
+          indices: false
+        }
       )
       .then(function (data) {
         return data.data;
@@ -309,7 +317,13 @@ export default {
   },
   settings: function (app, settings) {
     return axios
-      .post(baseURI + "/app/api/v1/apps/settings/" + app.slug, settings)
+      .post(baseURI + "/app/api/v1/apps/settings/" + app.slug, settings, {
+        headers: {
+          Accept: "*/*",
+          Pragma: "no-cache",
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        }
+      })
       .then(function (data) {
         return data.data;
       });

@@ -218,7 +218,7 @@ export default {
       ]
     },
     fieldLogic: false,
-    rowClickAction: "edit",
+    rowClickAction: "view",
     showDuplicateButton: true,
     showExportButton: true,
     showMoreButton: false,
