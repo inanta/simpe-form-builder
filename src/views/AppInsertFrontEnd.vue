@@ -4,7 +4,7 @@
       <div ref="mainContainer" class="relative mb-4 mt-2">
         <div
           ref="topButtonsContainer"
-          class="flex rounded-t-md border-b border-mid-gray bg-white px-3 py-3 dark:border-surface--dark-600 dark:bg-surface--dark-300"
+          class="flex rounded-t-md border-b border-mid-gray bg-white py-3 px-3 dark:border-surface--dark-600 dark:bg-surface--dark-300"
         >
           <div class="my-auto text-xl font-bold">{{ app.name }}</div>
           <div>
@@ -44,7 +44,7 @@
             </button>
           </div>
         </div>
-        <div v-if="app.container_type === 'Tabs'" class="px-5 pt-3">
+        <div v-if="app.container_type === 'Tabs'" class="pt-3">
           <button
             v-for="(container, index) in containers"
             :key="container.name"
@@ -68,7 +68,7 @@
               v-show="index == selectedContainer"
               class="flex-shrink flex-grow"
             >
-              <div :data-app="app.slug" class="px-5 py-3">
+              <div :data-app="app.slug">
                 <div
                   v-for="(row, row_index) in container.rows"
                   :key="row_index"
@@ -81,7 +81,6 @@
                     class="overflow-hidden"
                   >
                     <app-field
-                      ref="fields"
                       :app="app"
                       :data="values"
                       :error="errors[column.name]"
@@ -100,6 +99,12 @@
               </div>
             </div>
           </template>
+          <div
+            v-if="showSpamProtection"
+            id="h-hcaptcha-widget"
+            class="h-captcha"
+            data-sitekey="ce2a4f04-a5cf-4da6-bd8a-da2e74c8913a"
+          ></div>
         </form>
       </div>
     </div>
@@ -120,6 +125,8 @@
 </template>
 
 <script>
+/* global hcaptcha */
+
 import AppField from "@/components/Builder/AppField.vue";
 import ConfirmationDialog from "@/components/Builder/ConfirmationDialog.vue";
 import AppAlert from "@/components/Builder/AppAlert.vue";
@@ -171,23 +178,67 @@ export default {
       selectedContainer: 0,
       showInvalid: false,
       values: {},
-      visibilities: {}
+      visibilities: {},
+
+      scripts: [],
+      showSpamProtection: false
     };
   },
   computed: {
     isAbleToSave: function () {
       return isAbleToSave(this.isValuesValid);
+    },
+    hasSpamProtection: function () {
+      if (
+        typeof this.app.custom_settings !== "undefined" &&
+        typeof this.app.custom_settings.protection_type !== "undefined"
+      ) {
+        this.app.custom_settings.protection_type;
+
+        return this.app.custom_settings.protection_type;
+      }
+
+      return false;
     }
   },
   watch: {
     $route(to) {
       this.render(to.params.name);
+    },
+    app: function (value) {
+      this.showSpamProtection = true;
+
+      this.$nextTick(function () {
+        setTimeout(function () {
+          if (
+            typeof value.custom_settings !== "undefined" &&
+            typeof value.custom_settings.protection_type !== "undefined"
+          ) {
+            console.log("Rendering hCaptcha");
+
+            hcaptcha.render("h-hcaptcha-widget");
+          }
+        }, 1000);
+      });
     }
   },
   mounted: function () {
     assignValueFromQuery(this.$route, this.values);
 
     this.render(this.$route.params.name);
+
+    const scripts = ["https://js.hcaptcha.com/1/api.js"];
+
+    for (let index = 0; index < scripts.length; index++) {
+      const script = document.createElement("script");
+
+      script.src = scripts[index];
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+
+      this.scripts.push(script);
+    }
 
     window.addEventListener("scroll", this.onWindowScroll);
   },
@@ -393,7 +444,7 @@ export default {
           save: getPropertyValue(
             self.app.settings,
             "ui.page.messages.save",
-            "Save"
+            "Submit"
           )
         };
 
