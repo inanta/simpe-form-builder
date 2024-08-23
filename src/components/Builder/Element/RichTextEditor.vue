@@ -85,18 +85,20 @@ export default {
       ]
     };
 
-    self.editor = new Quill(self.$refs.editor, {
-      modules: Object.assign({}, modules, self.modules),
+    console.log(!(this.builder || this.readonly));
+
+    this.editor = new Quill(this.$refs.editor, {
+      modules: Object.assign({}, modules, this.modules),
       theme: "snow",
       placeholder: this.placeholder,
       readOnly: !(this.builder || this.readonly)
     });
 
-    if (self.value != "") {
-      self.editor.clipboard.dangerouslyPasteHTML(self.value);
+    if (this.value != "") {
+      this.editor.clipboard.dangerouslyPasteHTML(this.value);
     }
 
-    self.editor.on("text-change", function () {
+    this.editor.on("text-change", function () {
       self.$emit("input", {
         target: {
           name: self.name,

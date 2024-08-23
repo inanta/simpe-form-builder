@@ -85,6 +85,7 @@ export default {
   emits: ["close"],
   data: function () {
     return {
+      isValuesValid: {},
       selectedContainer: 0,
       showInvalid: false,
       values: {}
