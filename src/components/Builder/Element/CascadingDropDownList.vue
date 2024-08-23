@@ -10,7 +10,7 @@
     ></ns-drop-down-list>
     <div
       v-if="isLoading"
-      class="absolute top-[calc(50%-0.75rem)] right-2 block"
+      class="absolute right-2 top-[calc(50%-0.75rem)] block"
     >
       <span class="loader-3"></span>
     </div>

@@ -14,7 +14,7 @@
         >
           <ns-tab :title="customSetting.label" :order="customSettingIndex">
             <div
-              class="border border-x-0 border-t-primary border-b-mid-gray pb-3 dark:border-t-primary--dark dark:border-b-mid-gray--dark"
+              class="border border-x-0 border-b-mid-gray border-t-primary pb-3 dark:border-b-mid-gray--dark dark:border-t-primary--dark"
             >
               <template
                 v-if="
@@ -110,8 +110,8 @@ export default {
             typeof value[field.name] !== "undefined"
               ? value[field.name]
               : typeof field.value !== "undefined"
-              ? field.value
-              : "";
+                ? field.value
+                : "";
 
           self.internalValues[field.name] = saved_value;
           self.visibilities[field.name] = self.isVisible(field);

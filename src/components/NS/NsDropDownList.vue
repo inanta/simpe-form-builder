@@ -27,7 +27,7 @@
             'bg-primary text-on-primary dark:bg-primary--dark dark:text-on-primary--dark':
               index === hoveredItemIndex
           }"
-          class="cursor-pointer py-1 px-2"
+          class="cursor-pointer px-2 py-1"
           @mouseover="onDropDownItemMouseOver(index)"
           @click="onDropDownItemClick(item)"
         >

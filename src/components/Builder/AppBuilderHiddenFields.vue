@@ -8,7 +8,7 @@
     <div
       v-for="(value, index) in internalValues"
       :key="index"
-      class="flex w-full max-w-full space-x-2 px-2 pt-2 pb-0"
+      class="flex w-full max-w-full space-x-2 px-2 pb-0 pt-2"
     >
       <div class="w-1/3">
         <input

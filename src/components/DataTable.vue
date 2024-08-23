@@ -122,8 +122,8 @@
               ? serverItemsLength
               : currentPage * perPage
             : currentPage * perPage > filteredItems.length
-            ? filteredItems.length
-            : currentPage * perPage
+              ? filteredItems.length
+              : currentPage * perPage
         }}
         of
         {{ serverItemsLength ? serverItemsLength : filteredItems.length }}
@@ -587,8 +587,8 @@ export default {
               self.filteredHeaders[index].sort === "desc"
                 ? ""
                 : self.filteredHeaders[index].sort === ""
-                ? "asc"
-                : "desc";
+                  ? "asc"
+                  : "desc";
 
             if (self.filteredHeaders[index].sort !== "") {
               self.currentSortColumn = self.filteredHeaders[index];

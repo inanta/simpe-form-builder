@@ -150,10 +150,10 @@
       <template v-if="tableActions === 'inline'">
         <div
           data-action-buttons
-          class="absolute top-0 right-0 hidden h-full w-auto items-center justify-end pr-1 text-right text-on-primary md:pr-16"
+          class="absolute right-0 top-0 hidden h-full w-auto items-center justify-end pr-1 text-right text-on-primary md:pr-16"
         >
           <div
-            class="rounded bg-primary py-0.5 px-3 shadow-md dark:bg-primary--dark"
+            class="rounded bg-primary px-3 py-0.5 shadow-md dark:bg-primary--dark"
           >
             <app-view-item-actions
               :additional-action-buttons="additionalActionButtons"

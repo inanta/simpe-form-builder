@@ -5,7 +5,7 @@
       class="mb-4 mt-2 rounded-md border border-mid-gray"
       style="box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important"
     >
-      <div class="flex border-b border-mid-gray py-3 px-3">
+      <div class="flex border-b border-mid-gray px-3 py-3">
         <div class="my-auto">
           <input
             ref="import"

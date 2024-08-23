@@ -13,7 +13,7 @@
         <div
           ref="topButtonsContainer"
           :class="{
-            'border-b py-3 px-3':
+            'border-b px-3 py-3':
               hasExportFeature ||
               hasImportFeature ||
               hasDeleteFeature ||

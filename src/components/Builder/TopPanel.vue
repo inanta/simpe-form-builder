@@ -2,33 +2,33 @@
   <div class="mt-3 dark:text-on-surface--dark-100">
     <div class="flex w-full">
       <button
-        class="rounded-sm bg-primary py-2 px-4 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
+        class="rounded-sm bg-primary px-4 py-2 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
         @click="onImportButtonClick"
       >
         <span class="mdi mdi-import"></span> Import
       </button>
       <button
         v-if="configurations.builder.databaseSelection"
-        class="mr-auto ml-2 rounded-sm bg-primary py-2 px-4 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
+        class="ml-2 mr-auto rounded-sm bg-primary px-4 py-2 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
         @click="isDatabaseSelectionShown = true"
       >
         <span class="mdi mdi-database-cog"></span> Selected Database:
         {{ selectedTable }}
       </button>
       <button
-        class="ml-auto rounded-sm bg-primary py-2 px-4 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
+        class="ml-auto rounded-sm bg-primary px-4 py-2 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
         @click="$emit('download')"
       >
         <span class="mdi mdi-download"></span> Download
       </button>
       <button
-        class="ml-2 rounded-sm bg-primary py-2 px-4 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
+        class="ml-2 rounded-sm bg-primary px-4 py-2 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
         @click="$emit('preview')"
       >
         <span class="mdi mdi-eye"></span> Preview
       </button>
       <button
-        class="ml-2 rounded-sm bg-primary py-2 px-4 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
+        class="ml-2 rounded-sm bg-primary px-4 py-2 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
         @click="$emit('save')"
       >
         <span class="mdi mdi-content-save"></span> Save

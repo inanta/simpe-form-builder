@@ -17,10 +17,10 @@
               isImageFile(selected_file) &&
               fileSelectorShowPreviewForImageFile === true
             "
-            class="square-image relative mb-3 w-full rounded bg-white shadow md:mr-[1%] md:mb-[1%] md:w-[19%]"
+            class="square-image relative mb-3 w-full rounded bg-white shadow md:mb-[1%] md:mr-[1%] md:w-[19%]"
           >
             <img :src="baseURI + '/' + selected_file.file_path" class="p-1" />
-            <div class="absolute top-2 right-2">
+            <div class="absolute right-2 top-2">
               <a
                 v-if="
                   !readonly &&
@@ -196,7 +196,7 @@
             }"
             @click="onFileClick(file)"
           >
-            <div class="absolute top-2 right-2">
+            <div class="absolute right-2 top-2">
               <a
                 v-if="fileSelectorAllowDeleteInBrowser"
                 class="cursor-pointer rounded border border-light-gray bg-white px-1.5 py-1 text-center shadow"

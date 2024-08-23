@@ -9,7 +9,7 @@
       <div
         class="mb-4 mt-2 rounded-md border border-light-gray shadow-center dark:border-surface--dark-300 dark:bg-surface--dark-300"
       >
-        <div class="flex border-b border-mid-gray py-3 px-3">
+        <div class="flex border-b border-mid-gray px-3 py-3">
           <div class="my-auto">
             <input
               ref="import"

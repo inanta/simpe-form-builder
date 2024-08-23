@@ -12,7 +12,7 @@
       >
         <div
           ref="topButtonsContainer"
-          class="flex rounded-t-md border-b border-mid-gray bg-white py-3 px-3 dark:border-surface--dark-600 dark:bg-surface--dark-300"
+          class="flex rounded-t-md border-b border-mid-gray bg-white px-3 py-3 dark:border-surface--dark-600 dark:bg-surface--dark-300"
         >
           <div>
             <button

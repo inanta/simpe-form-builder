@@ -5,7 +5,7 @@
         title="Activities"
         :order="activityFeedsDefaultTab === 'activities' ? 0 : 1"
       >
-        <div class="py-5 px-3">
+        <div class="px-3 py-5">
           <div class="flex">
             <div>
               <img :src="userPicture" class="h-14 w-14 rounded" />
@@ -95,7 +95,7 @@
         title="Files"
         :order="activityFeedsDefaultTab === 'files' ? 0 : 1"
       >
-        <div class="py-5 px-3">
+        <div class="px-3 py-5">
           <file-browser :files="files"></file-browser>
         </div>
       </ns-tab>
