@@ -4,10 +4,10 @@ export default function (isValuesValid) {
       const value = isValuesValid[key];
 
       if (value === false) {
-        return false;
+        return { status: false, name: key };
       }
     }
   }
 
-  return true;
+  return { status: true };
 }

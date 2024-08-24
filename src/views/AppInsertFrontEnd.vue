@@ -2,9 +2,9 @@
   <div>
     <div>
       <div ref="mainContainer" class="relative mb-4 mt-2">
-        <div
+        <!-- <div
           ref="topButtonsContainer"
-          class="flex rounded-t-md border-b border-mid-gray bg-white py-3 px-3 dark:border-surface--dark-600 dark:bg-surface--dark-300"
+          class="flex rounded-t-md border-b border-mid-gray bg-white px-3 py-3 dark:border-surface--dark-600 dark:bg-surface--dark-300"
         >
           <div class="my-auto text-xl font-bold">{{ app.name }}</div>
           <div>
@@ -18,7 +18,7 @@
             </button>
           </div>
           <div class="ml-auto">
-            <!-- <button
+            <button
               :class="{
                 'bg-negative dark:bg-negative--dark': !disableCancelButton,
                 'bg-disabled text-on-disabled dark:bg-disabled--dark dark:text-on-disabled--dark':
@@ -29,7 +29,7 @@
               @click="onCancelButtonClick"
             >
               <span class="mdi mdi-close"></span> {{ messages.cancel }}
-            </button> -->
+            </button>
             <button
               :class="{
                 'bg-primary dark:bg-primary--dark': !disableSaveButton,
@@ -43,7 +43,7 @@
               <span class="mdi mdi-content-save"></span> {{ messages.save }}
             </button>
           </div>
-        </div>
+        </div> -->
         <div v-if="app.container_type === 'Tabs'" class="pt-3">
           <button
             v-for="(container, index) in containers"
@@ -81,6 +81,7 @@
                     class="overflow-hidden"
                   >
                     <app-field
+                      ref="fields"
                       :app="app"
                       :data="values"
                       :error="errors[column.name]"
@@ -105,6 +106,21 @@
             class="h-captcha"
             data-sitekey="ce2a4f04-a5cf-4da6-bd8a-da2e74c8913a"
           ></div>
+          <div class="pt-3">
+            <button
+              :class="{
+                'bg-primary dark:bg-primary--dark': !disableSaveButton,
+                'bg-disabled text-on-disabled dark:bg-disabled--dark dark:text-on-disabled--dark':
+                  disableSaveButton
+              }"
+              :disable="disableSaveButton"
+              class="rounded px-3 py-2 text-on-primary"
+              type="button"
+              @click="onSaveButtonClick"
+            >
+              <span class="mdi mdi-content-save"></span> {{ messages.save }}
+            </button>
+          </div>
         </form>
       </div>
     </div>
@@ -147,6 +163,7 @@ import getPropertyValue from "@/assets/js/getPropertyValue.js";
 import isAbleToSave from "../assets/js/builder/isAbleToSave.js";
 import onAppInput from "../assets/js/builder/onAppInput.js";
 import onAppWindowScroll from "../assets/js/builder/onAppWindowScroll.js";
+import scrollFieldIntoView from "../assets/js/builder/scrollFieldIntoView.js";
 
 export default {
   components: {
@@ -218,7 +235,7 @@ export default {
 
             hcaptcha.render("h-hcaptcha-widget");
           }
-        }, 1000);
+        }, 2000);
       });
     }
   },
@@ -289,7 +306,7 @@ export default {
     onSaveButtonClick: function () {
       const self = this;
 
-      if (self.isAbleToSave) {
+      if (self.isAbleToSave.status) {
         self.disableCancelButton = true;
         self.disableSaveButton = true;
 
@@ -327,40 +344,7 @@ export default {
             self.disableSaveButton = false;
           });
       } else {
-        for (const key in this.isValuesValid) {
-          if (Object.prototype.hasOwnProperty.call(this.isValuesValid, key)) {
-            const valid = this.isValuesValid[key];
-
-            if (!valid) {
-              for (
-                let index = 0;
-                index < this.$refs["fields"].length;
-                index++
-              ) {
-                const field = this.$refs["fields"][index];
-
-                if (
-                  typeof field.properties.name !== "undefined" &&
-                  key === field.properties.name
-                ) {
-                  field.$el.scrollIntoView({ behavior: "smooth" });
-
-                  break;
-                }
-              }
-
-              // document.dispatchEvent(
-              //   new CustomEvent("app:validationError", {
-              //     detail: {
-              //       name: key
-              //     }
-              //   })
-              // );
-
-              break;
-            }
-          }
-        }
+        scrollFieldIntoView(this.$refs["fields"], self.isAbleToSave.name);
 
         self.showInvalid = true;
       }
