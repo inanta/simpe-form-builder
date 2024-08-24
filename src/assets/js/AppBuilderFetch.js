@@ -3,6 +3,9 @@
 import axios from "axios";
 import qs from "qs";
 import slugify from "slugify";
+import alert from "@/assets/js/builder/alert.js";
+
+//<script src="{{'modules/ooc_tools/js/lib/sweetalert2.min' | asset_url }}"></script>
 
 const baseURI = import.meta.env.VITE_FETCH_BASE_URL;
 
@@ -197,7 +200,6 @@ export default {
       webapp_item_expirydate: "",
       webapp_item_weighting: "0",
       "ooc_custom_field-app": JSON.stringify(app),
-      // "ooc_custom_field-user": "35",
       webapp_item_slug_base: "apps",
       webapp_schema_id: "1743699",
       webapp_schema_name: "modules/_admin/webapps/apps"
@@ -212,9 +214,6 @@ export default {
       // url = baseURI + "/appii/?t=webapps_item&a=edit";
       url = baseURI + "/app/api/v1/builder/save?t=webapps_item&a=edit";
     }
-
-    // const url = baseURI + "/appii/webapp";
-    // let url = baseURI + "/appii/?t=webapps_item&a=add";
 
     return axios
       .post(url, data, {
@@ -303,78 +302,7 @@ export default {
       ? document.querySelector(card_cvv).value.replace(/\s/g, "")
       : "";
 
-    console.log("card_num_", card_num_);
-    console.log("card_cvv_", card_cvv_);
-
-    // var card_num_ = $(card_num).val()
-    //   ? $(card_num).val().replace(/\s/g, "")
-    //   : ""; // cleanup for submission
-    // var card_cvv_ = $(card_cvv).val()
-    //   ? $(card_cvv).val().replace(/\s/g, "")
-    //   : "";
-
-    // document.querySelector('input[name="eway_card_number"]').value =
-    //   eCrypt.encryptValue(card_num_, eway_encrypt_key);
-    // document.querySelector('input[name="eway_card_cvv"]').value =
-    //   eCrypt.encryptValue(card_cvv_, eway_encrypt_key);
-
-    // $('input[name="eway_card_number"]').val(
-    //   eCrypt.encryptValue(card_num_, eway_encrypt_key)
-    // );
-    // $('input[name="eway_card_cvv"]').val(
-    //   eCrypt.encryptValue(card_cvv_, eway_encrypt_key)
-    // );
-    // prevent actual card send to http
-
-    // $(card_num).prop("disabled", true);
-    // $(card_cvv).prop("disabled", true);
-
-    // formdata = the_form.serializeArray();
-
-    // if is payment forms, then submit using ajax
-    // if (payment > 0) {
     console.log("Form submit start");
-    // $.ajax({
-    //   method: "POST",
-    //   url: "/api/ooc-form-payments",
-    //   headers: {
-    //     "X-CSRF-Token": token,
-    //     "X-Requested-With": "XMLHttpRequest",
-    //     accept: "application/json"
-    //   },
-    //   data: formdata,
-    //   error: function (err) {
-    //     var errors = err.responseText;
-
-    //     var output_msg = "";
-    //     for (var key in errors) {
-    //       if (errors.hasOwnProperty(key)) {
-    //         var error = errors[key];
-
-    //         for (var errorKey in error) {
-    //           if (error.hasOwnProperty(errorKey)) {
-    //             var errorItem = error[errorKey];
-
-    //             output_msg += errorKey + ": " + errorItem[0] + "\n";
-    //           }
-    //         }
-    //       }
-    //     }
-
-    //     if (output_msg) {
-    //       alert(output_msg);
-    //     }
-    //     console.log("error", err);
-    //   },
-    //   success: function (response) {
-    //     console.log("Form submitted successful");
-    //     //alert('Form submitted successful');
-    //     //location.reload();
-    //   }
-    // }).done(function (response) {
-    //   ProcessResponse(response, self, "eway");
-    // });
-    // }
 
     new_data["form"] = { properties_attributes: {} };
 
@@ -424,43 +352,16 @@ export default {
           console.log(response.data);
 
           if (response.data.error) {
-            alert(response.data.err_message);
+            alert("Error", response.data.err_message.join(". "), "error");
 
             return response;
           } else {
             send(new_data);
           }
-          // send();
         });
     } else {
       return send(new_data);
     }
-
-    // return axios
-    //   .post(baseURI + "/api/customizations", new_data, {
-    //     headers: {
-    //       Accept: "*/*",
-    //       Pragma: "no-cache",
-    //       "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-    //     }
-    //   })
-    //   .then(function (data) {
-    //     window.location.href = app.custom_settings["redirect"];
-
-    //     return data.data;
-    //   });
-
-    // return axios
-    //   .post(baseURI + "/app/api/v1/records/" + app.slug, data, {
-    //     headers: {
-    //       Accept: "*/*",
-    //       Pragma: "no-cache",
-    //       "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-    //     }
-    //   })
-    //   .then(function (data) {
-    //     return data.data;
-    //   });
   },
   insertRecords: function (app, data) {
     return axios
