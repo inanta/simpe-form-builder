@@ -58,6 +58,14 @@
 import AppField from "@/components/Builder/AppField.vue";
 // import FieldPreview from "@/components/Builder/FieldPreview.vue";
 
+// import callHook from "@/assets/js/builder/callHook.js";
+// import onInsertPageCancelButtonClick from "@/assets/js/builder/app/hooks/onInsertPageCancelButtonClick.js";
+// import onInsertPageLoaded from "@/assets/js/builder/app/hooks/onInsertPageLoaded.js";
+// import onInsertPageValueChanged from "@/assets/js/builder/app/hooks/onInsertPageValueChanged.js";
+// import onRecordInserted from "@/assets/js/builder/app/hooks/onRecordInserted.js";
+
+import onAppInput from "@/assets/js/builder/onAppInput.js";
+
 export default {
   name: "AppPreview",
   components: {
@@ -101,9 +109,7 @@ export default {
   },
   methods: {
     onInput: function (name, value, is_initial_value = false) {
-      // const app = onAppInput(this.app, this.values, name, value);
-
-      console.log(name, value);
+      onAppInput(this.app, this.values, name, value);
 
       if (!is_initial_value) {
         this.isChangesMade = true;
