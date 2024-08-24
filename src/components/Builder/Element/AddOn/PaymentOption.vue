@@ -76,6 +76,12 @@ export default {
       type: Boolean,
       default: false
     },
+    data: {
+      type: Object,
+      default: function () {
+        return {};
+      }
+    },
     name: {
       type: String,
       default: ""
@@ -131,6 +137,7 @@ export default {
   emits: ["input"],
   data: function () {
     return {
+      lastWatchChangesID: null,
       quantity: []
     };
   },
@@ -175,6 +182,50 @@ export default {
     }
   },
   watch: {
+    data: {
+      handler: function (value) {
+        for (const key in value) {
+          if (Object.prototype.hasOwnProperty.call(value, key)) {
+            let field = value[key];
+
+            if (this.isJSON(field)) {
+              field = JSON.parse(field);
+
+              if (
+                typeof field.type !== "undefined" &&
+                field.type == "payment-summary" &&
+                field.title === this.paymentOptionTitle &&
+                field.id !== this.lastWatchChangesID
+              ) {
+                this.lastWatchChangesID = field.id;
+
+                for (
+                  let index = 0;
+                  index < this.paymentOptionItems.length;
+                  index++
+                ) {
+                  const item = this.paymentOptionItems[index];
+
+                  if (item.name === field.name) {
+                    if (field.operation === "+") {
+                      this.onPlusButtonClick(index);
+                    } else if (field.operation === "-") {
+                      this.onMinusButtonClick(index);
+                    } else if (field.operation === "") {
+                      this.quantity[index] = 0;
+                    }
+
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      deep: true,
+      immediate: true
+    },
     paymentOptionItems: {
       handler: function (values) {
         for (let index = 0; index < values.length; index++) {
@@ -191,6 +242,7 @@ export default {
           const item = this.paymentOptionItems[index];
 
           composed_values.push({
+            title: this.title,
             name: item.name,
             price: item.price,
             quantity: values[index],
@@ -219,6 +271,17 @@ export default {
         style: "currency",
         currency: configurations.currency
       }).format(price);
+    },
+    isJSON: function (str) {
+      try {
+        JSON.parse(str);
+
+        return true;
+      } catch (e) {
+        e;
+
+        return false;
+      }
     },
     onMinusButtonClick: function (index) {
       if (this.quantity[index] - 1 < this.minQuantity) {
