@@ -88,6 +88,7 @@
                     class="overflow-hidden"
                   >
                     <app-field
+                      ref="fields"
                       :app="app"
                       :data="values"
                       :error="errors[column.name]"
@@ -146,6 +147,7 @@ import getPropertyValue from "@/assets/js/getPropertyValue.js";
 import isAbleToSave from "../assets/js/builder/isAbleToSave.js";
 import onAppInput from "../assets/js/builder/onAppInput.js";
 import onAppWindowScroll from "../assets/js/builder/onAppWindowScroll.js";
+import scrollFieldIntoView from "../assets/js/builder/scrollFieldIntoView.js";
 
 export default {
   components: {
@@ -244,7 +246,7 @@ export default {
     onSaveButtonClick: function () {
       const self = this;
 
-      if (self.isAbleToSave) {
+      if (self.isAbleToSave.status) {
         self.disableCancelButton = true;
         self.disableSaveButton = true;
 
@@ -282,6 +284,8 @@ export default {
             self.disableSaveButton = false;
           });
       } else {
+        scrollFieldIntoView(this.$refs["fields"], self.isAbleToSave.name);
+
         self.showInvalid = true;
       }
     },
@@ -334,10 +338,12 @@ export default {
           );
         }
 
-        for (let index = 0; index < app.hidden_fields.length; index++) {
-          const field = app.hidden_fields[index];
+        if (typeof app.hidden_fields !== "undefined") {
+          for (let index = 0; index < app.hidden_fields.length; index++) {
+            const field = app.hidden_fields[index];
 
-          self.values[field.name] = field.value;
+            self.values[field.name] = field.value;
+          }
         }
 
         self.$nextTick(function () {
