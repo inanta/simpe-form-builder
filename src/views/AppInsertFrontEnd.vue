@@ -331,6 +331,7 @@ export default {
           })
           .catch(function (error) {
             if (
+              typeof error.response !== "undefined" &&
               typeof error.response.status !== "undefined" &&
               error.response.status === 401
             ) {
