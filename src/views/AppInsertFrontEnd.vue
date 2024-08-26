@@ -53,7 +53,7 @@
                 selectedContainer === index,
               'border-light-gray': selectedContainer !== index
             }"
-            class="border-b-4 px-3 py-2 text-primary transition-all dark:text-primary--dark"
+            class="border-b-4 p-0 text-primary transition-all dark:text-primary--dark md:px-5 md:py-3"
             @click="selectedContainer = index"
           >
             {{ container.name }}
@@ -72,8 +72,8 @@
                 <div
                   v-for="(row, row_index) in container.rows"
                   :key="row_index"
-                  :class="'grid-cols-' + row.columns.length"
-                  class="grid gap-2"
+                  class="grid grid-cols-1 gap-2"
+                  :class="'md:grid-cols-' + row.columns.length"
                 >
                   <div
                     v-for="(column, column_index) in row.columns"

@@ -1,59 +1,71 @@
 <template>
-  <div data-component="payment-summary" class="ml-2 border border-mid-gray p-3">
+  <div
+    data-component="payment-summary"
+    class="ml-0 border border-mid-gray p-3 md:ml-2"
+  >
     <div class="heading">{{ paymentSummaryTitle }}</div>
     <div
       v-for="(payment, paymentIndex) in paymentOptions"
       :key="paymentIndex"
-      class="flex border-b border-mid-gray py-3"
+      class="border-b border-mid-gray py-3"
     >
-      <div class="pr-3 font-bold">{{ payment.title }}</div>
-      <div class="ml-auto">
-        <div
-          v-for="(item, itemIndex) in payment.items"
-          :key="itemIndex"
-          class="mb-1"
-        >
-          <div class="flex flex-row">
-            <div class="mr-auto truncate py-2 font-bold">
-              {{ item.name }}
-            </div>
-            <div class="ml-auto px-4 py-2">{{ formatPrice(item.price) }}</div>
-            <div class="">
-              <div class="w-max rounded !border !border-mid-gray">
+      <div class="truncate pb-2 pr-3 font-bold">
+        <span class="mdi mdi-check-circle"></span>
+        {{ payment.title }}
+      </div>
+      <div class="flex">
+        <div class="w-full">
+          <div
+            v-for="(item, itemIndex) in payment.items"
+            :key="itemIndex"
+            class="mb-1"
+          >
+            <div class="flex flex-col md:flex-row">
+              <div class="flex w-full">
+                <div class="flex-1 truncate py-2 font-bold">
+                  {{ item.name }}
+                </div>
+                <div class="ml-auto flex-1 px-4 py-2 text-right">
+                  {{ formatPrice(item.price) }}
+                </div>
+                <div class="flex-1">
+                  <div class="w-max rounded !border !border-mid-gray">
+                    <button
+                      class="!w-9 !border-r px-3 py-1.5 text-base text-black outline-none"
+                      type="button"
+                      @click="onMinusButtonClick(item)"
+                    >
+                      -
+                    </button>
+                    <input
+                      v-model="item.quantity"
+                      class="!w-14 appearance-none rounded-sm !border-none bg-white px-3 py-1.5 text-center text-base text-black outline-none focus:border-primary"
+                      type="text"
+                      min="0"
+                      readonly
+                    />
+                    <button
+                      class="!w-9 !border-l px-3 py-1.5 text-base text-black outline-none"
+                      type="button"
+                      @click="onPlusButtonClick(item)"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+                <div class="ml-auto flex-1 px-4 py-2 text-right">
+                  {{ formatPrice(item.quantity * item.price) }}
+                </div>
+              </div>
+              <div class="pb-2 pt-1 md:pb-0">
                 <button
-                  class="!w-9 !border-r px-3 py-1.5 text-base text-black outline-none"
                   type="button"
-                  @click="onMinusButtonClick(item)"
+                  class="w-full rounded bg-negative px-2 py-1 text-on-negative md:w-auto"
+                  @click="onRemoveButtonClick(item)"
                 >
-                  -
-                </button>
-                <input
-                  v-model="item.quantity"
-                  class="!w-16 appearance-none rounded-sm !border-none bg-white px-3 py-1.5 text-center text-base text-black outline-none focus:border-primary"
-                  type="text"
-                  min="0"
-                  readonly
-                />
-                <button
-                  class="!w-9 !border-l px-3 py-1.5 text-base text-black outline-none"
-                  type="button"
-                  @click="onPlusButtonClick(item)"
-                >
-                  +
+                  <span class="mdi mdi-delete"></span>
                 </button>
               </div>
-            </div>
-            <div class="px-4 py-2">
-              {{ formatPrice(item.quantity * item.price) }}
-            </div>
-            <div>
-              <button
-                type="button"
-                class="rounded bg-negative px-3 py-2 text-on-negative"
-                @click="onRemoveButtonClick(item)"
-              >
-                <span class="mdi mdi-delete"></span>
-              </button>
             </div>
           </div>
         </div>
@@ -61,7 +73,8 @@
     </div>
     <div class="flex pt-4 text-right font-bold">
       <div class="ml-auto">TOTAL</div>
-      <div class="pl-4">{{ formatPrice(total) }}</div>
+      <div class="pl-6 text-right">{{ formatPrice(total) }}</div>
+      <input type="hidden" name="payment-summary-amount" :value="total" />
     </div>
   </div>
 </template>

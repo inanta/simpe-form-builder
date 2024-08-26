@@ -152,10 +152,15 @@ export default {
             );
           }
 
-          for (let index = 0; index < app.hidden_fields.length; index++) {
-            const field = app.hidden_fields[index];
+          if (
+            typeof app.hidden_fields !== "undefined" &&
+            Array.isArray(app.hidden_fields)
+          ) {
+            for (let index = 0; index < app.hidden_fields.length; index++) {
+              const field = app.hidden_fields[index];
 
-            self.values[field.name] = field.value;
+              self.values[field.name] = field.value;
+            }
           }
 
           AppBuilder.getRecord(app.slug, id).then(function (record) {

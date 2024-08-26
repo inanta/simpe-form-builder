@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="payment-fields">
+    <div v-if="!readonly" class="payment-fields">
       <div
         v-if="paymentProcessorDefineAmount === 'yes'"
         class="!mb-0 flex flex-col pb-3"
@@ -97,6 +97,7 @@
         </div>
       </div>
     </div>
+    <div v-else>Included with form. Please manually check status.</div>
   </div>
 </template>
 
@@ -133,6 +134,10 @@ export default {
     paymentProcessorAmount: {
       type: String,
       default: "0"
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     }
   },
   data: function () {

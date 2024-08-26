@@ -33,10 +33,11 @@
               class="rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark"
             >
               <template #content>
-                <i class="mdi mdi-swap-vertical"></i> Import / Export
+                <i class="mdi mdi-swap-vertical"></i>
+                {{ messages.import_export }}
               </template>
               <template #caret>
-                <i class="mdi mdi-chevron-down"></i>
+                &nbsp;<i class="mdi mdi-chevron-down"></i>
               </template>
               <ns-drop-down-button-item v-if="hasImportFeature"
                 ><a
@@ -340,6 +341,11 @@ export default {
           }
 
           self.messages = {
+            import_export: getPropertyValue(
+              self.app.settings,
+              "ui.page.messages.import_export",
+              "Import / Export"
+            ),
             add: getPropertyValue(
               self.app.settings,
               "ui.page.messages.add",

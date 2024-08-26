@@ -260,7 +260,13 @@ export default {
           slug +
           "/" +
           id +
-          (query_string === "" ? "" : "?" + query_string)
+          (query_string === "" ? "" : "?" + query_string),
+        {
+          headers: {
+            Accept: "*/*",
+            Pragma: "no-cache"
+          }
+        }
       )
       .then(function (data) {
         return data.data.record;
@@ -288,7 +294,8 @@ export default {
     const eway_encrypt_key =
       "zHjlINCr1W2XOulo6FN+z0iWerBaTBxrIMf6DEpkWz/xTQqqVgwFL3JRpbVC8tCNwyeFL2gk8Veto42Q//8BckThIdOLkrmzuvqzzTfQIP31467j+Gx69ksSa4rEe2tvj4W6Du5QmX3b6VM4+qzzhg6Vi7PHRYhtQwJ3SaCtycNYC73GjK5EAKJIjeSSPQkQNDSKYOm3DONIlvNikV/oev5QkglbOKvdEWFE3A5Dol9wvs2BjsdIEX6/dqUccpdUreSzDIiWMv38pukwuVZn+e0Mc661E5YNGjjDqRvK8tul8AThsWiQstC6S8MzWnjaCwfeCQlBIS5QrEyjs1i37w==";
 
-    var amount = "input[name=amount]";
+    // var amount = "input[name=amount]";
+    var amount = 'input[name="payment-summary-amount"]';
     var card_name = "input[name=card_holder]";
     var card_num = "input[name=card_number]";
     var card_cvv = "input[name=card_cvv]";
@@ -313,6 +320,11 @@ export default {
         new_data["form"]["properties_attributes"][key] = element;
       }
     }
+
+    new_data["form"]["properties_attributes"]["payment_type"] =
+      "Booking Payment";
+
+    new_data["ptype"] = "eway";
 
     if (document.querySelector('[name="h-captcha-response"]')) {
       new_data["h-captcha-response"] = document.querySelector(
@@ -352,10 +364,16 @@ export default {
           console.log(response.data);
 
           if (response.data.error) {
-            alert("Error", response.data.err_message.join(". "), "error");
+            alert("Error", response.data.err_message.join(". ") + ".", "error");
 
             return response;
           } else {
+            new_data["eway_response"] = JSON.stringify(
+              response.data.process_payment
+            );
+
+            console.log("NEW DATA", new_data);
+
             send(new_data);
           }
         });

@@ -21,12 +21,12 @@
       <hr class="border-top my-4 border-light-gray" />
       <template v-for="(container, index) in containers" :key="container.name">
         <div v-show="index == selectedContainer" class="flex-shrink flex-grow">
-          <div class="px-5 py-3">
+          <div class="p-0 md:px-5 md:py-3">
             <div
               v-for="(row, row_index) in container.rows"
               :key="row_index"
-              :class="'grid-cols-' + (row.columns.length - 1)"
-              class="grid gap-2"
+              class="grid grid-cols-1 gap-2"
+              :class="'md:grid-cols-' + (row.columns.length - 1)"
             >
               <div
                 v-for="(column, column_index) in row.columns"

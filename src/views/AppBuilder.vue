@@ -366,10 +366,14 @@ export default {
         const app = store.importAppData;
         store.importAppData = {};
 
-        self.app = app;
-        self.isEdit = true; // Not working
-        self.selectedTable = app.table;
-        self.selectedPrimaryKey = app.pk;
+        // self.app = app;
+        // self.isEdit = true; // Not working
+        // self.selectedTable = app.table;
+        // self.selectedPrimaryKey = app.pk;
+
+        app.columns = app.elements;
+
+        this.onImport(app);
       } else {
         self.isEdit = false; // Not working
         self.selectedTable = "";

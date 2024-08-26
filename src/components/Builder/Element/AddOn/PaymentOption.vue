@@ -1,15 +1,15 @@
 <template>
-  <div class="flex flex-row">
+  <div class="flex flex-col md:flex-row">
     <template v-if="paymentOptionType == 'title-description'">
-      <div class="w-1/3 font-bold">
+      <div class="md:pb:0 w-full pb-2 font-bold md:w-3/12">
         <pre class="whitespace-pre-wrap">{{ title }}</pre>
       </div>
-      <div class="w-1/3">
+      <div class="md:pb:0 w-full pb-2 md:w-4/12">
         <pre class="whitespace-pre-wrap">{{ description }}</pre>
       </div>
     </template>
     <template v-else>
-      <div class="w-2/3 font-bold">
+      <div class="md:pb:0 w-full pb-2 font-bold md:w-7/12">
         <img
           v-if="paymentOptionPicture !== ''"
           :src="paymentOptionPicture"
@@ -18,18 +18,20 @@
         <div v-else class="text-red-600">Please Add The Picture URL</div>
       </div>
     </template>
-    <div class="ml-auto w-1/3">
+    <div class="md:pb:0 ml-auto w-full pb-2 md:w-5/12">
       <div
         v-for="(item, itemIndex) in paymentOptionItems"
         :key="item.name"
         class="mb-1"
       >
-        <div class="flex flex-row">
-          <div class="mr-auto py-2 font-bold">
+        <div class="flex">
+          <div class="flex-1 truncate py-2 font-bold">
             {{ item.name }}
           </div>
-          <div class="ml-auto px-4 py-2">{{ formatPrice(item.price) }}</div>
-          <div class="">
+          <div class="ml-auto flex-1 px-4 py-2 text-right">
+            {{ formatPrice(item.price) }}
+          </div>
+          <div class="flex-1">
             <div class="w-max rounded !border !border-mid-gray">
               <button
                 class="!w-9 !border-r px-3 py-1.5 text-base text-black outline-none"
@@ -40,7 +42,7 @@
               </button>
               <input
                 v-model="quantity[itemIndex]"
-                class="!w-16 appearance-none rounded-sm !border-none bg-white px-3 py-1.5 text-center text-base text-black outline-none focus:border-primary"
+                class="!w-14 appearance-none rounded-sm !border-none bg-white px-3 py-1.5 text-center text-base text-black outline-none focus:border-primary"
                 type="text"
                 min="0"
               />
@@ -53,7 +55,7 @@
               </button>
             </div>
           </div>
-          <div class="px-4 py-2">
+          <div class="ml-auto flex-1 px-4 py-2 text-right">
             {{ formatPrice(quantity[itemIndex] * item.price) }}
           </div>
         </div>
@@ -132,6 +134,10 @@ export default {
     paymentOptionType: {
       type: String,
       default: "title-description"
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ["input"],
@@ -192,6 +198,7 @@ export default {
               field = JSON.parse(field);
 
               if (
+                field !== null &&
                 typeof field.type !== "undefined" &&
                 field.type == "payment-summary" &&
                 field.title === this.paymentOptionTitle &&

@@ -218,6 +218,9 @@ export default {
       ]
     },
     fieldLogic: false,
+    messages: {
+      importApp: "Import Full Event"
+    },
     rowClickAction: "view",
     showDuplicateButton: true,
     showExportButton: true,

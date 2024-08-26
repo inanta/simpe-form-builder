@@ -5,7 +5,8 @@
         class="rounded-sm bg-primary px-4 py-2 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
         @click="onImportButtonClick"
       >
-        <span class="mdi mdi-import"></span> Import
+        <span class="mdi mdi-import"></span>
+        {{ configurations.builder.messages.importApp }}
       </button>
       <button
         v-if="configurations.builder.databaseSelection"
@@ -106,6 +107,7 @@ export default {
   },
   emits: {
     columnsChange: null,
+    configurations: configurations,
     containerTypeChange: null,
     download: null,
     import: null,

@@ -21,7 +21,8 @@
               class="rounded bg-primary px-3 py-2 text-on-primary"
               @click="importApp"
             >
-              <span class="mdi mdi-import"></span> Import
+              <span class="mdi mdi-import"></span>
+              {{ configurations.builder.messages.importApp }}
             </button>
           </div>
           <div class="ml-auto">
