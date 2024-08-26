@@ -273,7 +273,7 @@ export default {
       });
   },
   insertRecord: function (app, data) {
-    const send = function (data) {
+    const send = async function (data) {
       return axios
         .post(baseURI + "/api/customizations", data, {
           headers: {
@@ -286,6 +286,22 @@ export default {
           window.location.href = app.custom_settings["redirect"];
 
           return data.data;
+        })
+        .catch(function (error) {
+          console.log("error.response", error.response);
+
+          if (
+            typeof error.response.data !== "undefined" &&
+            typeof error.response.data.errors !== "undefined" &&
+            typeof error.response.data.errors.base &&
+            typeof error.response.data.errors.base[0] !== "undefined"
+          ) {
+            alert("Error", error.response.data.errors.base[0], "error");
+          } else {
+            alert("Error", error.response.data, "error");
+          }
+
+          return error;
         });
     };
 
@@ -372,9 +388,7 @@ export default {
               response.data.process_payment
             );
 
-            console.log("NEW DATA", new_data);
-
-            send(new_data);
+            return send(new_data);
           }
         });
     } else {
