@@ -31,6 +31,7 @@
                 <div class="flex-1">
                   <div class="w-max rounded !border !border-mid-gray">
                     <button
+                      v-if="!readonly"
                       class="!w-9 !border-r px-3 py-1.5 text-base text-black outline-none"
                       type="button"
                       @click="onMinusButtonClick(item)"
@@ -43,8 +44,10 @@
                       type="text"
                       min="0"
                       readonly
+                      disabled
                     />
                     <button
+                      v-if="!readonly"
                       class="!w-9 !border-l px-3 py-1.5 text-base text-black outline-none"
                       type="button"
                       @click="onPlusButtonClick(item)"
@@ -57,7 +60,7 @@
                   {{ formatPrice(item.quantity * item.price) }}
                 </div>
               </div>
-              <div class="pb-2 pt-1 md:pb-0">
+              <div v-if="!readonly" class="pb-2 pt-1 md:pb-0">
                 <button
                   type="button"
                   class="w-full rounded bg-negative px-2 py-1 text-on-negative md:w-auto"
@@ -115,6 +118,10 @@ export default {
       default: function () {
         return {};
       }
+    },
+    readonly: {
+      type: Boolean,
+      value: false
     }
   },
   emits: ["input"],

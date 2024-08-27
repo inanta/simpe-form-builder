@@ -36,6 +36,7 @@
           <div class="flex-1">
             <div class="w-max rounded !border !border-mid-gray">
               <button
+                v-if="!readonly"
                 class="!w-9 !border-r px-3 py-1.5 text-base text-black outline-none"
                 type="button"
                 @click="onMinusButtonClick(itemIndex)"
@@ -47,8 +48,10 @@
                 class="!w-14 appearance-none rounded-sm !border-none bg-white px-3 py-1.5 text-center text-base text-black outline-none focus:border-primary"
                 type="text"
                 min="0"
+                :readonly="readonly"
               />
               <button
+                v-if="!readonly"
                 class="!w-9 !border-l px-3 py-1.5 text-base text-black outline-none"
                 type="button"
                 @click="onPlusButtonClick(itemIndex)"
