@@ -71,21 +71,17 @@
             v-for="(container, index) in containers"
             :key="container.name"
           >
-            <div
-              v-show="index == selectedContainer"
-              class="flex-shrink flex-grow"
-            >
+            <div v-show="index == selectedContainer">
               <div :data-app="app.slug" class="px-5 py-3">
                 <div
                   v-for="(row, row_index) in container.rows"
                   :key="row_index"
-                  :class="'grid-cols-' + row.columns.length"
-                  class="grid gap-2"
+                  class="flex flex-col md:flex-row md:space-x-2"
                 >
                   <div
                     v-for="(column, column_index) in row.columns"
                     :key="column_index"
-                    class="overflow-hidden"
+                    class="flex-1 overflow-hidden"
                   >
                     <app-field
                       ref="fields"

@@ -11,10 +11,7 @@
           v-for="(container, index) in previewContainers"
           :key="container.name"
         >
-          <div
-            v-show="index == selectedContainer"
-            class="flex-shrink flex-grow"
-          >
+          <div v-show="index == selectedContainer">
             <div :data-app="app.slug" class="px-5 py-3">
               <div
                 v-for="(row, row_index) in container.rows"

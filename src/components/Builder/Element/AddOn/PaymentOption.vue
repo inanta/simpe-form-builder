@@ -2,7 +2,9 @@
   <div class="flex flex-col md:flex-row">
     <template v-if="paymentOptionType == 'title-description'">
       <div class="md:pb:0 w-full pb-2 font-bold md:w-3/12">
-        <pre class="whitespace-pre-wrap">{{ title }}</pre>
+        <pre
+          class="whitespace-pre-wrap"
+        ><span class="mdi mdi-circle mr-2 md:hidden"></span>{{ title }}</pre>
       </div>
       <div class="md:pb:0 w-full pb-2 md:w-4/12">
         <pre class="whitespace-pre-wrap">{{ description }}</pre>
@@ -25,7 +27,7 @@
         class="mb-1"
       >
         <div class="flex">
-          <div class="flex-1 truncate py-2 font-bold">
+          <div class="flex-1 py-2 font-bold">
             {{ item.name }}
           </div>
           <div class="ml-auto flex-1 px-4 py-2 text-right">
