@@ -71,23 +71,20 @@
             v-for="(container, index) in containers"
             :key="container.name"
           >
-            <div
-              v-show="index == selectedContainer"
-              class="flex-shrink flex-grow"
-            >
+            <div v-show="index == selectedContainer">
               <div :data-app="app.slug" class="px-5 py-3">
                 <div
                   v-for="(row, row_index) in container.rows"
                   :key="row_index"
-                  :class="'grid-cols-' + row.columns.length"
-                  class="grid gap-2"
+                  class="flex flex-col md:flex-row md:space-x-2"
                 >
                   <div
                     v-for="(column, column_index) in row.columns"
                     :key="column_index"
-                    class="overflow-hidden"
+                    class="flex-1 overflow-hidden"
                   >
                     <app-field
+                      ref="fields"
                       :app="app"
                       :data="values"
                       :error="errors[column.name]"
@@ -138,6 +135,7 @@ import onEditPageLoaded from "@/assets/js/builder/app/hooks/onEditPageLoaded.js"
 import onEditPageValueChanged from "@/assets/js/builder/app/hooks/onEditPageValueChanged.js";
 import onRecordEdited from "@/assets/js/builder/app/hooks/onRecordEdited.js";
 
+import alert from "@/assets/js/builder/alert.js";
 import assignValueFromQuery from "../assets/js/builder/assignValueFromQuery.js";
 import checkFieldLogic from "../assets/js/builder/checkFieldLogic.js";
 import executeFieldLogics from "../assets/js/builder/executeFieldLogics.js";
@@ -146,6 +144,7 @@ import getPropertyValue from "@/assets/js/getPropertyValue.js";
 import isAbleToSave from "../assets/js/builder/isAbleToSave.js";
 import onAppInput from "../assets/js/builder/onAppInput.js";
 import onAppWindowScroll from "../assets/js/builder/onAppWindowScroll.js";
+import scrollFieldIntoView from "../assets/js/builder/scrollFieldIntoView.js";
 
 export default {
   components: {
@@ -244,7 +243,7 @@ export default {
     onSaveButtonClick: function () {
       const self = this;
 
-      if (self.isAbleToSave) {
+      if (self.isAbleToSave.status) {
         self.disableCancelButton = true;
         self.disableSaveButton = true;
 
@@ -282,6 +281,8 @@ export default {
             self.disableSaveButton = false;
           });
       } else {
+        scrollFieldIntoView(this.$refs["fields"], self.isAbleToSave.name);
+
         self.showInvalid = true;
       }
     },
@@ -294,150 +295,155 @@ export default {
     render: function (app_slug, id) {
       const self = this;
 
-      AppBuilder.get(app_slug).then(function (app) {
-        self.app = JSON.parse(JSON.stringify(app));
-        self.containers.splice(0);
+      AppBuilder.get(app_slug)
+        .then(function (app) {
+          self.app = JSON.parse(JSON.stringify(app));
+          self.containers.splice(0);
 
-        for (let index = 0; index < app.columns.length; index++) {
-          const column = app.columns[index];
+          for (let index = 0; index < app.columns.length; index++) {
+            const column = app.columns[index];
 
-          if (typeof self.containers[column.container] === "undefined") {
-            self.containers[column.container] = {
-              name: app.containers[column.container].name,
-              rows: []
-            };
-          }
-
-          if (
-            typeof self.containers[column.container].rows[column.row] ===
-            "undefined"
-          ) {
-            self.containers[column.container].rows[column.row] = {
-              columns: []
-            };
-          }
-
-          if (typeof column.name !== "undefined") {
-            self.errors[column.name] = [];
-            self.visibilities[column.name] = true;
-          }
-
-          self.containers[column.container].rows[column.row].columns.push(
-            column
-          );
-        }
-
-        for (let index = 0; index < app.hidden_fields.length; index++) {
-          const field = app.hidden_fields[index];
-
-          self.values[field.name] = field.value;
-        }
-
-        AppBuilder.getRecord(app.slug, id, { event: "update" })
-          .then(function (record) {
-            for (const key in record) {
-              self.values[key] = record[key];
+            if (typeof self.containers[column.container] === "undefined") {
+              self.containers[column.container] = {
+                name: app.containers[column.container].name,
+                rows: []
+              };
             }
 
-            self.$nextTick(function () {
-              if (
-                typeof self.$refs.fields !== "undefined" &&
-                typeof self.$refs.fields[0] !== "undefined" &&
-                typeof self.$refs.fields[0].focus === "function"
-              ) {
-                self.$refs.fields[0].focus();
+            if (
+              typeof self.containers[column.container].rows[column.row] ===
+              "undefined"
+            ) {
+              self.containers[column.container].rows[column.row] = {
+                columns: []
+              };
+            }
+
+            if (typeof column.name !== "undefined") {
+              self.errors[column.name] = [];
+              self.visibilities[column.name] = true;
+            }
+
+            self.containers[column.container].rows[column.row].columns.push(
+              column
+            );
+          }
+
+          if (typeof app.hidden_fields !== "undefined") {
+            for (let index = 0; index < app.hidden_fields.length; index++) {
+              const field = app.hidden_fields[index];
+
+              self.values[field.name] = field.value;
+            }
+          }
+
+          AppBuilder.getRecord(app.slug, id, { event: "update" })
+            .then(function (record) {
+              for (const key in record) {
+                self.values[key] = record[key];
               }
-            });
 
-            app.additionalButtons = self.additionalButtons;
-            app.values = self.values;
-
-            self.messages = {
-              cancel: getPropertyValue(
-                self.app.settings,
-                "ui.page.messages.cancel",
-                "Cancel"
-              ),
-              save: getPropertyValue(
-                self.app.settings,
-                "ui.page.messages.save",
-                "Save"
-              )
-            };
-
-            if (typeof app.field_logics !== "undefined") {
-              for (
-                let field_logic_index = 0;
-                field_logic_index < app.field_logics.length;
-                field_logic_index++
-              ) {
-                const field_logic = app.field_logics[field_logic_index];
-
-                for (
-                  let condition_index = 0;
-                  condition_index < field_logic.conditions.length;
-                  condition_index++
+              self.$nextTick(function () {
+                if (
+                  typeof self.$refs.fields !== "undefined" &&
+                  typeof self.$refs.fields[0] !== "undefined" &&
+                  typeof self.$refs.fields[0].focus === "function"
                 ) {
-                  const condition = field_logic.conditions[condition_index];
+                  self.$refs.fields[0].focus();
+                }
+              });
 
-                  if (
-                    typeof self.fieldLogics[condition.field] === "undefined"
+              app.additionalButtons = self.additionalButtons;
+              app.values = self.values;
+
+              self.messages = {
+                cancel: getPropertyValue(
+                  self.app.settings,
+                  "ui.page.messages.cancel",
+                  "Cancel"
+                ),
+                save: getPropertyValue(
+                  self.app.settings,
+                  "ui.page.messages.save",
+                  "Save"
+                )
+              };
+
+              if (typeof app.field_logics !== "undefined") {
+                for (
+                  let field_logic_index = 0;
+                  field_logic_index < app.field_logics.length;
+                  field_logic_index++
+                ) {
+                  const field_logic = app.field_logics[field_logic_index];
+
+                  for (
+                    let condition_index = 0;
+                    condition_index < field_logic.conditions.length;
+                    condition_index++
                   ) {
-                    self.fieldLogics[condition.field] = [];
-                  }
+                    const condition = field_logic.conditions[condition_index];
 
-                  self.fieldLogics[condition.field].push(function () {
-                    const field_logic_result = checkFieldLogic(
-                      field_logic.operator,
-                      field_logic.conditions,
-                      self.values
-                    );
-
-                    executeFieldLogicActions(
-                      field_logic.actions,
-                      field_logic_result,
-                      self.visibilities
-                    );
-                  });
-                }
-              }
-
-              for (const key in self.fieldLogics) {
-                if (Object.hasOwnProperty.call(self.fieldLogics, key)) {
-                  self.$watch(
-                    "values." + key,
-                    function () {
-                      executeFieldLogics(self.fieldLogics[key]);
-                    },
-                    {
-                      immediate: true
+                    if (
+                      typeof self.fieldLogics[condition.field] === "undefined"
+                    ) {
+                      self.fieldLogics[condition.field] = [];
                     }
-                  );
+
+                    self.fieldLogics[condition.field].push(function () {
+                      const field_logic_result = checkFieldLogic(
+                        field_logic.operator,
+                        field_logic.conditions,
+                        self.values
+                      );
+
+                      executeFieldLogicActions(
+                        field_logic.actions,
+                        field_logic_result,
+                        self.visibilities
+                      );
+                    });
+                  }
+                }
+
+                for (const key in self.fieldLogics) {
+                  if (Object.hasOwnProperty.call(self.fieldLogics, key)) {
+                    self.$watch(
+                      "values." + key,
+                      function () {
+                        executeFieldLogics(self.fieldLogics[key]);
+                      },
+                      {
+                        immediate: true
+                      }
+                    );
+                  }
                 }
               }
-            }
 
-            callHook(self.hooks, "onEditPageLoaded", Object.freeze(app));
-          })
-          .catch(function (e) {
-            let title = "Error";
-            let message = "Something went wrong!";
+              callHook(self.hooks, "onEditPageLoaded", Object.freeze(app));
+            })
+            .catch(function (e) {
+              let title = "Error";
+              let message = "Something went wrong!";
 
-            if (e.response.status === 404) {
-              message = "Data not found.";
-            }
-
-            const alert = new CustomEvent("app:alert", {
-              detail: {
-                title: title,
-                icon: "error",
-                message: message
+              if (e.response.status === 404) {
+                message = "Data not found.";
               }
-            });
 
-            document.dispatchEvent(alert);
-          });
-      });
+              alert(title, message, "error");
+            });
+        })
+        .catch(function (e) {
+          let title = "Error";
+          let message = "Something went wrong!";
+
+          if (e.response.status === 404) {
+            message = "Not found.";
+          }
+
+          alert(title, message, "error");
+        });
     },
 
     saveConfirmation: function () {

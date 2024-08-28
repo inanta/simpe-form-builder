@@ -12,6 +12,15 @@ export default function validateField(rules, value, data) {
 
       return regex.test(value);
     },
+    regex: function (value, rule) {
+      if (value !== "" && typeof rule.pattern !== "undefined") {
+        const regex = new RegExp(rule.pattern);
+
+        return regex.test(value);
+      }
+
+      return true;
+    },
     "field-compare": function (value, rule, data) {
       if (
         typeof value !== "undefined" &&

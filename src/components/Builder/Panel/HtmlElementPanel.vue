@@ -44,7 +44,9 @@ export default {
         content: element.content,
         element: element.tag,
         name: element.name,
-        type: "html"
+        type: "html",
+        properties:
+          typeof element.properties !== "undefined" ? element.properties : {}
       });
     },
     onDragStart: function ($event, element) {
@@ -52,7 +54,9 @@ export default {
         content: element.content,
         element: element.tag,
         name: element.name,
-        type: "html"
+        type: "html",
+        properties:
+          typeof element.properties !== "undefined" ? element.properties : {}
       });
     }
   }

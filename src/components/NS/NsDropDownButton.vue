@@ -80,12 +80,12 @@ export default {
       const self = this;
 
       if (typeof is_shown === "undefined") {
-        self.isMenuShown = !self.isMenuShown;
-      } else {
-        self.isMenuShown = is_shown;
+        is_shown = !self.isMenuShown;
       }
 
-      if (self.isMenuShown) {
+      if (is_shown) {
+        self.isMenuShown = true;
+
         self.$nextTick(function () {
           if (self.popperInstance === null) {
             self.popperInstance = createPopper(
@@ -108,10 +108,15 @@ export default {
           self.popperInstance.update();
         });
       } else {
-        if (self.popperInstance !== null) {
-          self.popperInstance.destroy();
-          self.popperInstance = null;
-        }
+        // TODO: Find a better solutions, somehow we need to delay 250ms form mobile devices
+        setTimeout(function () {
+          self.isMenuShown = false;
+
+          if (self.popperInstance !== null) {
+            self.popperInstance.destroy();
+            self.popperInstance = null;
+          }
+        }, 250);
       }
 
       self.$emit(self.isMenuShown ? "open" : "close");

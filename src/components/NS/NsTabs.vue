@@ -12,6 +12,7 @@
           tab__selected: tabIndex == selectedIndex
         }"
         class="inline-block px-3 py-2"
+        type="button"
         @click="selectTab(tabIndex)"
       >
         {{ tab.title }}
@@ -113,5 +114,3 @@ export default {
   }
 };
 </script>
-
-<style lang="css"></style>

@@ -104,8 +104,7 @@
 </template>
 
 <script>
-import "quill-mention";
-import "quill-mention/dist/quill.mention.css";
+import "quill-mention/autoregister";
 
 import NsTabs from "@/components/NS/NsTabs.vue";
 import NsTab from "@/components/NS/NsTab.vue";
@@ -515,7 +514,7 @@ fieldPropertyOptions.addOption("activity-feeds-show-unrecognized-activity", [
 </script>
 
 <style scoped>
-.ql-mention-list-container {
+:deep(.ql-mention-list-container) {
   width: 270px;
   border: 1px solid #f0f0f0;
   border-radius: 4px;
@@ -525,21 +524,21 @@ fieldPropertyOptions.addOption("activity-feeds-show-unrecognized-activity", [
   overflow: auto;
 }
 
-.ql-mention-loading {
+:deep(.ql-mention-loading) {
   line-height: 44px;
   padding: 0 20px;
   vertical-align: middle;
   font-size: 16px;
 }
 
-.ql-mention-list {
+:deep(.ql-mention-list) {
   list-style: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
 }
 
-.ql-mention-list-item {
+:deep(.ql-mention-list-item) {
   cursor: pointer;
   line-height: 44px;
   font-size: 16px;
@@ -547,11 +546,11 @@ fieldPropertyOptions.addOption("activity-feeds-show-unrecognized-activity", [
   vertical-align: middle;
 }
 
-.ql-mention-list-item.disabled {
+:deep(.ql-mention-list-item.disabled) {
   cursor: auto;
 }
 
-.ql-mention-list-item.selected {
+:deep(.ql-mention-list-item.selected) {
   background-color: #d3e1eb;
   text-decoration: none;
 }

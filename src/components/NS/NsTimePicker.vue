@@ -3,7 +3,7 @@
     <div class="flex">
       <div class="text-center">
         <div class="text-2xl font-bold">
-          <button @click="onHourUpButtonClick">
+          <button type="button" @click="onHourUpButtonClick">
             <span class="mdi mdi-chevron-up"></span>
           </button>
         </div>
@@ -18,7 +18,7 @@
           </select>
         </div>
         <div class="text-2xl font-bold">
-          <button @click="onHourDownButtonClick">
+          <button type="button" @click="onHourDownButtonClick">
             <span class="mdi mdi-chevron-down"></span>
           </button>
         </div>
@@ -30,7 +30,7 @@
       </div>
       <div class="text-center">
         <div class="text-2xl font-bold">
-          <button @click="onMinuteUpButtonClick">
+          <button type="button" @click="onMinuteUpButtonClick">
             <span class="mdi mdi-chevron-up"></span>
           </button>
         </div>
@@ -46,7 +46,7 @@
           </select>
         </div>
         <div class="text-2xl font-bold">
-          <button @click="onMinuteDownButtonClick">
+          <button type="button" @click="onMinuteDownButtonClick">
             <span class="mdi mdi-chevron-down"></span>
           </button>
         </div>
@@ -127,12 +127,12 @@ export default {
       let start_hour = 0;
       let end_hour = this.is24HourFormat ? 23 : 12;
 
-      if (this.minHour > 0) {
-        start_hour = this.minHour;
+      if (this.validatedMinHour > 0) {
+        start_hour = this.validatedMinHour;
       }
 
-      if (this.maxHour < 23) {
-        end_hour = this.maxHour;
+      if (this.validatedMaxHour < 23) {
+        end_hour = this.validatedMaxHour;
       }
 
       for (let hour = start_hour; hour <= end_hour; hour++) {

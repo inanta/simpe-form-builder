@@ -4,7 +4,7 @@
     enter-active-class="animate__animated animate__fadeInDown animate__faster"
     leave-active-class="animate__animated animate__fadeOutUp animate__faster"
   >
-    <div v-show="visible" ref="field" class="py-1.5">
+    <div v-show="visible" class="py-1.5">
       <label
         v-if="fieldLabel !== ''"
         :for="properties.name"
@@ -45,13 +45,7 @@
             validationError !== '' && showInvalidMessage ? '20rem' : '0'
         }"
       >
-        <div
-          class="transition-all"
-          :class="{
-            invisible: validationError === '',
-            visible: validationError !== ''
-          }"
-        >
+        <div>
           <span class="mdi mdi-alert-circle"></span> {{ validationError }}
         </div>
       </div>
@@ -192,20 +186,6 @@ export default {
       immediate: false
     }
   },
-  // mounted: function () {
-  //   const self = this;
-
-  //   document.addEventListener("app:validationError", function (event) {
-  //     if (event.detail.name === self.properties.name) {
-  //       if (typeof self.$refs["field"] !== "undefined") {
-  //         self.$refs["field"].scrollIntoView({
-  //           behavior: "smooth",
-  //           block: "center"
-  //         });
-  //       }
-  //     }
-  //   });
-  // },
   methods: {
     getHtmlElements: function (validation = null) {
       if (validation !== null) {

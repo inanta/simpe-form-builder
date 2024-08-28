@@ -3,8 +3,9 @@
     <input
       ref="input"
       v-model="dateTimePickerValue"
+      autocomplete="off"
       type="text"
-      v-bind="$attrs"
+      v-bind="cleanAttributes($attrs)"
       :readonly="readonly"
       :disabled="readonly"
       @focus="onInputFocus"
@@ -55,6 +56,8 @@
 
 <script>
 import { createPopper } from "@popperjs/core";
+
+import cleanAttributes from "@/assets/js/builder/cleanAttributes.js";
 
 import NsClosable from "@/directives/NsClosable.js";
 import NsCalendar from "@/components/NS/NsCalendar.vue";
@@ -202,6 +205,11 @@ export default {
     }
   },
   methods: {
+    cleanAttributes: function (attributes) {
+      const cleaned_attributes = cleanAttributes(attributes, []);
+
+      return cleaned_attributes;
+    },
     convertTimestampToDate: function (timestamp, is_microtime = false) {
       if (!is_microtime) {
         timestamp *= 1000;

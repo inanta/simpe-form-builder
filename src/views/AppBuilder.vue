@@ -68,30 +68,28 @@
               v-for="(container, index) in containers"
               :key="container.name"
             >
-              <div
-                v-if="index == selectedContainer"
-                class="mr-4 flex-shrink flex-grow"
-              >
+              <div v-show="index == selectedContainer" class="pr-4">
                 <div
-                  class="rounded border border-mid-gray px-2 py-4 dark:border-surface--dark-300 dark:bg-surface--dark-300 dark:text-on-surface--dark-300"
+                  :data-app="slugifiedAppName"
+                  class="rounded border border-mid-gray px-3 py-3 dark:border-surface--dark-300 dark:bg-surface--dark-300 dark:text-on-surface--dark-300"
                   @dragenter.self="onContainerDragEnter(container)"
                 >
-                  <template
+                  <div
                     v-for="(row, row_index) in container.rows"
                     :key="row_index"
                   >
-                    <div
-                      :class="'grid-cols-' + row.grid"
-                      class="grid gap-0"
-                      @dragover.prevent
-                    >
-                      <template
+                    <div class="flex" @dragover.prevent>
+                      <div
                         v-for="(column, column_index) in row.columns"
                         :key="column_index"
+                        class="flex-1 overflow-hidden"
+                        :class="{
+                          hidden: column.type == 'empty' && !row.showEmptyColumn
+                        }"
                       >
                         <div
                           v-if="column.type == 'empty' && row.showEmptyColumn"
-                          class="flex content-center items-center rounded-sm px-2 py-1 text-primary"
+                          class="flex h-full content-center items-center rounded-sm px-2 py-1 text-primary"
                         >
                           <empty-column-placeholder
                             :column="column_index"
@@ -159,7 +157,7 @@
                             @switch-column="onSwitchColumn"
                           ></builder-app-field>
                         </div>
-                      </template>
+                      </div>
                     </div>
                     <div
                       class="px-2"
@@ -184,7 +182,7 @@
                         ></empty-column-placeholder>
                       </template>
                     </div>
-                  </template>
+                  </div>
                 </div>
               </div>
               <!-- Is table attribute needed? -->
@@ -215,18 +213,18 @@
         </div>
         <div v-if="configurations.builder.hiddenFields" class="pb-3">
           <button
-            class="w-full rounded-sm bg-primary p-2 text-on-primary"
+            class="w-full rounded-sm bg-primary p-2 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
             @click="isHiddenFieldsSidePanelShown = true"
           >
-            Hidden Fields
+            <span class="mdi mdi-eye-off"></span> Hidden Fields
           </button>
         </div>
         <div v-if="configurations.builder.computedFields" class="pb-3">
           <button
-            class="w-full rounded-sm bg-primary p-2 text-on-primary"
+            class="w-full rounded-sm bg-primary p-2 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
             @click="isComputedFieldsSidePanelShown = true"
           >
-            Computed Fields
+            <span class="mdi mdi-function-variant"></span> Computed Fields
           </button>
         </div>
       </div>
@@ -366,13 +364,6 @@ export default {
         const app = store.importAppData;
         store.importAppData = {};
 
-        // self.app = app;
-        // self.isEdit = true; // Not working
-        // self.selectedTable = app.table;
-        // self.selectedPrimaryKey = app.pk;
-
-        app.columns = app.elements;
-
         this.onImport(app);
       } else {
         self.isEdit = false; // Not working
@@ -399,17 +390,28 @@ export default {
     ) {
       const container = this.containers[container_index];
 
-      let element = {
-        is_focused: false,
-        is_selected: false
-      };
+      let element = {};
 
       if (typeof saved_element === "undefined") {
         element.element = this.dragColumn.element;
         element.content = this.dragColumn.content;
+
+        for (const key in this.dragColumn.properties) {
+          if (
+            Object.prototype.hasOwnProperty.call(
+              this.dragColumn.properties,
+              key
+            )
+          ) {
+            element[key] = this.dragColumn.properties[key];
+          }
+        }
       } else {
         element = saved_element;
       }
+
+      element.is_focused = false;
+      element.is_selected = false;
 
       const element_index = this.columns.findIndex(function (item) {
         return item.name === element.name;
@@ -657,7 +659,16 @@ export default {
     onRemoveItem: function (container, row, column) {
       this.removeItem(container, row, column);
 
-      fixRow(this.containers[container].rows);
+      if (
+        row === 0 &&
+        column === 0 &&
+        this.containers[container].rows.length === 1 &&
+        this.containers[container].rows[row].columns.length === 1
+      ) {
+        this.containers.splice(0, 1, createEmptyContainer());
+      } else {
+        fixRow(this.containers[container].rows);
+      }
     },
     onSwitchColumn: function (row_index, column_index) {
       const row = this.containers[this.selectedContainer].rows[row_index];

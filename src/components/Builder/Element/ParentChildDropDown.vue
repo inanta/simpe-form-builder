@@ -1,8 +1,8 @@
 <template>
   <ns-drop-down-list
     :class="{
-      'border-mid-gray dark:border-surface--dark-500': error,
-      'border-negative dark:border-negative--dark': !error
+      'border-mid-gray dark:border-surface--dark-500': !error,
+      'border-negative dark:border-negative--dark': error
     }"
     :items="items"
     :placeholder="placeholder"

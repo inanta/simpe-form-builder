@@ -8,7 +8,7 @@
 import fieldProperties from "@/assets/js/builder/variables/fieldProperties.js";
 import elementPanelList from "@/assets/js/builder/variables/elementPanelList.js";
 
-import Quill from "quill/dist/quill.js";
+import Quill from "quill";
 import "quill/dist/quill.snow.css";
 
 export default {
@@ -33,6 +33,10 @@ export default {
         return {};
       }
     },
+    name: {
+      type: String,
+      default: ""
+    },
     placeholder: {
       type: String,
       default: ""
@@ -49,13 +53,13 @@ export default {
   emits: ["input"],
   data: function () {
     return {
-      editor: null
+      isValueInitialized: false
     };
   },
   watch: {
     placeholder: {
       handler: function (value) {
-        if (this.editor !== null && value !== this.editor.root.innerHTML) {
+        if (this.editor !== null) {
           this.editor.root.dataset.placeholder = value;
           this.editor.root.setAttribute("data-placeholder", value);
         }
@@ -64,15 +68,20 @@ export default {
     },
     value: {
       handler: function (value) {
-        if (this.editor !== null && value !== this.editor.root.innerHTML) {
-          const delta = this.editor.clipboard.convert(value);
+        if (
+          this.editor !== null &&
+          (!this.isValueInitialized || this.builder)
+        ) {
+          const delta = this.editor.clipboard.convertHTML(value);
 
           this.editor.setContents(delta);
+          this.isValueInitialized = true;
         }
       },
       immediate: false
     }
   },
+  editor: null,
   mounted: function () {
     const self = this;
 
@@ -85,24 +94,26 @@ export default {
       ]
     };
 
-    console.log(!(this.builder || this.readonly));
-
     this.editor = new Quill(this.$refs.editor, {
       modules: Object.assign({}, modules, this.modules),
       theme: "snow",
       placeholder: this.placeholder,
-      readOnly: !(this.builder || this.readonly)
+      readOnly: this.builder || this.readonly
     });
 
     if (this.value != "") {
-      this.editor.clipboard.dangerouslyPasteHTML(this.value);
+      const delta = this.editor.clipboard.convertHTML(this.value);
+
+      this.editor.setContents(delta);
+      this.isValueInitialized = true;
     }
 
     this.editor.on("text-change", function () {
       self.$emit("input", {
         target: {
           name: self.name,
-          value: self.editor.root.innerHTML
+          value: self.editor.getSemanticHTML(),
+          isInitialValue: true
         }
       });
     });
@@ -143,6 +154,7 @@ fieldProperties["rich-text-editor"] = {
 </script>
 
 <style scoped>
+/*
 :deep(.ql-toolbar.ql-snow) {
   @apply rounded-t-sm dark:border-surface--dark-600 dark:bg-surface--dark-600;
 }
@@ -162,4 +174,5 @@ fieldProperties["rich-text-editor"] = {
 :deep(.ql-container.ql-snow) {
   @apply rounded-b-sm dark:border-surface--dark-500;
 }
+  */
 </style>

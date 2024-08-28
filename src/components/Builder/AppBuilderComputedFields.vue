@@ -137,7 +137,7 @@ export default {
     close: null,
     save: null
   },
-  data() {
+  data: function () {
     return {
       internalValues: [
         {
@@ -159,7 +159,6 @@ export default {
       ]
     };
   },
-  computed: {},
   watch: {
     values: function (value) {
       this.internalValues = value;
@@ -180,7 +179,6 @@ export default {
       }
     }
   },
-  mounted: function () {},
   methods: {
     onAddButtonClick: function () {
       this.internalValues.push({

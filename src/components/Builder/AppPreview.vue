@@ -51,7 +51,6 @@ import iterateColumns from "@/assets/js/builder/iterateColumns.js";
 import onAppInput from "@/assets/js/builder/onAppInput.js";
 
 export default {
-  name: "AppPreview",
   components: {
     NsSidePanel,
     AppField

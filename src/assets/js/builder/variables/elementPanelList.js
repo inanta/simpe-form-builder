@@ -41,7 +41,10 @@ export default {
         icon: "mdi mdi-form-textbox",
         name: "Input",
         sort: 0,
-        tag: "input"
+        tag: "input",
+        properties: {
+          type: "text"
+        }
       },
       {
         content: "",

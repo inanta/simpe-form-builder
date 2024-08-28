@@ -21,6 +21,7 @@
       v-if="additionalActionButtons.length > 0"
       v-tooltip
       align="right"
+      placement="bottom-end"
       :title="messages.more"
     >
       <template #content>

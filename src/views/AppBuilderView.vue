@@ -39,7 +39,7 @@
               <span class="mdi mdi-delete"></span>Delete
             </button>
             <button
-              class="ml-2 rounded bg-primary px-3 py-2 text-on-primary"
+              class="ml-2 rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
               @click="build"
             >
               <span class="mdi mdi-application-cog"></span> Create

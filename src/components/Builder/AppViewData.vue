@@ -15,31 +15,36 @@
       </div>
     </template>
     <div class="dark:text-on-surface--dark-100">
-      <template v-for="(container, index) in containers" :key="container.name">
-        <div v-show="index == selectedContainer">
-          <div :data-app="app.slug" class="px-5 py-3">
-            <div
-              v-for="(row, row_index) in container.rows"
-              :key="row_index"
-              class="flex flex-col md:flex-row md:space-x-2"
-            >
+      <form :name="app.slug">
+        <template
+          v-for="(container, index) in containers"
+          :key="container.name"
+        >
+          <div v-show="index == selectedContainer">
+            <div :data-app="app.slug" class="px-5 py-3">
               <div
-                v-for="(column, column_index) in row.columns"
-                :key="column_index"
-                class="flex-1 overflow-hidden"
+                v-for="(row, row_index) in container.rows"
+                :key="row_index"
+                class="flex flex-col md:flex-row md:space-x-2"
               >
-                <app-field
-                  :app="app"
-                  :data="values"
-                  :properties="column"
-                  :value="values[column.name]"
-                  @input="onInput"
-                ></app-field>
+                <div
+                  v-for="(column, column_index) in row.columns"
+                  :key="column_index"
+                  class="flex-1 overflow-hidden"
+                >
+                  <app-field
+                    :app="app"
+                    :data="values"
+                    :properties="column"
+                    :value="values[column.name]"
+                    @input="onInput"
+                  ></app-field>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </template>
+        </template>
+      </form>
     </div>
   </ns-side-panel>
 </template>

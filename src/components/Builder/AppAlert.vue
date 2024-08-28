@@ -18,7 +18,7 @@
       <div class="mx-auto">
         <button
           class="rounded bg-primary px-3 py-2 text-on-primary"
-          @click="isAlertShown = false"
+          @click="onCloseButtonClick"
         >
           {{ closeButtonCaption }}
         </button>
@@ -33,6 +33,9 @@ import NsDialog from "@/components/NS/NsDialog.vue";
 export default {
   components: {
     NsDialog
+  },
+  emits: {
+    close: null
   },
   data: function () {
     return {
@@ -52,6 +55,10 @@ export default {
     document.removeEventListener("app:alert", this.showAlert);
   },
   methods: {
+    onCloseButtonClick: function () {
+      this.isAlertShown = false;
+      this.$emit("close");
+    },
     showAlert: function (event) {
       const self = this;
 

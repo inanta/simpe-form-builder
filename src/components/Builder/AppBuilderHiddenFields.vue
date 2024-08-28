@@ -82,7 +82,7 @@ export default {
     close: null,
     save: null
   },
-  data() {
+  data: function () {
     return {
       internalValues: [
         {
@@ -92,7 +92,6 @@ export default {
       ]
     };
   },
-  computed: {},
   watch: {
     values: function (value) {
       this.internalValues = value;
@@ -100,15 +99,7 @@ export default {
       if (this.internalValues.length === 0) {
         this.internalValues.push({
           name: "",
-          label: "",
-          source: "built-in",
-          value: "current-timestamp",
-          on_insert: "0",
-          on_update: "0",
-          on_view: "0",
-          is_visible: "0",
-          header_align: "left",
-          header_format: "general"
+          value: ""
         });
       }
     }

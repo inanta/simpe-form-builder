@@ -23,7 +23,7 @@
         >
           <div
             :style="{ width: modalWidth }"
-            class="top-[10%] z-20 flex w-max flex-col rounded border border-light-gray bg-white shadow dark:border-none dark:bg-surface--dark-400 dark:text-on-surface--dark-400 md:mx-auto md:my-7"
+            class="top-[10%] z-20 flex w-max flex-col rounded border border-light-gray bg-white shadow md:mx-auto md:my-7 dark:border-none dark:bg-surface--dark-400 dark:text-on-surface--dark-400"
           >
             <div
               v-if="hasTitle"

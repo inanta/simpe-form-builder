@@ -13,9 +13,11 @@
     >
       <input
         :checked="
-          typeof internalProperties.checked != 'undefined' &&
-          typeof internalProperties.checked[itemIndex] !== 'undefined' &&
-          internalProperties.checked[itemIndex].checked
+          (internalProperties.type === 'checkbox' &&
+            typeof internalProperties.checked != 'undefined' &&
+            typeof internalProperties.checked[itemIndex] !== 'undefined' &&
+            internalProperties.checked[itemIndex].checked) ||
+          (internalProperties.type === 'radio' && item.value === value)
         "
         :name="
           internalProperties.name +
@@ -189,6 +191,25 @@ export default {
             this.internalProperties.checked[index].checked = false;
           }
         }
+      } else if (
+        (this.internalProperties.element === "input" &&
+          this.internalProperties.type === "radio") ||
+        this.internalProperties.element === "select"
+      ) {
+        if (this.value == "") {
+          const items =
+            typeof this.properties.items.value !== "undefined"
+              ? this.properties.items.value
+              : this.properties.items;
+
+          this.$emit("input", {
+            target: {
+              name: this.properties.name,
+              value: items[0].value,
+              isInitialValue: true
+            }
+          });
+        }
       }
     },
     itemElement(element, item) {
@@ -199,30 +220,39 @@ export default {
       return element === "select" ? "option" : "";
     },
     onInputChecked: function ($event, item_index) {
-      const values = [];
+      if (this.internalProperties.type === "checkbox") {
+        const values = [];
 
-      this.internalProperties.checked[item_index].checked = $event.target
-        .checked
-        ? true
-        : false;
+        this.internalProperties.checked[item_index].checked = $event.target
+          .checked
+          ? true
+          : false;
 
-      const items =
-        typeof this.properties.items.value !== "undefined"
-          ? this.properties.items.value
-          : this.properties.items;
+        const items =
+          typeof this.properties.items.value !== "undefined"
+            ? this.properties.items.value
+            : this.properties.items;
 
-      for (let index = 0; index < items.length; index++) {
-        if (this.internalProperties.checked[index].checked) {
-          values.push(this.internalProperties.checked[index].value);
+        for (let index = 0; index < items.length; index++) {
+          if (this.internalProperties.checked[index].checked) {
+            values.push(this.internalProperties.checked[index].value);
+          }
         }
+
+        this.$emit("input", {
+          target: {
+            name: this.properties.name,
+            value: values
+          }
+        });
+      } else if (this.internalProperties.type === "radio") {
+        this.$emit("input", {
+          target: {
+            name: this.properties.name,
+            value: $event.target.value
+          }
+        });
       }
-
-      this.$emit("input", {
-        target: {
-          name: this.properties.name,
-          value: values
-        }
-      });
     }
   }
 };
