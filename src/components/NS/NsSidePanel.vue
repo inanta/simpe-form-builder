@@ -19,7 +19,7 @@
       >
         <div
           v-if="isShown"
-          class="fixed right-0 top-0 z-20 flex h-full w-full flex-col overflow-auto border border-light-gray bg-white shadow-2xl md:w-3/4 dark:border-surface--dark-400 dark:dark:bg-surface--dark-400"
+          class="fixed right-0 top-0 z-20 flex h-full w-full flex-col overflow-auto border border-light-gray bg-white shadow-2xl dark:border-surface--dark-400 dark:dark:bg-surface--dark-400 md:w-3/4"
         >
           <div
             class="sticky top-0 z-10 flex bg-white px-4 py-3 shadow dark:bg-surface--dark-600 dark:text-white"

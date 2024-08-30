@@ -118,7 +118,7 @@
         </div>
         <div v-else class="flex flex-col px-5 py-10">
           <img
-            class="mx-auto md:w-1/5 dark:grayscale"
+            class="mx-auto dark:grayscale md:w-1/5"
             src="@/assets/img/undraw_void_-3-ggu.svg"
           />
           <div

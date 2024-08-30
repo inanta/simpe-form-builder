@@ -31,10 +31,42 @@ export default {
           ]
         },
         {
-          label: "Workflow"
+          label: "Workflow",
+          fields: [
+            {
+              element: "select",
+              label: "Email Workflow Template",
+              name: "email_workflow",
+              items: {
+                source: "api",
+                method: "get",
+                url: "/app/api/v1/settings?type=email-workflow",
+                payload: {},
+                handler: function (response) {
+                  return response.items;
+                }
+              }
+            }
+          ]
         },
         {
-          label: "Autoresponder"
+          label: "Autoresponder",
+          fields: [
+            {
+              element: "select",
+              label: "Email Autoresponder Template",
+              name: "email_workflow",
+              items: {
+                source: "api",
+                method: "get",
+                url: "/app/api/v1/settings?type=email-workflow",
+                payload: {},
+                handler: function (response) {
+                  return response.items;
+                }
+              }
+            }
+          ]
         },
         {
           label: "Spam Protection",
@@ -43,24 +75,27 @@ export default {
               element: "select",
               label: "Protection Type",
               name: "protection_type",
-              options: [
-                {
-                  label: "-- None --",
-                  value: ""
-                },
-                {
-                  label: "hCaptcha",
-                  value: "hcaptcha"
-                },
-                {
-                  label: "reCAPTCHA V2",
-                  value: "recaptcha_v2"
-                },
-                {
-                  label: "reCAPTCHA V3",
-                  value: "recaptcha_v3"
-                }
-              ],
+              items: {
+                source: "static",
+                values: [
+                  {
+                    label: "-- None --",
+                    value: ""
+                  },
+                  {
+                    label: "hCaptcha",
+                    value: "hcaptcha"
+                  },
+                  {
+                    label: "reCAPTCHA V2",
+                    value: "recaptcha_v2"
+                  },
+                  {
+                    label: "reCAPTCHA V3",
+                    value: "recaptcha_v3"
+                  }
+                ]
+              },
               value: ""
             },
             {
@@ -113,32 +148,38 @@ export default {
               element: "select",
               label: "Type",
               name: "webhook_type",
-              options: [
-                {
-                  label: "HTTP",
-                  value: "HTTP"
-                },
-                {
-                  label: "Internal evaluate code",
-                  value: "EVAL"
-                }
-              ],
+              items: {
+                source: "static",
+                values: [
+                  {
+                    label: "HTTP",
+                    value: "HTTP"
+                  },
+                  {
+                    label: "Internal evaluate code",
+                    value: "EVAL"
+                  }
+                ]
+              },
               value: "HTTP"
             },
             {
               element: "select",
               label: "Method",
               name: "webhook_method",
-              options: [
-                {
-                  label: "GET",
-                  value: "GET"
-                },
-                {
-                  label: "POST",
-                  value: "POST"
-                }
-              ],
+              items: {
+                source: "static",
+                values: [
+                  {
+                    label: "GET",
+                    value: "GET"
+                  },
+                  {
+                    label: "POST",
+                    value: "POST"
+                  }
+                ]
+              },
               rules: [
                 {
                   name: "webhook_type",

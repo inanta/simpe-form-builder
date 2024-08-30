@@ -28,6 +28,7 @@
                     :data="values"
                     :properties="column"
                     :show-invalid="showInvalid"
+                    :value="values[column.name]"
                     @visibility-changed="onVisibilityChanged"
                     @input="onInput"
                     @invalid="onInvalid"

@@ -87,6 +87,7 @@
                 <div
                   v-else-if="header.format === 'html'"
                   :ref="'html-' + i + '-' + j"
+                  @click.stop
                 >
                   {{ renderHtml("html-" + i + "-" + j, item[header.value]) }}
                 </div>

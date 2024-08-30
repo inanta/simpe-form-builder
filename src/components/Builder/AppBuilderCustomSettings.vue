@@ -8,8 +8,7 @@
     <div class="p-3">
       <ns-tabs>
         <template
-          v-for="(customSetting, customSettingIndex) in configurations.builder
-            .customSettings.settings"
+          v-for="(customSetting, customSettingIndex) in settings"
           :key="customSetting.label"
         >
           <ns-tab :title="customSetting.label" :order="customSettingIndex">
@@ -29,7 +28,7 @@
                     </div>
                     <div>
                       <native-html
-                        :properties="cleanAttributes(field)"
+                        :properties="field"
                         :error="false"
                         :value="internalValues[field.name]"
                         @input="onInput"
@@ -69,6 +68,7 @@ import NsTab from "@/components/NS/NsTab.vue";
 import NativeHtml from "@/components/Builder/Element/NativeHtml.vue";
 
 import configurations from "@/assets/js/builder/variables/configurations";
+import getAPI from "@/assets/js/getAPI.js";
 
 export default {
   components: {
@@ -96,9 +96,46 @@ export default {
   data: function () {
     return {
       configurations: configurations,
+      // settings: [],
       internalValues: {},
       visibilities: {}
     };
+  },
+  computed: {
+    settings: function () {
+      const composed_settings = [];
+
+      for (
+        let index = 0;
+        index < configurations.builder.customSettings.settings.length;
+        index++
+      ) {
+        const settings = {
+          label: configurations.builder.customSettings.settings[index].label,
+          fields: []
+        };
+
+        for (
+          let field_index = 0;
+          field_index <
+          configurations.builder.customSettings.settings[index].fields.length;
+          field_index++
+        ) {
+          const field = this.cleanAttributes(
+            configurations.builder.customSettings.settings[index].fields[
+              field_index
+            ]
+          );
+
+          settings.fields.push(field);
+        }
+
+        // this.settings.push(settings);
+        composed_settings.push(settings);
+      }
+
+      return composed_settings;
+    }
   },
   watch: {
     values: {
@@ -120,8 +157,11 @@ export default {
       immediate: true
     }
   },
+  mounted: async function () {
+    // this.initialize();
+  },
   methods: {
-    cleanAttributes: function (field) {
+    cleanAttributes: async function (field) {
       const cleaned_attributes = {};
 
       for (const key in field) {
@@ -138,15 +178,81 @@ export default {
                 cleaned_attributes[attribute_key] = element;
               }
             }
-          } else if (key === "options") {
-            cleaned_attributes["items"] = attribute;
+          } else if (key === "items") {
+            if (
+              typeof attribute.source !== "undefined" &&
+              attribute.source === "static"
+            ) {
+              cleaned_attributes["items"] = attribute.values;
+            } else if (
+              typeof attribute.source !== "undefined" &&
+              attribute.source === "api"
+            ) {
+              const response = await getAPI(attribute.url);
+              // cleaned_attributes["items"] = attribute.handler(response);
+
+              // getAPI;
+
+              // console.log(response);
+
+              cleaned_attributes["items"] = attribute.handler(response);
+
+              // console.log(cleaned_attributes);
+
+              // cleaned_attributes["items"] = [
+              //   {
+              //     label: "",
+              //     value: ""
+              //   }
+              // ];
+            } else {
+              // cleaned_attributes["items"] = [];
+
+              cleaned_attributes["items"] = [
+                {
+                  label: "",
+                  value: ""
+                }
+              ];
+            }
           } else {
             cleaned_attributes[key] = attribute;
           }
         }
       }
 
+      console.log(cleaned_attributes);
+
       return cleaned_attributes;
+    },
+    initialize: function () {
+      for (
+        let index = 0;
+        index < configurations.builder.customSettings.settings.length;
+        index++
+      ) {
+        const settings = {
+          label: configurations.builder.customSettings.settings[index].label,
+          fields: []
+        };
+
+        for (
+          let field_index = 0;
+          field_index <
+          configurations.builder.customSettings.settings[index].fields.length;
+          field_index++
+        ) {
+          const field = this.cleanAttributes(
+            configurations.builder.customSettings.settings[index].fields[
+              field_index
+            ]
+          );
+
+          settings.fields.push(field);
+        }
+
+        this.settings.push(settings);
+      }
     },
     iterateSettings: function (callback) {
       for (const group_key in configurations.builder.customSettings.settings) {
