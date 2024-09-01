@@ -96,47 +96,12 @@ export default {
   data: function () {
     return {
       configurations: configurations,
-      // settings: [],
+      settings: [],
       internalValues: {},
       visibilities: {}
     };
   },
-  computed: {
-    settings: function () {
-      const composed_settings = [];
 
-      for (
-        let index = 0;
-        index < configurations.builder.customSettings.settings.length;
-        index++
-      ) {
-        const settings = {
-          label: configurations.builder.customSettings.settings[index].label,
-          fields: []
-        };
-
-        for (
-          let field_index = 0;
-          field_index <
-          configurations.builder.customSettings.settings[index].fields.length;
-          field_index++
-        ) {
-          const field = this.cleanAttributes(
-            configurations.builder.customSettings.settings[index].fields[
-              field_index
-            ]
-          );
-
-          settings.fields.push(field);
-        }
-
-        // this.settings.push(settings);
-        composed_settings.push(settings);
-      }
-
-      return composed_settings;
-    }
-  },
   watch: {
     values: {
       handler: function (value) {
@@ -157,8 +122,8 @@ export default {
       immediate: true
     }
   },
-  mounted: async function () {
-    // this.initialize();
+  mounted: function () {
+    this.initialize();
   },
   methods: {
     cleanAttributes: async function (field) {
@@ -189,25 +154,9 @@ export default {
               attribute.source === "api"
             ) {
               const response = await getAPI(attribute.url);
-              // cleaned_attributes["items"] = attribute.handler(response);
-
-              // getAPI;
-
-              // console.log(response);
 
               cleaned_attributes["items"] = attribute.handler(response);
-
-              // console.log(cleaned_attributes);
-
-              // cleaned_attributes["items"] = [
-              //   {
-              //     label: "",
-              //     value: ""
-              //   }
-              // ];
             } else {
-              // cleaned_attributes["items"] = [];
-
               cleaned_attributes["items"] = [
                 {
                   label: "",
@@ -221,11 +170,9 @@ export default {
         }
       }
 
-      console.log(cleaned_attributes);
-
       return cleaned_attributes;
     },
-    initialize: function () {
+    initialize: async function () {
       for (
         let index = 0;
         index < configurations.builder.customSettings.settings.length;
@@ -242,7 +189,7 @@ export default {
           configurations.builder.customSettings.settings[index].fields.length;
           field_index++
         ) {
-          const field = this.cleanAttributes(
+          const field = await this.cleanAttributes(
             configurations.builder.customSettings.settings[index].fields[
               field_index
             ]
@@ -296,8 +243,6 @@ export default {
       const self = this;
 
       this.internalValues[event.target.name] = event.target.value;
-
-      console.log(event.target.value);
 
       this.iterateSettings(function (field) {
         self.visibilities[field.name] = self.isVisible(field);
