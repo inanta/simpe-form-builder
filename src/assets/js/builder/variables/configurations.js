@@ -267,7 +267,7 @@ export default {
     showExportButton: true,
     showMoreButton: false,
     showViewButton: false,
-    title: "Form Builder"
+    title: ""
   },
   locale: "en-AU",
   currency: "AUD",
