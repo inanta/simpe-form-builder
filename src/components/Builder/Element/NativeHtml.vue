@@ -163,8 +163,6 @@ export default {
         }
       }
 
-      console.log(cleaned_attributes);
-
       return cleaned_attributes;
     },
     cleanAttributeItems(items) {
