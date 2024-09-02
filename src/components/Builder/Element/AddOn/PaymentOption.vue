@@ -333,13 +333,7 @@ fieldProperties["payment-option"] = {
   },
   "payment-option-title": {
     label: "Title",
-    type: "textarea",
-    rules: [
-      {
-        property: "payment-option-type",
-        values: ["title-description"]
-      }
-    ]
+    type: "textarea"
   },
   "payment-option-description": {
     label: "Description",
