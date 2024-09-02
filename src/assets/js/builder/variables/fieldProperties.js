@@ -16,6 +16,9 @@ export default {
     },
     attrs: {
       label: "Attributes"
+    },
+    style: {
+      label: "Style"
     }
   },
   h2: {
@@ -30,6 +33,9 @@ export default {
     },
     attrs: {
       label: "Attributes"
+    },
+    style: {
+      label: "Style"
     }
   },
   h3: {
@@ -44,6 +50,9 @@ export default {
     },
     attrs: {
       label: "Attributes"
+    },
+    style: {
+      label: "Style"
     }
   },
   h4: {
@@ -58,6 +67,9 @@ export default {
     },
     attrs: {
       label: "Attributes"
+    },
+    style: {
+      label: "Style"
     }
   },
   h5: {
@@ -72,6 +84,9 @@ export default {
     },
     attrs: {
       label: "Attributes"
+    },
+    style: {
+      label: "Style"
     }
   },
   h6: {
@@ -86,6 +101,9 @@ export default {
     },
     attrs: {
       label: "Attributes"
+    },
+    style: {
+      label: "Style"
     }
   },
   input: {

@@ -151,6 +151,9 @@ export default {
     fields: ["select"],
     default: 1
   },
+  style: {
+    options: "FieldPropertyStylesCompositor"
+  },
   type: {
     fields: ["input"],
     options: [
