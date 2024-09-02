@@ -227,6 +227,9 @@ fieldProperties["inline-text"] = {
   "inline-text-content": {
     label: "Content"
   },
+  "inline-text-style": {
+    label: "Style"
+  },
   attrs: {
     label: "Attributes"
   }
@@ -246,6 +249,11 @@ fieldPropertyOptions.addOption("inline-text-element", [
 fieldPropertyOptions.addOption(
   "inline-text-content",
   "FieldPropertyValueSource"
+);
+
+fieldPropertyOptions.addOption(
+  "inline-text-style",
+  "FieldPropertyStylesCompositor"
 );
 </script>
 

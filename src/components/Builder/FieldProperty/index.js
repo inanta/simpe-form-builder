@@ -11,6 +11,7 @@ import FieldPropertyElementSelection from "@/components/Builder/FieldProperty/Fi
 import FieldPropertyValidationCollection from "@/components/Builder/FieldProperty/FieldPropertyValidationCollection.vue";
 import FieldPropertyValueSource from "@/components/Builder/FieldProperty/FieldPropertyValueSource.vue";
 import FieldPropertyRepeatInput from "@/components/Builder/FieldProperty/FieldPropertyRepeatInput.vue";
+import FieldPropertyStylesCompositor from "@/components/Builder/FieldProperty/FieldPropertyStylesCompositor.vue";
 
 export default {
   FieldPropertyColumnSelector,
@@ -25,5 +26,6 @@ export default {
   FieldPropertyElementSelection,
   FieldPropertyValidationCollection,
   FieldPropertyValueSource,
-  FieldPropertyRepeatInput
+  FieldPropertyRepeatInput,
+  FieldPropertyStylesCompositor
 };
