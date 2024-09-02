@@ -55,7 +55,7 @@ export default {
             {
               element: "select",
               label: "Email Autoresponder Template",
-              name: "email_workflow",
+              name: "email_autoresponder",
               items: {
                 source: "api",
                 method: "get",
