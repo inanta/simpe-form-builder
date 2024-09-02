@@ -18,6 +18,7 @@
         :error="validationError !== '' && showInvalidMessage"
         :value="value"
         :properties="properties"
+        :class="inputClass"
         @input="onInput"
         @keyup.enter="onKeyUp"
       >
@@ -140,6 +141,14 @@ export default {
     };
   },
   computed: {
+    inputClass: function () {
+      return {
+        "w-full appearance-none rounded-sm border bg-white px-3 py-1.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600":
+          this.properties.element === "input" ||
+          this.properties.element === "select" ||
+          this.properties.element === "textarea"
+      };
+    },
     fieldLabel: function () {
       if (
         typeof this.properties.label !== "undefined" &&

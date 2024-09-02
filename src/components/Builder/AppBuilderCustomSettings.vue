@@ -28,6 +28,7 @@
                     </div>
                     <div>
                       <native-html
+                        class="w-full appearance-none rounded-sm border bg-white px-3 py-1.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
                         :properties="field"
                         :error="false"
                         :value="internalValues[field.name]"

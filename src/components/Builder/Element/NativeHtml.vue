@@ -44,7 +44,6 @@
     :name="internalProperties.name"
     :value="value"
     v-bind="cleanAttributes(internalProperties)"
-    class="w-full appearance-none rounded-sm border bg-white px-3 py-1.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
     @input="$emit('input', $event)"
     @keyup="$emit('keyup', $event)"
   >
@@ -64,6 +63,7 @@
       properties.items || (properties.content && properties.content !== '')
     "
     v-bind="cleanAttributes(internalProperties)"
+    :style="internalProperties.style"
   >
     <template v-if="properties.items">
       <component
@@ -82,6 +82,7 @@
     :is="internalProperties.element"
     v-else
     v-bind="cleanAttributes(internalProperties)"
+    :style="internalProperties.style"
   />
 </template>
 
@@ -153,6 +154,16 @@ export default {
           }
         }
       }
+
+      for (const key in this.$attrs) {
+        if (Object.prototype.hasOwnProperty.call(this.$attrs, key)) {
+          const attribute = this.$attrs[key];
+
+          cleaned_attributes[key] = attribute;
+        }
+      }
+
+      console.log(cleaned_attributes);
 
       return cleaned_attributes;
     },

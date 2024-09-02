@@ -7,6 +7,7 @@
     v-else
     class="dark:text-white"
     v-bind="cleanAttributes(properties)"
+    :style="style"
   >
     {{ savedContent }}
   </component>
@@ -46,6 +47,12 @@ export default {
       default: ""
     },
     properties: {
+      type: Object,
+      default: function () {
+        return {};
+      }
+    },
+    style: {
       type: Object,
       default: function () {
         return {};
@@ -227,11 +234,11 @@ fieldProperties["inline-text"] = {
   "inline-text-content": {
     label: "Content"
   },
-  "inline-text-style": {
-    label: "Style"
-  },
   attrs: {
     label: "Attributes"
+  },
+  style: {
+    label: "Style"
   }
 };
 
@@ -251,10 +258,7 @@ fieldPropertyOptions.addOption(
   "FieldPropertyValueSource"
 );
 
-fieldPropertyOptions.addOption(
-  "inline-text-style",
-  "FieldPropertyStylesCompositor"
-);
+// fieldPropertyOptions.addOption("style", "FieldPropertyStylesCompositor");
 </script>
 
 <style scoped></style>
