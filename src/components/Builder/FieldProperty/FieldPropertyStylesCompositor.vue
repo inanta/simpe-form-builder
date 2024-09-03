@@ -20,9 +20,15 @@
         v-if="showAdd"
         class="absolute left-0 top-0 flex h-full w-full flex-col overflow-auto bg-white p-2 dark:bg-surface--dark-300"
       >
-        <div class="flex-grow">
-          <div v-for="(style, key) in styles" :key="key">
-            <span class="mdi mdi-check-circle"></span> {{ getStyleLabel(key) }}:
+        <div class="">
+          <div v-for="(style, key) in styles" :key="key" class="py-0.5">
+            <button
+              type="button"
+              class="mr-1 h-6 w-6 rounded-full bg-negative text-on-negative dark:bg-negative--dark dark:text-on-negative--dark"
+            >
+              <span class="mdi mdi-minus"></span>
+            </button>
+            {{ getStyleLabel(key) }}:
             {{ style }}
           </div>
 
@@ -48,7 +54,7 @@
                   <native-html
                     :properties="input"
                     :error="false"
-                    :value="input.value"
+                    :value="input.value === '' ? input.default : input.value"
                     class="w-full appearance-none rounded-sm border bg-white px-1 py-0.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
                     @input="onInput($event, inputIndex)"
                   ></native-html>
@@ -148,7 +154,6 @@ export default {
               default: "solid",
               element: "select",
               label: "Style",
-              type: "text",
               value: "",
               items: [
                 {
@@ -302,10 +307,10 @@ export default {
         this.value = this.properties[this.fieldProperty];
       },
       immediate: true
-    },
-    value: function (value) {
-      this.$emit("change", this.fieldProperty, value);
     }
+    // value: function (value) {
+    //   this.$emit("change", this.fieldProperty, value);
+    // }
   },
   mounted: function () {},
   methods: {
@@ -337,8 +342,6 @@ export default {
           return input.value;
         })
         .join(" ");
-
-      console.log(this.value);
     },
     save: function () {
       this.showAdd = false;
