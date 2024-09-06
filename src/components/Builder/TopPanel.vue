@@ -29,8 +29,14 @@
         <span class="mdi mdi-eye"></span> Preview
       </button>
       <button
-        class="ml-2 rounded-sm bg-primary px-4 py-2 text-on-primary dark:bg-primary--dark dark:text-on-primary--dark"
-        @click="$emit('save')"
+        :class="{
+          'bg-primary dark:bg-primary--dark': !disableSaveButton,
+          'bg-disabled text-on-disabled dark:bg-disabled--dark dark:text-on-disabled--dark':
+            disableSaveButton
+        }"
+        :disable="disableSaveButton"
+        class="ml-2 rounded-sm px-4 py-2 text-on-primary dark:text-on-primary--dark"
+        @click="onSaveButtonClick"
       >
         <span class="mdi mdi-content-save"></span> Save
       </button>
@@ -123,6 +129,7 @@ export default {
       selectedTable: "",
       columns: [],
       configurations: configurations,
+      disableSaveButton: false,
       isDatabaseSelectionShown: false,
       selectedPrimaryKey: "-",
       containerTypes: ["Single Container", "Tabs", "Accordion"],
@@ -257,6 +264,10 @@ export default {
 
         reader.readAsText(self.$refs.import.files[0]);
       }
+    },
+    onSaveButtonClick: function () {
+      this.disableSaveButton = true;
+      this.$emit("save");
     }
   }
 };

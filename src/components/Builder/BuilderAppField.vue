@@ -32,6 +32,7 @@
         @remove="$emit('remove')"
       ></field-tool-bar>
       <app-field
+        :app="app"
         :builder="true"
         :properties="properties"
         class="pointer-events-none"
@@ -54,6 +55,12 @@ export default {
     FieldToolBar
   },
   props: {
+    app: {
+      type: Object,
+      default: function () {
+        return {};
+      }
+    },
     column: {
       type: Number,
       default: 0

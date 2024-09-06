@@ -48,20 +48,25 @@
             "
             class="flex px-4 pb-2"
           >
-            <button
-              v-if="configurations.builder.customSettings.show"
-              class="ml-auto rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark"
-              @click="onCustomSettingsButtonClick"
-            >
-              <span class="mdi mdi-cogs"></span> Settings
-            </button>
-            <button
-              v-if="configurations.builder.fieldLogic"
-              class="ml-2 rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark"
-              @click="onViewLogicButtonClick"
-            >
-              <span class="mdi mdi-source-branch"></span> View Logic
-            </button>
+            <div class="ml-auto">
+              <button
+                v-if="
+                  configurations.builder.customSettings.settings.length > 0 &&
+                  configurations.builder.customSettings.show
+                "
+                class="ml-2 rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark"
+                @click="onCustomSettingsButtonClick"
+              >
+                <span class="mdi mdi-cogs"></span> Settings
+              </button>
+              <button
+                v-if="configurations.builder.fieldLogic"
+                class="ml-2 rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark"
+                @click="onViewLogicButtonClick"
+              >
+                <span class="mdi mdi-source-branch"></span> View Logic
+              </button>
+            </div>
           </div>
           <form :name="slugifiedAppName">
             <template
@@ -102,6 +107,7 @@
                         </div>
                         <div v-if="column.type != 'empty'">
                           <builder-app-field
+                            :app="app"
                             :builder="true"
                             :column="column_index"
                             :column-count="row.columns.length"
@@ -258,7 +264,10 @@
     @save="onFieldLogicSave"
   ></app-builder-field-logic>
   <app-builder-custom-settings
-    v-if="configurations.builder.customSettings.show"
+    v-if="
+      configurations.builder.customSettings.settings.length > 0 &&
+      configurations.builder.customSettings.show
+    "
     :values="app['custom_settings']"
     :show="isCustomSettingsSidePanelShown"
     @close="isCustomSettingsSidePanelShown = false"

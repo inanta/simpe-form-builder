@@ -37,14 +37,10 @@
       internalProperties.element === 'select' ||
       internalProperties.element == 'textarea'
     "
-    :class="{
-      'border-mid-gray dark:border-surface--dark-500': !error,
-      'border-negative dark:border-negative--dark': error
-    }"
+    :class="genericInputClasses"
     :name="internalProperties.name"
     :value="value"
     v-bind="cleanAttributes(internalProperties)"
-    class="w-full appearance-none rounded-sm border bg-white px-3 py-1.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
     @input="$emit('input', $event)"
     @keyup="$emit('keyup', $event)"
   >
@@ -112,6 +108,16 @@ export default {
       internalProperties: {}
     };
   },
+  computed: {
+    genericInputClasses: function () {
+      const classes = {};
+
+      classes[this.$attrs.class] = true;
+      classes["border-negative dark:border-negative--dark"] = this.error;
+
+      return classes;
+    }
+  },
   watch: {
     properties: {
       handler: function (value) {
@@ -138,6 +144,7 @@ export default {
         "rows",
         "size",
         "step",
+        "style",
         "type"
       ]);
 

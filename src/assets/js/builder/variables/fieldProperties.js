@@ -210,11 +210,11 @@ export default {
     readonly: {
       label: "Is Read Only"
     },
-    attrs: {
-      label: "Attributes"
-    },
     validation: {
       label: "Validation"
+    },
+    attrs: {
+      label: "Attributes"
     },
     style: {
       label: "Style"
@@ -256,11 +256,11 @@ export default {
     readonly: {
       label: "Is Read Only"
     },
-    attrs: {
-      label: "Attributes"
-    },
     validation: {
       label: "Validation"
+    },
+    attrs: {
+      label: "Attributes"
     },
     style: {
       label: "Style"
@@ -288,11 +288,11 @@ export default {
     readonly: {
       label: "Is Read Only"
     },
-    attrs: {
-      label: "Attributes"
-    },
     validation: {
       label: "Validation"
+    },
+    attrs: {
+      label: "Attributes"
     },
     style: {
       label: "Style"

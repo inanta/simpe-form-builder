@@ -15,9 +15,10 @@
       <native-html
         v-if="getHtmlElements().includes(properties.element)"
         ref="fields"
-        :error="validationError !== '' && showInvalidMessage"
+        :error="isError"
         :value="value"
         :properties="properties"
+        class="w-full appearance-none rounded-sm border border-mid-gray bg-white px-3 py-1.5 text-base text-black outline-none focus:border-primary dark:border-surface--dark-500 dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
         @input="onInput"
         @keyup.enter="onKeyUp"
       >
@@ -29,7 +30,7 @@
         :app="app"
         :builder="builder"
         :data="data"
-        :error="validationError !== '' && showInvalidMessage"
+        :error="isError"
         :properties="properties"
         :value="value"
         v-bind="properties"
@@ -41,8 +42,7 @@
       <div
         class="overflow-hidden text-negative transition-all dark:text-negative--dark"
         :style="{
-          'max-height':
-            validationError !== '' && showInvalidMessage ? '20rem' : '0'
+          'max-height': isError ? '20rem' : '0'
         }"
       >
         <div>
@@ -149,6 +149,9 @@ export default {
       }
 
       return "";
+    },
+    isError: function () {
+      return this.validationError !== "" && this.showInvalidMessage;
     }
   },
   watch: {
@@ -209,6 +212,7 @@ export default {
             ? event.target.isInitialValue
             : false;
 
+        // Some elements will emit the initial value, skipping validation for the initial value.
         if (!is_initial_value) {
           if (this.validateValue(event.target.value, this.data)) {
             this.showInvalidMessage = true;

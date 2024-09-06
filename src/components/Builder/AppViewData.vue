@@ -21,7 +21,7 @@
           :key="container.name"
         >
           <div v-show="index == selectedContainer">
-            <div :data-app="slug" class="px-5 py-3">
+            <div :data-app="app.slug" class="px-5 py-3">
               <div
                 v-for="(row, row_index) in container.rows"
                 :key="row_index"
@@ -168,7 +168,7 @@ export default {
             }
           }
 
-          AppBuilder.getRecord(app_slug, id).then(function (record) {
+          AppBuilder.getRecord(app.slug, id).then(function (record) {
             for (const key in record) {
               self.values[key] = record[key];
             }
@@ -180,7 +180,7 @@ export default {
       }
     },
     onEditButttonClick: function () {
-      this.$router.push("/app/edit/" + this.slug + "/" + this.id);
+      this.$router.push("/app/edit/" + this.app.slug + "/" + this.id);
     }
   }
 };

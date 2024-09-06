@@ -7,7 +7,6 @@
     v-else
     class="dark:text-white"
     v-bind="cleanAttributes(properties)"
-    :style="style"
   >
     {{ savedContent }}
   </component>
@@ -47,12 +46,6 @@ export default {
       default: ""
     },
     properties: {
-      type: Object,
-      default: function () {
-        return {};
-      }
-    },
-    style: {
       type: Object,
       default: function () {
         return {};

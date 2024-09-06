@@ -110,7 +110,7 @@
                 "
                 :value="getPropertyValue(fieldProperty, 'string', '')"
                 class="w-full rounded-sm border border-primary px-1 py-0.5 outline-none dark:border-surface--dark-500 dark:bg-surface--dark-500"
-                row="3"
+                row="4"
                 @input="setPropertyValue(fieldProperty, $event.target.value)"
               ></textarea>
               <!-- Field Option As Text -->

@@ -7,7 +7,8 @@ export default function (attributes, additional_attributes = []) {
     column: true,
     element: true,
     name: false,
-    row: true
+    row: true,
+    style: false
   };
 
   for (let index = 0; index < additional_attributes.length; index++) {
@@ -40,6 +41,8 @@ export default function (attributes, additional_attributes = []) {
           );
         }
       }
+    } else if (typeof attributes[key] === "object" && key === "style") {
+      cleaned_attributes[key] = attributes[key];
     }
   }
 

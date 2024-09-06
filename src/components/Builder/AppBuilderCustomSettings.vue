@@ -102,7 +102,6 @@ export default {
       visibilities: {}
     };
   },
-
   watch: {
     values: {
       handler: function (value) {
