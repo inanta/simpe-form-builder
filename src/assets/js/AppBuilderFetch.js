@@ -318,42 +318,43 @@ export default {
     var card_exp_mm = "[name=card_exp_mm]";
     var card_exp_yy = "[name=card_exp_yy]";
 
-    var card_num_ = document.querySelector(card_num).value
-      ? document.querySelector(card_num).value.replace(/\s/g, "")
-      : ""; // cleanup for submission
-    var card_cvv_ = document.querySelector(card_cvv).value
-      ? document.querySelector(card_cvv).value.replace(/\s/g, "")
-      : "";
-
-    console.log("Form submit start");
-
-    new_data["form"] = { properties_attributes: {} };
-
-    for (const key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const element = data[key];
-
-        new_data["form"]["properties_attributes"][key] = element;
-      }
-    }
-
-    new_data["form"]["properties_attributes"]["payment_type"] =
-      "Booking Payment";
-
-    new_data["ptype"] = "eway";
-
-    if (document.querySelector('[name="h-captcha-response"]')) {
-      new_data["h-captcha-response"] = document.querySelector(
-        '[name="h-captcha-response"]'
-      ).value;
-    }
-
-    new_data["authenticity_token"] = app.custom_settings["authenticity_token"];
-    new_data["form_id"] = app.custom_settings["form_id"];
-    new_data["download_expiry"] = app.custom_settings["download_expiry"];
-    new_data["resource_id"] = "new";
-
     if (document.querySelector(amount)) {
+      var card_num_ = document.querySelector(card_num).value
+        ? document.querySelector(card_num).value.replace(/\s/g, "")
+        : ""; // cleanup for submission
+      var card_cvv_ = document.querySelector(card_cvv).value
+        ? document.querySelector(card_cvv).value.replace(/\s/g, "")
+        : "";
+
+      console.log("Form submit start");
+
+      new_data["form"] = { properties_attributes: {} };
+
+      for (const key in data) {
+        if (Object.prototype.hasOwnProperty.call(data, key)) {
+          const element = data[key];
+
+          new_data["form"]["properties_attributes"][key] = element;
+        }
+      }
+
+      new_data["form"]["properties_attributes"]["payment_type"] =
+        "Booking Payment";
+
+      new_data["ptype"] = "eway";
+
+      if (document.querySelector('[name="h-captcha-response"]')) {
+        new_data["h-captcha-response"] = document.querySelector(
+          '[name="h-captcha-response"]'
+        ).value;
+      }
+
+      new_data["authenticity_token"] =
+        app.custom_settings["authenticity_token"];
+      new_data["form_id"] = app.custom_settings["form_id"];
+      new_data["download_expiry"] = app.custom_settings["download_expiry"];
+      new_data["resource_id"] = "new";
+
       new_data["amount"] = document.querySelector(amount).value;
       new_data["payment_method"] = 248;
       new_data["card_holder"] = document.querySelector(card_name).value;
@@ -392,6 +393,33 @@ export default {
           }
         });
     } else {
+      new_data["form"] = { properties_attributes: {} };
+
+      for (const key in data) {
+        if (Object.prototype.hasOwnProperty.call(data, key)) {
+          const element = data[key];
+
+          new_data["form"]["properties_attributes"][key] = element;
+        }
+      }
+
+      // new_data["form"]["properties_attributes"]["payment_type"] =
+      //   "Booking Payment";
+
+      // new_data["ptype"] = "eway";
+
+      if (document.querySelector('[name="h-captcha-response"]')) {
+        new_data["h-captcha-response"] = document.querySelector(
+          '[name="h-captcha-response"]'
+        ).value;
+      }
+
+      new_data["authenticity_token"] =
+        app.custom_settings["authenticity_token"];
+      new_data["form_id"] = app.custom_settings["form_id"];
+      new_data["download_expiry"] = app.custom_settings["download_expiry"];
+      new_data["resource_id"] = "new";
+
       return send(new_data);
     }
   },
