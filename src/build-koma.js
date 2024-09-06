@@ -1,7 +1,7 @@
-import replace from "replace-in-file";
+import { replaceInFileSync } from "replace-in-file";
 import fs from "fs";
 
-const results = replace.sync({
+const results = replaceInFileSync({
   files: "./dist/**/*.html",
   from: [
     /<title><\/title>/g,
