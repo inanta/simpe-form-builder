@@ -373,6 +373,8 @@ export default {
         const app = store.importAppData;
         store.importAppData = {};
 
+        app.columns = app.elements;
+
         this.onImport(app);
       } else {
         self.isEdit = false; // Not working
@@ -591,28 +593,33 @@ export default {
       const self = this;
 
       if ((event.ctrlKey || event.metaKey) && event.key === "v") {
-        navigator.clipboard
-          .readText()
-          .then((clipboardText) => {
-            try {
-              const field = JSON.parse(clipboardText);
+        if (
+          event.target.tagName !== "INPUT" &&
+          event.target.tagName !== "TEXTAREA"
+        ) {
+          navigator.clipboard
+            .readText()
+            .then((clipboardText) => {
+              try {
+                const field = JSON.parse(clipboardText);
 
-              if (typeof field.element !== "undefined") {
-                self.addElement(
-                  self.selectedContainer,
-                  undefined,
-                  undefined,
-                  field,
-                  true
-                );
+                if (typeof field.element !== "undefined") {
+                  self.addElement(
+                    self.selectedContainer,
+                    undefined,
+                    undefined,
+                    field,
+                    true
+                  );
+                }
+              } catch (err) {
+                console.log("Error parsing element", err);
               }
-            } catch (err) {
-              console.log("Error parsing element", err);
-            }
-          })
-          .catch((err) => {
-            console.error("Unable to read from clipboard", err);
-          });
+            })
+            .catch((err) => {
+              console.error("Unable to read from clipboard", err);
+            });
+        }
       } else if ((event.ctrlKey || event.metaKey) && event.key === "c") {
         if (
           event.target.tagName !== "INPUT" &&
@@ -631,6 +638,9 @@ export default {
       }
     },
     onImport: function (app) {
+      delete app.slug;
+      delete app.id;
+
       this.app = app;
       this.isEdit = true;
       this.selectedTable = app.table;
@@ -952,6 +962,9 @@ export default {
           self.$router.push("/app/builder/view");
         });
       } else {
+        delete app.slug;
+        delete app.id;
+
         let blob = new Blob([JSON.stringify(app, null, 2)], {
           type: "application/json;charset=utf-8"
         });
