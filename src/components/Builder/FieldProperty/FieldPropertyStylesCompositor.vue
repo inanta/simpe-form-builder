@@ -32,8 +32,14 @@
           </template>
           <template v-else>This element has no CSS styling applied.</template>
           <div class="pt-1 text-center">
-            <button
+            <!-- <button
               class="rounded-full bg-primary px-2 py-1 text-on-primary dark:bg-primary--dark"
+              @click="isAddStyleShown = true"
+            >
+              <i class="mdi mdi-clipboard-file"></i>
+            </button> -->
+            <button
+              class="ml-1 rounded-full bg-primary px-2 py-1 text-on-primary dark:bg-primary--dark"
               @click="isAddStyleShown = true"
             >
               <i class="mdi mdi-plus"></i>

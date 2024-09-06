@@ -63,7 +63,6 @@
       properties.items || (properties.content && properties.content !== '')
     "
     v-bind="cleanAttributes(internalProperties)"
-    :style="internalProperties.style"
   >
     <template v-if="properties.items">
       <component
@@ -82,7 +81,6 @@
     :is="internalProperties.element"
     v-else
     v-bind="cleanAttributes(internalProperties)"
-    :style="internalProperties.style"
   />
 </template>
 
@@ -139,6 +137,7 @@ export default {
         "rows",
         "size",
         "step",
+        "style",
         "type"
       ]);
 
@@ -155,12 +154,19 @@ export default {
         }
       }
 
-      for (const key in this.$attrs) {
-        if (Object.prototype.hasOwnProperty.call(this.$attrs, key)) {
-          const attribute = this.$attrs[key];
-
-          cleaned_attributes[key] = attribute;
+      if (this.$attrs["class"] !== "") {
+        if (
+          typeof cleaned_attributes["class"] !== "undefined" &&
+          cleaned_attributes["class"] !== ""
+        ) {
+          cleaned_attributes["class"] += " " + this.$attrs["class"];
+        } else {
+          cleaned_attributes["class"] = this.$attrs["class"];
         }
+      }
+
+      if (typeof attributes["style"] !== "undefined") {
+        cleaned_attributes["style"] = attributes["style"];
       }
 
       return cleaned_attributes;
