@@ -40,7 +40,7 @@ export default {
               items: {
                 source: "api",
                 method: "get",
-                url: "/app/api/v1/settings?type=email-workflow",
+                url: "app/api/v1/settings?type=email-workflow",
                 payload: {},
                 handler: function (response) {
                   return response.items;
@@ -59,7 +59,7 @@ export default {
               items: {
                 source: "api",
                 method: "get",
-                url: "/app/api/v1/settings?type=email-workflow",
+                url: "app/api/v1/settings?type=email-workflow",
                 payload: {},
                 handler: function (response) {
                   return response.items;
