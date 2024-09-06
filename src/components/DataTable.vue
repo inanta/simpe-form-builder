@@ -48,7 +48,7 @@
                   enter-active-class="animate__animated animate__fadeIn animate__faster"
                   leave-active-class="animate__animated animate__fadeOut animate__faster"
                 >
-                  <div v-if="isLoading" c>
+                  <div v-if="isLoading">
                     <ns-progress-bar
                       class="!rounded-none !border-0"
                       height="0.25rem"
@@ -135,12 +135,13 @@
             <button
               v-if="pagingPage !== null"
               :class="{
-                'bg-primary dark:bg-primary--dark': currentPage != pagingPage,
-                'bg-mid-gray dark:bg-disabled--dark dark:text-on-disabled--dark':
+                'bg-primary text-on-primary dark:bg-primary--dark':
+                  currentPage != pagingPage,
+                'bg-disabled text-on-disabled dark:bg-disabled--dark dark:text-on-disabled--dark':
                   currentPage == pagingPage
               }"
               :disabled="currentPage == pagingPage"
-              class="ml-1 rounded bg-primary px-2 py-1 text-on-primary"
+              class="ml-1 rounded px-2 py-1"
               @click="pageChange(pagingPage)"
             >
               {{ pagingPage }}

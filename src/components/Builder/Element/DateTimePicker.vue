@@ -152,12 +152,14 @@ export default {
   watch: {
     dateTimePickerValue: {
       handler: function (value) {
-        this.$emit("input", {
-          target: {
-            name: this.name,
-            value: value.toString()
-          }
-        });
+        if (value !== null && this.value != value) {
+          this.$emit("input", {
+            target: {
+              name: this.name,
+              value: value.toString()
+            }
+          });
+        }
       }
     },
     value: {

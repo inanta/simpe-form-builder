@@ -151,9 +151,18 @@
     {{ messages["delete-confirmation"].replace("$count", checkedItems.length) }}
   </confirmation-dialog>
   <app-alert></app-alert>
+  <app-insert :show="isInsertShown" @record-saved="onRecordSaved"></app-insert>
+  <app-edit
+    :id="editID"
+    :name="app.slug"
+    :show="isEditShown"
+    @record-saved="onRecordSaved"
+  ></app-edit>
 </template>
 
 <script>
+import AppEdit from "@/components/Builder/AppEdit.vue";
+import AppInsert from "@/components/Builder/AppInsert.vue";
 import AppViewTable from "@/components/Builder/AppViewTable.vue";
 import ConfirmationDialog from "@/components/Builder/ConfirmationDialog.vue";
 import NsDropDownButton from "@/components/NS/NsDropDownButton.vue";
@@ -172,11 +181,12 @@ import hasFeature from "@/assets/js/builder/hasFeature.js";
 import hash from "@/assets/js/hash.js";
 import onViewPageLoaded from "@/assets/js/builder/app/hooks/onViewPageLoaded.js";
 import onViewPageRenderAdditionalActionButtons from "@/assets/js/builder/app/hooks/onViewPageRenderAdditionalActionButtons.js";
-import onAppWindowScroll from "../assets/js/builder/onAppWindowScroll.js";
 
 export default {
   name: "AppView",
   components: {
+    AppEdit,
+    AppInsert,
     AppViewTable,
     ConfirmationDialog,
     NsDropDownButton,
@@ -194,6 +204,7 @@ export default {
       isError: false,
       isCheckedAll: false,
       isLoading: true,
+      editID: "",
       headers: [],
       hooks: { onViewPageLoaded, onViewPageRenderAdditionalActionButtons },
       items: [],
@@ -204,7 +215,9 @@ export default {
       sort: "",
       searchText: "",
       serverItemsLength: 0,
-      isDeleteConfirmationShown: false
+      isDeleteConfirmationShown: false,
+      isEditShown: false,
+      isInsertShown: false
     };
   },
   computed: {
@@ -242,17 +255,13 @@ export default {
   watch: {
     $route: function (to) {
       if (to.path.includes("/app/")) {
-        this.render(to.params.name);
+        this.initializePage(to.params.action, to.params.id);
       }
     }
   },
   mounted: function () {
     this.render(this.$route.params.name);
-
-    window.addEventListener("scroll", this.onWindowScroll);
-  },
-  unmounted: function () {
-    window.removeEventListener("scroll", this.onWindowScroll);
+    this.initializePage(this.$route.params.action, this.$route.params.id);
   },
   methods: {
     additionalButtonIcon: function (button) {
@@ -287,7 +296,9 @@ export default {
       console.log(event);
     },
     edit: function (item) {
-      this.$router.push("/app/edit/" + this.app.slug + "/" + item["!id"]);
+      this.$router.push(
+        "/app/data/" + this.app.slug + "/update/" + item["!id"]
+      );
     },
     exportData: function () {
       AppBuilder.exportRecords(this.app);
@@ -472,8 +483,20 @@ export default {
     importData: function () {
       this.$refs.import.click();
     },
+    initializePage: function (action, id) {
+      this.isInsertShown = false;
+      this.isEditShown = false;
+      this.editID = "";
+
+      if (action === "insert") {
+        this.isInsertShown = true;
+      } else if (action === "update" && id) {
+        this.editID = id;
+        this.isEditShown = true;
+      }
+    },
     insert: function () {
-      this.$router.push("/app/insert/" + this.app.slug);
+      this.$router.push("/app/data/" + this.app.slug + "/insert");
     },
     onDataTablePageChange: async function (
       page,
@@ -489,6 +512,11 @@ export default {
       this.setLocalStorage(hashed_app_url + "_sort", sort);
       this.setLocalStorage(hashed_app_url + "_order", order);
 
+      this.page = page;
+      this.perPage = per_page;
+      this.sort = sort;
+      this.order = order;
+
       if (typeof this.app.slug !== "undefined") {
         this.getAllRecords(this.app.slug, page, per_page, sort, order, filter);
       }
@@ -500,8 +528,14 @@ export default {
       this.defaultFilters = filter;
       this.getAllRecords(this.app.slug);
     },
-    onWindowScroll: function () {
-      onAppWindowScroll(this);
+    onRecordSaved: function () {
+      this.getAllRecords(
+        this.app.slug,
+        this.page,
+        this.perPage,
+        this.sort,
+        this.order
+      );
     },
     parseImportFile: function () {
       const self = this;

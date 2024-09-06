@@ -215,6 +215,9 @@ export default {
     },
     validation: {
       label: "Validation"
+    },
+    style: {
+      label: "Style"
     }
   },
   p: {
@@ -258,6 +261,9 @@ export default {
     },
     validation: {
       label: "Validation"
+    },
+    style: {
+      label: "Style"
     }
   },
   textarea: {
@@ -287,6 +293,9 @@ export default {
     },
     validation: {
       label: "Validation"
+    },
+    style: {
+      label: "Style"
     }
   },
   hr: {
@@ -295,6 +304,9 @@ export default {
     },
     attrs: {
       label: "Attributes"
+    },
+    style: {
+      label: "Style"
     }
   }
 };

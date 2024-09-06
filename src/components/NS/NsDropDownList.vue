@@ -119,7 +119,7 @@ export default {
       handler: function (value) {
         if (value !== "") {
           this.value = value;
-          this.setSelected(value);
+          this.setSelected(value, true);
         } else {
           this.clearSelected();
         }
@@ -236,7 +236,8 @@ export default {
         this.hoveredItemIndex -= 1;
       }
     },
-    setSelected: function (value) {
+    setSelected: function (value, force_emit = false) {
+      let emit = force_emit;
       let items = [];
 
       this.isShown = false;
@@ -257,7 +258,10 @@ export default {
 
         if (item.value !== this.value) {
           this.value = item.value;
+          emit = true;
+        }
 
+        if (emit) {
           this.$emit("change", item.value);
           this.$emit("update:modelValue", item.value);
         }

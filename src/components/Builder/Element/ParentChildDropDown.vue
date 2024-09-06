@@ -1,5 +1,6 @@
 <template>
   <ns-drop-down-list
+    v-model="internalValue"
     :class="{
       'border-mid-gray dark:border-surface--dark-500': !error,
       'border-negative dark:border-negative--dark': error
@@ -7,7 +8,6 @@
     :items="items"
     :placeholder="placeholder"
     class="w-full appearance-none rounded-sm border bg-white px-3 py-1.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
-    @change="onInput"
   ></ns-drop-down-list>
 </template>
 
@@ -74,14 +74,37 @@ export default {
     readonly: {
       type: Boolean,
       default: false
+    },
+    value: {
+      type: String,
+      default: ""
     }
   },
   emits: ["input"],
   data: function () {
     return {
       items: [],
-      value: ""
+      internalValue: ""
     };
+  },
+  watch: {
+    value: {
+      handler: function (value) {
+        this.internalValue = value;
+      },
+      immediate: true
+    },
+    internalValue: {
+      handler: function () {
+        this.$emit("input", {
+          target: {
+            name: this.name,
+            value: this.internalValue
+          }
+        });
+      },
+      immediate: false
+    }
   },
   mounted: function () {
     this.initWatch();
@@ -103,11 +126,16 @@ export default {
               .then(function (response) {
                 self.items = response.items;
 
-                self.value = self.items[0].value;
+                if (self.value === "") {
+                  self.internalValue = self.items[0].value;
+                } else {
+                  self.internalValue = self.value;
+                }
+
                 self.$emit("input", {
                   target: {
                     name: self.name,
-                    value: self.value
+                    value: self.internalValue
                   }
                 });
               })

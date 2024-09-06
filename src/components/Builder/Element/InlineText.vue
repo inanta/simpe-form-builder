@@ -257,8 +257,6 @@ fieldPropertyOptions.addOption(
   "inline-text-content",
   "FieldPropertyValueSource"
 );
-
-// fieldPropertyOptions.addOption("style", "FieldPropertyStylesCompositor");
 </script>
 
 <style scoped></style>

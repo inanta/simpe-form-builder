@@ -44,6 +44,7 @@
     :name="internalProperties.name"
     :value="value"
     v-bind="cleanAttributes(internalProperties)"
+    class="w-full appearance-none rounded-sm border bg-white px-3 py-1.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
     @input="$emit('input', $event)"
     @keyup="$emit('keyup', $event)"
   >
@@ -137,7 +138,6 @@ export default {
         "rows",
         "size",
         "step",
-        "style",
         "type"
       ]);
 
@@ -152,21 +152,6 @@ export default {
             cleaned_attributes.title = validation.message;
           }
         }
-      }
-
-      if (this.$attrs["class"] !== "") {
-        if (
-          typeof cleaned_attributes["class"] !== "undefined" &&
-          cleaned_attributes["class"] !== ""
-        ) {
-          cleaned_attributes["class"] += " " + this.$attrs["class"];
-        } else {
-          cleaned_attributes["class"] = this.$attrs["class"];
-        }
-      }
-
-      if (typeof attributes["style"] !== "undefined") {
-        cleaned_attributes["style"] = attributes["style"];
       }
 
       return cleaned_attributes;
@@ -221,6 +206,20 @@ export default {
             target: {
               name: this.properties.name,
               value: items[0].value,
+              isInitialValue: true
+            }
+          });
+        }
+      } else if (
+        (this.internalProperties.element === "input" &&
+          this.internalProperties.type !== "file") ||
+        this.internalProperties.element === "textarea"
+      ) {
+        if (this.value == "") {
+          this.$emit("input", {
+            target: {
+              name: this.properties.name,
+              value: "",
               isInitialValue: true
             }
           });

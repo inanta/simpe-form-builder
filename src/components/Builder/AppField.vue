@@ -18,7 +18,6 @@
         :error="validationError !== '' && showInvalidMessage"
         :value="value"
         :properties="properties"
-        :class="inputClass"
         @input="onInput"
         @keyup.enter="onKeyUp"
       >
@@ -141,14 +140,6 @@ export default {
     };
   },
   computed: {
-    inputClass: function () {
-      return {
-        "w-full appearance-none rounded-sm border bg-white px-3 py-1.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600":
-          this.properties.element === "input" ||
-          this.properties.element === "select" ||
-          this.properties.element === "textarea"
-      };
-    },
     fieldLabel: function () {
       if (
         typeof this.properties.label !== "undefined" &&
@@ -213,17 +204,22 @@ export default {
     },
     onInput: function (event) {
       if (event.target.name !== "") {
-        if (this.validateValue(event.target.value, this.data)) {
-          this.showInvalidMessage = true;
+        const is_initial_value =
+          typeof event.target.isInitialValue !== "undefined"
+            ? event.target.isInitialValue
+            : false;
+
+        if (!is_initial_value) {
+          if (this.validateValue(event.target.value, this.data)) {
+            this.showInvalidMessage = true;
+          }
         }
 
         this.$emit(
           "input",
           event.target.name,
           event.target.value,
-          typeof event.target.isInitialValue !== "undefined"
-            ? event.target.isInitialValue
-            : false
+          is_initial_value
         );
       }
     },

@@ -3,14 +3,15 @@
     class="bg-white text-black dark:bg-surface--dark-100 dark:text-on-surface--dark-100"
   >
     <div class="px-4 pb-4">
-      <div class="flex py-2">
-        <div class="my-auto text-xl font-bold">{{ app.name }}</div>
+      <div class="px-1 py-2 text-2xl font-bold">
+        {{ app.name }}
       </div>
       <div
         ref="mainContainer"
         class="relative mb-4 mt-2 rounded-md border border-light-gray bg-white shadow-center dark:border-surface--dark-300 dark:bg-surface--dark-300 dark:shadow-none"
       >
         <div
+          v-if="!isLoading"
           ref="topButtonsContainer"
           class="flex rounded-t-md border-b border-mid-gray bg-white px-3 py-3 dark:border-surface--dark-600 dark:bg-surface--dark-300"
         >
@@ -66,12 +67,29 @@
             {{ container.name }}
           </button>
         </div>
+        <div v-if="isLoading" class="py-12">
+          <img
+            src="@/assets/img/undraw_load_more_re_482p.svg"
+            class="mx-auto w-1/6"
+          />
+          <div
+            class="py-5 text-center text-lg text-disabled dark:text-disabled--dark"
+          >
+            Please hold on while we load your data.
+          </div>
+          <div class="mx-auto w-1/2">
+            <ns-progress-bar
+              class="!rounded-none !border-0"
+              height="0.25rem"
+            ></ns-progress-bar>
+          </div>
+        </div>
         <form :name="app.slug">
           <template
             v-for="(container, index) in containers"
             :key="container.name"
           >
-            <div v-show="index == selectedContainer">
+            <div v-show="index == selectedContainer && !isLoading">
               <div :data-app="app.slug" class="px-5 py-3">
                 <div
                   v-for="(row, row_index) in container.rows"
@@ -123,6 +141,7 @@
 </template>
 
 <script>
+import NsProgressBar from "@/components/NS/NsProgressBar.vue";
 import AppField from "@/components/Builder/AppField.vue";
 import ConfirmationDialog from "@/components/Builder/ConfirmationDialog.vue";
 import AppAlert from "@/components/Builder/AppAlert.vue";
@@ -136,18 +155,19 @@ import onEditPageValueChanged from "@/assets/js/builder/app/hooks/onEditPageValu
 import onRecordEdited from "@/assets/js/builder/app/hooks/onRecordEdited.js";
 
 import alert from "@/assets/js/builder/alert.js";
-import assignValueFromQuery from "../assets/js/builder/assignValueFromQuery.js";
-import checkFieldLogic from "../assets/js/builder/checkFieldLogic.js";
-import executeFieldLogics from "../assets/js/builder/executeFieldLogics.js";
-import executeFieldLogicActions from "../assets/js/builder/executeFieldLogicActions.js";
+import assignValueFromQuery from "@/assets/js/builder/assignValueFromQuery.js";
+import checkFieldLogic from "@/assets/js/builder/checkFieldLogic.js";
+import executeFieldLogics from "@/assets/js/builder/executeFieldLogics.js";
+import executeFieldLogicActions from "@/assets/js/builder/executeFieldLogicActions.js";
 import getPropertyValue from "@/assets/js/getPropertyValue.js";
-import isAbleToSave from "../assets/js/builder/isAbleToSave.js";
-import onAppInput from "../assets/js/builder/onAppInput.js";
-import onAppWindowScroll from "../assets/js/builder/onAppWindowScroll.js";
-import scrollFieldIntoView from "../assets/js/builder/scrollFieldIntoView.js";
+import isAbleToSave from "@/assets/js/builder/isAbleToSave.js";
+import onAppInput from "@/assets/js/builder/onAppInput.js";
+import onAppWindowScroll from "@/assets/js/builder/onAppWindowScroll.js";
+import scrollFieldIntoView from "@/assets/js/builder/scrollFieldIntoView.js";
 
 export default {
   components: {
+    NsProgressBar,
     AppField,
     ConfirmationDialog,
     AppAlert
@@ -172,6 +192,7 @@ export default {
       isSaveConfirmationShown: false,
       isChangesMade: false,
       isChangesMadeConfirmationShown: false,
+      isLoading: true,
       messages: {},
       selectedContainer: 0,
       showInvalid: false,
@@ -185,8 +206,8 @@ export default {
     }
   },
   watch: {
-    $route(to) {
-      this.render(to.params.name);
+    $route: function (to) {
+      this.render(to.params.name, this.$route.params.id);
     }
   },
   mounted: function () {
@@ -420,6 +441,8 @@ export default {
                   }
                 }
               }
+
+              self.isLoading = false;
 
               callHook(self.hooks, "onEditPageLoaded", Object.freeze(app));
             })
