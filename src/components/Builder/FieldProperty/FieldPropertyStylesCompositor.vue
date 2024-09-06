@@ -19,22 +19,33 @@
         <div class="flex-grow">
           <template v-if="Object.keys(styles).length > 0">
             <div v-for="(style, key) in styles" :key="key" class="py-0.5">
-              <button
-                type="button"
-                class="mr-1 h-6 w-6 rounded-full bg-negative text-on-negative dark:bg-negative--dark dark:text-on-negative--dark"
-                @click="onRemoveStyle(key)"
-              >
-                <span class="mdi mdi-minus"></span>
-              </button>
-              {{ getStyleLabel(key) }}:
-              {{ style }}
+              <div class="flex">
+                <div class="pr-1">
+                  <button
+                    type="button"
+                    class="mr-1 h-5 w-5 rounded-full bg-negative text-on-negative dark:bg-negative--dark dark:text-on-negative--dark"
+                    @click="onRemoveStyle(key)"
+                  >
+                    <span class="mdi mdi-minus"></span>
+                  </button>
+                </div>
+                <div>
+                  <div class="font-bold">{{ getStyleLabel(key) }}</div>
+                  <div>
+                    {{ style }}
+                    <button type="button" @click="onEditButtonClick(key)">
+                      <span class="mdi mdi-pencil"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </template>
           <template v-else>This element has no CSS styling applied.</template>
           <div class="pt-1 text-center">
             <button
-              class="rounded-full bg-primary px-2 py-1 text-on-primary dark:bg-primary--dark"
-              @click="isAddStyleShown = true"
+              class="h-7 w-7 rounded-full bg-primary text-on-primary dark:bg-primary--dark"
+              @click="onShowAddStyleButtonClick"
             >
               <i class="mdi mdi-plus"></i>
             </button>
@@ -72,6 +83,7 @@
             <ns-drop-down-list
               v-model="selectedStyleProperty"
               :items="styleProperties"
+              :readonly="isEdit"
               class="w-full rounded-sm border border-primary bg-white px-1 py-0.5 outline-none dark:border-surface--dark-500 dark:bg-surface--dark-500"
             ></ns-drop-down-list>
           </div>
@@ -88,6 +100,7 @@
                 <native-html
                   :properties="input"
                   :error="false"
+                  :placeholder="input.placeholder"
                   :value="input.value === '' ? input.default : input.value"
                   class="w-full appearance-none rounded-sm border bg-white px-1 py-0.5 text-base text-black outline-none focus:border-primary dark:bg-surface--dark-500 dark:text-on-surface--dark-500 dark:focus:border-surface--dark-600"
                   @input="onInput($event, inputIndex)"
@@ -105,7 +118,7 @@
           </button>
           <button
             class="rounded-sm bg-primary px-2 py-1 text-on-primary dark:bg-primary--dark"
-            @click="onAddStyle"
+            @click="onAddStyleButtonClick"
           >
             <span class="mdi mdi-plus"></span>Add
           </button>
@@ -152,6 +165,7 @@ export default {
     return {
       isAddShown: false,
       isAddStyleShown: false,
+      isEdit: false,
       selectedStyleProperty: "backgroundColor",
       styleProperties: [
         {
@@ -162,6 +176,7 @@ export default {
               default: "#000000",
               element: "input",
               label: "Color",
+              placeholder: "",
               type: "color",
               value: ""
             }
@@ -175,6 +190,7 @@ export default {
               default: "#000000",
               element: "input",
               label: "Color",
+              placeholder: "",
               type: "color",
               value: ""
             },
@@ -230,6 +246,7 @@ export default {
               default: "1px",
               element: "input",
               label: "Width",
+              placeholder: "",
               type: "text",
               value: ""
             }
@@ -243,6 +260,7 @@ export default {
               default: "#000000",
               element: "input",
               label: "Color",
+              placeholder: "",
               type: "color",
               value: ""
             }
@@ -256,6 +274,7 @@ export default {
               default: "solid",
               element: "input",
               label: "Style",
+              placeholder: "",
               type: "input",
               value: ""
             }
@@ -269,6 +288,7 @@ export default {
               default: "#000000",
               element: "input",
               label: "Width",
+              placeholder: "Enter size (e.g., 16px, 1.5em, 2rem)",
               type: "input",
               value: ""
             }
@@ -282,6 +302,7 @@ export default {
               default: "#000000",
               element: "input",
               label: "Color",
+              placeholder: "",
               type: "color",
               value: ""
             }
@@ -295,6 +316,7 @@ export default {
               default: "0",
               element: "input",
               label: "Margin",
+              placeholder: "Enter size (e.g., 16px, 1.5em, 2rem)",
               type: "text",
               value: ""
             }
@@ -308,6 +330,7 @@ export default {
               default: "0",
               element: "input",
               label: "Padding",
+              placeholder: "Enter size (e.g., 16px, 1.5em, 2rem)",
               type: "text",
               value: ""
             }
@@ -369,6 +392,21 @@ export default {
         for (const key in saved_styles) {
           if (Object.prototype.hasOwnProperty.call(saved_styles, key)) {
             this.styles[key] = saved_styles[key];
+            this.selectedStyleProperty = key;
+
+            const values = saved_styles[key].split(" ");
+
+            for (
+              let index = 0;
+              index < this.selectedPropertyInput.input.length;
+              index++
+            ) {
+              const input = this.selectedPropertyInput.input[index];
+
+              if (typeof values[index] !== "undefined") {
+                input.value = values[index];
+              }
+            }
           }
         }
       }
@@ -378,10 +416,7 @@ export default {
 
       this.isAddShown = true;
     },
-    onInput: function (event, index) {
-      this.selectedPropertyInput.input[index].value = event.target.value;
-    },
-    onAddStyle: function () {
+    onAddStyleButtonClick: function () {
       this.value = this.selectedPropertyInput.input
         .map(function (input) {
           return input.value === "" ? input.default : input.value;
@@ -391,8 +426,20 @@ export default {
       this.styles[this.selectedStyleProperty] = this.value;
       this.isAddStyleShown = false;
     },
+    onInput: function (event, index) {
+      this.selectedPropertyInput.input[index].value = event.target.value;
+    },
+    onEditButtonClick: function (style) {
+      this.isEdit = true;
+      this.selectedStyleProperty = style;
+      this.isAddStyleShown = true;
+    },
     onRemoveStyle: function (style) {
       delete this.styles[style];
+    },
+    onShowAddStyleButtonClick: function () {
+      this.isEdit = false;
+      this.isAddStyleShown = true;
     },
     save: function () {
       this.isAddShown = false;
