@@ -3,7 +3,9 @@
     data-component="payment-summary"
     class="ml-0 border border-mid-gray p-3 md:ml-2"
   >
-    <div class="heading">{{ paymentSummaryTitle }}</div>
+    <div :style="properties.style">
+      {{ paymentSummaryTitle }}
+    </div>
     <div
       v-for="(payment, paymentIndex) in paymentOptions"
       :key="paymentIndex"
@@ -157,35 +159,70 @@ export default {
       handler: function (value) {
         const options = [];
 
-        for (const key in value) {
-          if (Object.prototype.hasOwnProperty.call(value, key)) {
-            if (this.isJSON(value[key])) {
-              const data = JSON.parse(value[key]);
+        if (this.builder) {
+          options.push({
+            title: "Preview Item 1",
+            items: [
+              {
+                title: "Preview Item 1",
+                name: "Item Variant 1",
+                price: 80,
+                quantity: 2,
+                total: 160
+              },
+              {
+                title: "Preview Item 1",
+                name: "Item Variant 2",
+                price: 80,
+                quantity: 1,
+                total: 160
+              }
+            ]
+          });
 
-              if (Array.isArray(data)) {
-                const items = {
-                  title: "",
-                  items: []
-                };
+          options.push({
+            title: "Preview Item 2",
+            items: [
+              {
+                title: "Preview Item 2",
+                name: "Item Variant",
+                price: 100,
+                quantity: 1,
+                total: 100
+              }
+            ]
+          });
+        } else {
+          for (const key in value) {
+            if (Object.prototype.hasOwnProperty.call(value, key)) {
+              if (this.isJSON(value[key])) {
+                const data = JSON.parse(value[key]);
 
-                for (let index = 0; index < data.length; index++) {
-                  const item = data[index];
+                if (Array.isArray(data)) {
+                  const items = {
+                    title: "",
+                    items: []
+                  };
 
-                  if (
-                    typeof item.title !== "undefined" &&
-                    typeof item.name !== "undefined" &&
-                    typeof item.price !== "undefined" &&
-                    typeof item.quantity !== "undefined" &&
-                    typeof item.total !== "undefined" &&
-                    item.quantity > 0
-                  ) {
-                    items.title = item.title;
-                    items.items.push(item);
+                  for (let index = 0; index < data.length; index++) {
+                    const item = data[index];
+
+                    if (
+                      typeof item.title !== "undefined" &&
+                      typeof item.name !== "undefined" &&
+                      typeof item.price !== "undefined" &&
+                      typeof item.quantity !== "undefined" &&
+                      typeof item.total !== "undefined" &&
+                      item.quantity > 0
+                    ) {
+                      items.title = item.title;
+                      items.items.push(item);
+                    }
                   }
-                }
 
-                if (items.items.length > 0) {
-                  options.push(items);
+                  if (items.items.length > 0) {
+                    options.push(items);
+                  }
                 }
               }
             }
@@ -283,6 +320,9 @@ fieldProperties["payment-summary"] = {
   },
   "payment-summary-title": {
     label: "Title"
+  },
+  style: {
+    label: "Header Style"
   }
 };
 </script>
