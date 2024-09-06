@@ -193,6 +193,7 @@ export default {
       // webapp_item_title: app.name,
       // webapp_table: "apps",
 
+      webapp_item_id: "0",
       webapp_item_enabled: "on",
       webapp_item_title: app.name,
       webapp_item_slug: slugify(app.name, { lower: true }),
