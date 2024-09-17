@@ -366,6 +366,9 @@ export default {
     },
     exportAsJSON: function (item) {
       AppBuilder.exportApp(item).then(function (response) {
+        delete response.slug;
+        delete response.id;
+
         let blob = new Blob([JSON.stringify(response, null, 2)], {
           type: "application/json;charset=utf-8"
         });
