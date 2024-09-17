@@ -21,17 +21,17 @@ const routes = [
     path: "/app/view/:name",
     name: "App View",
     component: () => import("../views/AppView.vue")
+  },
+  {
+    path: "/app/insert/:name/:parameter?/:value?",
+    name: "App Insert",
+    component: () => import("../views/AppInsert.vue")
+  },
+  {
+    path: "/app/edit/:name/:id",
+    name: "App Edit",
+    component: () => import("../views/AppEdit.vue")
   }
-  // {
-  //   path: "/app/insert/:name/:parameter?/:value?",
-  //   name: "App Insert",
-  //   component: () => import("../views/AppInsert.vue")
-  // },
-  // {
-  //   path: "/app/edit/:name/:id",
-  //   name: "App Edit",
-  //   component: () => import("../views/AppEdit.vue")
-  // }
 
   ///
   // {
