@@ -98,7 +98,7 @@ export default {
       }
     },
     value: {
-      type: String,
+      type: [String, Array],
       default: ""
     }
   },
@@ -187,7 +187,10 @@ export default {
             ? this.properties.items.value
             : this.properties.items;
 
-        if (typeof this.internalProperties.checked === "undefined") {
+        if (
+          typeof this.internalProperties.checked === "undefined" ||
+          this.internalProperties.checked === false
+        ) {
           this.internalProperties.checked = [];
 
           for (let index = 0; index < items.length; index++) {
@@ -260,10 +263,13 @@ export default {
           }
         }
 
+        // TODO: Add an option to send it as array or JSON string
+        const emit_values = JSON.stringify(values);
+
         this.$emit("input", {
           target: {
             name: this.properties.name,
-            value: values
+            value: emit_values
           }
         });
       } else if (this.internalProperties.type === "radio") {
