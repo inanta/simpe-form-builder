@@ -275,6 +275,34 @@ export default {
   },
   insertRecord: function (app, data) {
     const send = async function (data) {
+      for (const key in data["form"]["properties_attributes"]) {
+        if (
+          Object.prototype.hasOwnProperty.call(
+            data["form"]["properties_attributes"],
+            key
+          )
+        ) {
+          for (let index = 0; index < app.columns.length; index++) {
+            const column = app.columns[index];
+
+            if (
+              typeof column.name !== "undefined" &&
+              column.name !== "" &&
+              column.name === key
+            ) {
+              if (
+                typeof column["dataot-payment-field"] !== "undefined" &&
+                column["dataot-payment-field"] !== ""
+              ) {
+                delete data["form"]["properties_attributes"][
+                  column["dataot-payment-field"]
+                ];
+              }
+            }
+          }
+        }
+      }
+
       return axios
         .post(baseURI + "/api/customizations", data, {
           headers: {
@@ -307,17 +335,54 @@ export default {
     };
 
     const new_data = {};
-
     const eway_encrypt_key =
       "zHjlINCr1W2XOulo6FN+z0iWerBaTBxrIMf6DEpkWz/xTQqqVgwFL3JRpbVC8tCNwyeFL2gk8Veto42Q//8BckThIdOLkrmzuvqzzTfQIP31467j+Gx69ksSa4rEe2tvj4W6Du5QmX3b6VM4+qzzhg6Vi7PHRYhtQwJ3SaCtycNYC73GjK5EAKJIjeSSPQkQNDSKYOm3DONIlvNikV/oev5QkglbOKvdEWFE3A5Dol9wvs2BjsdIEX6/dqUccpdUreSzDIiWMv38pukwuVZn+e0Mc661E5YNGjjDqRvK8tul8AThsWiQstC6S8MzWnjaCwfeCQlBIS5QrEyjs1i37w==";
 
-    // var amount = "input[name=amount]";
     var amount = 'input[name="payment-summary-amount"]';
     var card_name = "input[name=card_holder]";
     var card_num = "input[name=card_number]";
     var card_cvv = "input[name=card_cvv]";
     var card_exp_mm = "[name=card_exp_mm]";
     var card_exp_yy = "[name=card_exp_yy]";
+
+    new_data["form"] = { properties_attributes: {} };
+    new_data["form"]["properties_attributes"]["form_label"] = [];
+
+    for (const key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        const element = data[key];
+
+        new_data["form"]["properties_attributes"][key] = element;
+
+        for (let index = 0; index < app.columns.length; index++) {
+          const column = app.columns[index];
+
+          if (
+            typeof column.name !== "undefined" &&
+            column.name !== "" &&
+            column.name === key
+          ) {
+            new_data["form"]["properties_attributes"]["form_label"].push({
+              label: column.label,
+              name: key
+            });
+
+            if (
+              typeof column["dataot-payment-field"] !== "undefined" &&
+              column["dataot-payment-field"] !== ""
+            ) {
+              new_data["form"]["properties_attributes"][
+                column["dataot-payment-field"]
+              ] = element;
+            }
+          }
+        }
+      }
+    }
+
+    new_data["form"]["properties_attributes"]["form_label"] = JSON.stringify(
+      new_data["form"]["properties_attributes"]["form_label"]
+    );
 
     if (document.querySelector(amount)) {
       var card_num_ = document.querySelector(card_num).value
@@ -328,16 +393,6 @@ export default {
         : "";
 
       console.log("Form submit start");
-
-      new_data["form"] = { properties_attributes: {} };
-
-      for (const key in data) {
-        if (Object.prototype.hasOwnProperty.call(data, key)) {
-          const element = data[key];
-
-          new_data["form"]["properties_attributes"][key] = element;
-        }
-      }
 
       new_data["form"]["properties_attributes"]["payment_type"] =
         "Booking Payment";
@@ -379,8 +434,6 @@ export default {
           }
         })
         .then(function (response) {
-          console.log(response.data);
-
           if (response.data.error) {
             alert("Error", response.data.err_message.join(". ") + ".", "error");
 
@@ -395,19 +448,6 @@ export default {
         });
     } else {
       new_data["form"] = { properties_attributes: {} };
-
-      for (const key in data) {
-        if (Object.prototype.hasOwnProperty.call(data, key)) {
-          const element = data[key];
-
-          new_data["form"]["properties_attributes"][key] = element;
-        }
-      }
-
-      // new_data["form"]["properties_attributes"]["payment_type"] =
-      //   "Booking Payment";
-
-      // new_data["ptype"] = "eway";
 
       if (document.querySelector('[name="h-captcha-response"]')) {
         new_data["h-captcha-response"] = document.querySelector(
