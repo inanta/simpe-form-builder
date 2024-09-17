@@ -125,6 +125,9 @@ export default {
         }
       ]
     },
+    "dataot-payment-field": {
+      label: "Payment Field"
+    },
     max: {
       label: "Max",
       rules: [

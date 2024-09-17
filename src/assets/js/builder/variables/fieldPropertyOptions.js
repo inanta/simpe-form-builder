@@ -207,5 +207,22 @@ export default {
   validation: {
     fields: ["input", "textarea"],
     options: "FieldPropertyValidationCollection"
+  },
+  "dataot-payment-field": {
+    fields: ["input"],
+    options: [
+      { name: "-", value: "" },
+      { name: "First Name", value: "billing_first_name" },
+      { name: "Last Name", value: "billing_last_name" },
+      { name: "Street 1", value: "billing-address-1" },
+      { name: "Street 2", value: "billing-address-2" },
+      { name: "City", value: "billing-city" },
+      { name: "State", value: "billing-address-2" },
+      { name: "Country", value: "billing-country" },
+      { name: "Postal Code", value: "billing-zip" },
+      { name: "Phone", value: "billing_phone" },
+      { name: "Email", value: "billing_email" }
+    ],
+    default: "text"
   }
 };
