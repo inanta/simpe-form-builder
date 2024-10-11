@@ -144,8 +144,6 @@ export default {
       .then(function (data) {
         data.data.columns = data.data.elements;
 
-        console.log("data", data.data);
-
         return data.data;
       });
   },
@@ -297,6 +295,8 @@ export default {
                 delete data["form"]["properties_attributes"][
                   column["dataot-payment-field"]
                 ];
+              } else if (column.element === "payment-summary") {
+                delete data["form"]["properties_attributes"][column["name"]];
               }
             }
           }
@@ -336,7 +336,9 @@ export default {
 
     const new_data = {};
     const eway_encrypt_key =
-      "zHjlINCr1W2XOulo6FN+z0iWerBaTBxrIMf6DEpkWz/xTQqqVgwFL3JRpbVC8tCNwyeFL2gk8Veto42Q//8BckThIdOLkrmzuvqzzTfQIP31467j+Gx69ksSa4rEe2tvj4W6Du5QmX3b6VM4+qzzhg6Vi7PHRYhtQwJ3SaCtycNYC73GjK5EAKJIjeSSPQkQNDSKYOm3DONIlvNikV/oev5QkglbOKvdEWFE3A5Dol9wvs2BjsdIEX6/dqUccpdUreSzDIiWMv38pukwuVZn+e0Mc661E5YNGjjDqRvK8tul8AThsWiQstC6S8MzWnjaCwfeCQlBIS5QrEyjs1i37w==";
+      typeof document.querySelector("#app").dataset.encKey === "undefined"
+        ? ""
+        : document.querySelector("#app").dataset.encKey;
 
     var amount = 'input[name="payment-summary-amount"]';
     var card_name = "input[name=card_holder]";
@@ -434,8 +436,19 @@ export default {
           }
         })
         .then(function (response) {
-          if (response.data.error) {
-            alert("Error", response.data.err_message.join(". ") + ".", "error");
+          if (
+            typeof response.data.error !== "undefined" &&
+            response.data.error
+          ) {
+            if (Array.isArray(response.data.err_message)) {
+              alert(
+                "Error",
+                response.data.err_message.join(". ") + ".",
+                "error"
+              );
+            } else {
+              alert("Error", response.data.err_message + ".", "error");
+            }
 
             return response;
           } else {
@@ -447,8 +460,6 @@ export default {
           }
         });
     } else {
-      new_data["form"] = { properties_attributes: {} };
-
       if (document.querySelector('[name="h-captcha-response"]')) {
         new_data["h-captcha-response"] = document.querySelector(
           '[name="h-captcha-response"]'
