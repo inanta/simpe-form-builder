@@ -231,9 +231,14 @@ export default {
             typeof value.custom_settings !== "undefined" &&
             typeof value.custom_settings.protection_type !== "undefined"
           ) {
-            console.log("Rendering hCaptcha");
+            const captchaElement = document.getElementById("h-hcaptcha-widget");
 
-            hcaptcha.render("h-hcaptcha-widget");
+            if (captchaElement && captchaElement.childElementCount > 0) {
+              console.log("hCaptcha already rendered");
+            } else {
+              console.log("Rendering hCaptcha");
+              hcaptcha.render("h-hcaptcha-widget");
+            }
           }
         }, 2000);
       });
@@ -330,6 +335,8 @@ export default {
             }
           })
           .catch(function (error) {
+            console.error(error);
+
             if (
               typeof error.response !== "undefined" &&
               typeof error.response.status !== "undefined" &&
