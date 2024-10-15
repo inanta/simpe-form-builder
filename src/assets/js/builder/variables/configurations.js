@@ -255,6 +255,50 @@ export default {
               ]
             }
           ]
+        },
+        {
+          label: "Event",
+          fields: [
+            {
+              element: "select",
+              label: "Disable Event",
+              name: "disable_event",
+              items: {
+                source: "static",
+                values: [
+                  {
+                    label: "-- None --",
+                    value: ""
+                  },
+                  {
+                    label: "No",
+                    value: "no"
+                  },
+                  {
+                    label: "Yes",
+                    value: "yes"
+                  }
+                ]
+              },
+              value: "no"
+            },
+            {
+              attributes: {
+                type: "date"
+              },
+              element: "input",
+              label: "Publish Date",
+              name: "publish_date"
+            },
+            {
+              attributes: {
+                type: "date"
+              },
+              element: "input",
+              label: "Expiry Date",
+              name: "expiry_date"
+            }
+          ]
         }
       ]
     },
