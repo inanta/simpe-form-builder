@@ -113,7 +113,7 @@
                 'bg-disabled text-on-disabled dark:bg-disabled--dark dark:text-on-disabled--dark':
                   disableSaveButton
               }"
-              :disable="disableSaveButton"
+              :disabled="disableSaveButton"
               class="rounded px-3 py-2 text-on-primary"
               type="button"
               @click="onSaveButtonClick"
@@ -335,21 +335,27 @@ export default {
             }
           })
           .catch(function (error) {
-            console.error(error);
-
             if (
               typeof error.response !== "undefined" &&
               typeof error.response.status !== "undefined" &&
               error.response.status === 401
             ) {
               // window.location.href = "/";
-            } else if (typeof error.response.data.errors !== "undefined") {
+            } else if (
+              typeof error.response !== "undefined" &&
+              typeof error.response.data !== "undefined" &&
+              typeof error.response.data.errors !== "undefined"
+            ) {
               self.errors = error.response.data.errors;
               self.showInvalid = true;
+            } else {
+              console.log("Error", error);
             }
 
             self.disableCancelButton = false;
             self.disableSaveButton = false;
+
+            console.error(error);
           });
       } else {
         scrollFieldIntoView(this.$refs["fields"], self.isAbleToSave.name);
