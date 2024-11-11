@@ -2,48 +2,6 @@
   <div>
     <div>
       <div ref="mainContainer" class="relative mb-4 mt-2">
-        <!-- <div
-          ref="topButtonsContainer"
-          class="flex rounded-t-md border-b border-mid-gray bg-white px-3 py-3 dark:border-surface--dark-600 dark:bg-surface--dark-300"
-        >
-          <div class="my-auto text-xl font-bold">{{ app.name }}</div>
-          <div>
-            <button
-              v-for="button in additionalButtons"
-              :key="button.name"
-              class="ml-2 rounded bg-primary px-3 py-2 text-on-primary dark:bg-primary--dark"
-              @click="button.onClick"
-            >
-              <span :class="button.icon"></span> {{ button.label }}
-            </button>
-          </div>
-          <div class="ml-auto">
-            <button
-              :class="{
-                'bg-negative dark:bg-negative--dark': !disableCancelButton,
-                'bg-disabled text-on-disabled dark:bg-disabled--dark dark:text-on-disabled--dark':
-                  disableCancelButton
-              }"
-              :disable="disableCancelButton"
-              class="rounded px-3 py-2 text-on-negative"
-              @click="onCancelButtonClick"
-            >
-              <span class="mdi mdi-close"></span> {{ messages.cancel }}
-            </button>
-            <button
-              :class="{
-                'bg-primary dark:bg-primary--dark': !disableSaveButton,
-                'bg-disabled text-on-disabled dark:bg-disabled--dark dark:text-on-disabled--dark':
-                  disableSaveButton
-              }"
-              :disable="disableSaveButton"
-              class="ml-2 rounded px-3 py-2 text-on-primary"
-              @click="onSaveButtonClick"
-            >
-              <span class="mdi mdi-content-save"></span> {{ messages.save }}
-            </button>
-          </div>
-        </div> -->
         <div v-if="app.container_type === 'Tabs'" class="pt-3">
           <button
             v-for="(container, index) in containers"
@@ -147,7 +105,7 @@ import AppField from "@/components/Builder/AppField.vue";
 import ConfirmationDialog from "@/components/Builder/ConfirmationDialog.vue";
 import AppAlert from "@/components/Builder/AppAlert.vue";
 
-import AppBuilder from "@/assets/js/AppBuilder.js";
+import AppBuilder from "@/assets/js/AppBuilderFrontEnd.js";
 
 import callHook from "@/assets/js/builder/callHook.js";
 import onInsertPageCancelButtonClick from "@/assets/js/builder/app/hooks/onInsertPageCancelButtonClick.js";
