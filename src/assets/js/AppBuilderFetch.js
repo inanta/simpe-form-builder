@@ -334,6 +334,20 @@ export default {
         });
     };
 
+    if (document.querySelector('[name="h-captcha-response"]')) {
+      if (document.querySelector('[name="h-captcha-response"]').value === "") {
+        alert(
+          "Error",
+          "Please complete the human verification security check",
+          "error"
+        );
+
+        return Promise.reject(
+          new Error("Please complete the human verification security check")
+        );
+      }
+    }
+
     const new_data = {};
     const eway_encrypt_key =
       typeof document.querySelector("#app").dataset.encKey === "undefined"
