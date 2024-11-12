@@ -64,7 +64,8 @@ export default {
             Accept: "*/*",
             Pragma: "no-cache",
             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            "X-CSRF-TOKEN": app.custom_settings["authenticity_token"]
+            "X-CSRF-TOKEN": app.custom_settings["authenticity_token"],
+            "X-Requested-With": "XMLHttpRequest"
           }
         })
         .then(function (data) {
