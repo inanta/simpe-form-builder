@@ -181,13 +181,20 @@ export default {
       this.render(to.params.name);
     },
     app: function (value) {
-      this.showSpamProtection = true;
+      if (
+        typeof value.custom_settings !== "undefined" &&
+        typeof value.custom_settings.protection_type !== "undefined" &&
+        value.custom_settings.protection_type !== ""
+      ) {
+        this.showSpamProtection = true;
+      }
 
       this.$nextTick(function () {
         setTimeout(function () {
           if (
             typeof value.custom_settings !== "undefined" &&
-            typeof value.custom_settings.protection_type !== "undefined"
+            typeof value.custom_settings.protection_type !== "undefined" &&
+            value.custom_settings.protection_type !== ""
           ) {
             const captchaElement = document.getElementById("h-hcaptcha-widget");
 
@@ -276,6 +283,7 @@ export default {
         AppBuilder.insertRecord(self.app, self.values)
           .then(function (result) {
             if (result) {
+              /*
               const app = JSON.parse(JSON.stringify(self.app));
 
               app.result = result;
@@ -290,6 +298,16 @@ export default {
 
               self.disableCancelButton = false;
               self.disableSaveButton = false;
+              */
+
+              if (
+                typeof result.data !== "undefined" &&
+                typeof result.data.error !== "undefined" &&
+                result.data.error
+              ) {
+                self.disableCancelButton = false;
+                self.disableSaveButton = false;
+              }
             }
           })
           .catch(function (error) {
