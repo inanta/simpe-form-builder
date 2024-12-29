@@ -1,5 +1,11 @@
 <template>
-  <div>
+  <div v-if="isShown">
+    <div
+      v-if="paymentOptionType != 'title-description'"
+      class="block truncate pb-1.5 text-base font-semibold text-black dark:text-on-surface--dark-100"
+    >
+      {{ paymentOptionTitle }}
+    </div>
     <div class="flex flex-col md:flex-row">
       <template v-if="paymentOptionType == 'title-description'">
         <div class="md:pb:0 w-full pb-2 font-bold md:w-3/12">
@@ -187,6 +193,33 @@ export default {
       }
 
       return this.paymentOptionDescription;
+    },
+    isShown: function () {
+      const currentDate = new Date();
+
+      let isShown = true;
+
+      if (!this.builder) {
+        let startDate = new Date();
+        let endDate = new Date();
+
+        startDate.setDate(startDate.getDate() - 1);
+        endDate.setFullYear(endDate.getFullYear() + 1);
+
+        if (this.paymentOptionStartDate !== "") {
+          startDate = new Date(parseInt(this.paymentOptionStartDate) * 1000);
+        }
+
+        if (this.paymentOptionEndDate !== "") {
+          endDate = new Date(parseInt(this.paymentOptionEndDate) * 1000);
+        }
+
+        if (currentDate < startDate || currentDate > endDate) {
+          isShown = false;
+        }
+      }
+
+      return isShown;
     },
     maxQuantity: function () {
       let max = 9999;
